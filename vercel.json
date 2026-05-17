@@ -1,0 +1,23 @@
+{
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "devCommand": null,
+  "installCommand": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/vocab_data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
