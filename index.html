@@ -335,7 +335,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ==================== SUPABASE ====================
+const SUPABASE_URL = 'https://oqcdhkhxodifxhevqusr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_njoQhSyOTW7aTRwteqq24g_Y5l6pkNV';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ==================== DATA STORE ====================
 const TEACHER_PASSWORD = 'teacher888';
 let currentUser = null;
@@ -631,6 +637,18 @@ const PET_SCENE_WORDS = [...MODULE_LIBRARY.vocabulary.pet_scene_23.words, ...MOD
 
 // 获取当前学生应该看到的内容（根据教师推送配置）
 async function getContent() {
+  // 如果有学生登录，检查是否有推送配置
+  if (currentUser && currentUser.type === 'student') {
+    try {
+      const { data } = await sb.from('push_configs').select('push_config').eq('student_name', currentUser.name).single();
+      if (data && data.push_config) {
+        return getContentFromPush(data.push_config);
+      }
+    } catch(e) {
+      // 无推送配置，使用默认内容
+    }
+  }
+  // 默认内容（无推送时使用）
   const cfg = GRADE_CONTENT[currentGrade] || GRADE_CONTENT.default;
   return {
     vocabulary: [],
@@ -703,8 +721,19 @@ const contentData = {
 async function getStudentData(name) {
   const key = 'eng_app_student_' + name;
   let data = null;
-  const cached = localStorage.getItem(key);
-  if (cached) { data = JSON.parse(cached); }
+  try {
+    const { data: row } = await sb.from('students').select('data').eq('name', name).maybeSingle();
+    if (row && row.data) {
+      data = row.data;
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+  } catch(e) {
+    console.log('Supabase读取失败，使用本地缓存:', e.message);
+  }
+  if (!data) {
+    const cached = localStorage.getItem(key);
+    if (cached) { data = JSON.parse(cached); }
+  }
   if (!data) {
     data = {
       name: name,
@@ -724,7 +753,7 @@ async function getStudentData(name) {
       flashcardCorrect: 0,
       lastActive: new Date().toISOString()
     };
-    saveStudentData(name, data);
+    await saveStudentData(name, data);
   }
   return data;
 }
@@ -733,16 +762,29 @@ async function saveStudentData(name, data) {
   const key = 'eng_app_student_' + name;
   data.lastActive = new Date().toISOString();
   localStorage.setItem(key, JSON.stringify(data));
+  try {
+    await sb.from('students').upsert({ name: name, data: data, updated_at: new Date().toISOString() }, { onConflict: 'name' });
+  } catch(e) {
+    console.log('Supabase保存失败，仅保存到本地:', e.message);
+  }
 }
 
 async function getAllStudents() {
   let rows = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key.startsWith('eng_app_student_')) {
-      const name = key.replace('eng_app_student_', '');
-      const data = JSON.parse(localStorage.getItem(key));
-      rows.push({name, data});
+  try {
+    const { data } = await sb.from('students').select('name,data');
+    if (data) rows = data;
+  } catch(e) {
+    console.log('Supabase读取失败，使用本地缓存:', e.message);
+  }
+  if (rows.length === 0) {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('eng_app_student_')) {
+        const name = key.replace('eng_app_student_', '');
+        const data = JSON.parse(localStorage.getItem(key));
+        rows.push({name, data});
+      }
     }
   }
   return rows.map(r => ({name: r.name, ...r.data}));
@@ -1624,13 +1666,23 @@ async function savePushConfig() {
     return;
   }
 
-  const moduleNames = [
-    ...pushConfig.vocabulary.map(k => MODULE_LIBRARY.vocabulary[k]?.name),
-    ...pushConfig.grammar.map(k => MODULE_LIBRARY.grammar[k]?.name),
-    ...pushConfig.sentences.map(k => MODULE_LIBRARY.sentences[k]?.name)
-  ].filter(Boolean).join('、');
+  try {
+    await sb.from('push_configs').upsert({
+      student_name: student,
+      push_config: pushConfig,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'student_name' });
 
-  document.getElementById('pushMsg').innerHTML = `<span style="color:#22c55e">✅ 已推送 ${moduleCount} 个模块给 <b>${student}</b>：<br>${moduleNames}</span>`;
+    const moduleNames = [
+      ...pushConfig.vocabulary.map(k => MODULE_LIBRARY.vocabulary[k]?.name),
+      ...pushConfig.grammar.map(k => MODULE_LIBRARY.grammar[k]?.name),
+      ...pushConfig.sentences.map(k => MODULE_LIBRARY.sentences[k]?.name)
+    ].filter(Boolean).join('、');
+
+    document.getElementById('pushMsg').innerHTML = `<span style="color:#22c55e">✅ 已推送 ${moduleCount} 个模块给 <b>${student}</b>：<br>${moduleNames}</span>`;
+  } catch(e) {
+    document.getElementById('pushMsg').innerHTML = `<span style="color:#ef4444">推送失败：${e.message}</span>`;
+  }
 }
 
 // ==================== UTILS ====================
