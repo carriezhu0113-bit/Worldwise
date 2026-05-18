@@ -1,0 +1,19 @@
+# Obsidian
+.obsidian/
+Attachments/
+Clippings/
+Excalidraw/
+copilot/
+*.base
+
+# Python scripts (if not needed for app)
+extract_all_words.py
+extract_pet.py
+read_pet.py
+pet_words.json
+
+# PET vocab app subdirectory (files are in root)
+pet-vocab-app/
+
+# Deploy script
+deploy-oss.sh
