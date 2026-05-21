@@ -95,9 +95,8 @@ async function fcSelectAnswer(selected, correct) {
   if (fcAnswered) return;
   fcAnswered = true;
   const w = fcWords[fcIndex];
-  const data = await getStudentData(currentUser.name);
-  data.flashcardDone = (data.flashcardDone || 0) + 1;
 
+  // 立即更新 UI 反馈
   const btns = document.querySelectorAll('.fc-option-btn');
   btns.forEach(b => {
     b.style.pointerEvents = 'none';
@@ -107,22 +106,30 @@ async function fcSelectAnswer(selected, correct) {
   });
 
   if (selected === correct) {
-    data.flashcardCorrect = (data.flashcardCorrect || 0) + 1;
-    if (!data.wordsKnown.includes(w.word)) data.wordsKnown.push(w.word);
-    data.wordsUnknown = data.wordsUnknown.filter(x => x !== w.word);
     let extra = '';
     if (w.synonyms && w.synonyms !== '暂无') extra = `<div style="margin-top:8px;font-size:13px;color:#059669">💡 ${w.synonyms}</div>`;
     if (w.phrase) extra += `<div style="font-size:13px;color:#059669">📎 ${w.phrase}</div>`;
     document.getElementById('fcFeedback').innerHTML = `<div style="color:#059669;font-size:16px;font-weight:600">✅ 正确！</div>${extra}`;
   } else {
+    document.getElementById('fcFeedback').innerHTML = `<div style="color:#ef4444;font-size:16px;font-weight:600">❌ 正确答案：${w.meaning}</div><div style="margin-top:6px;font-size:13px;color:#64748b">这个单词稍后会再次出现</div>`;
+  }
+
+  document.getElementById('fcNextBtn').style.display = 'inline-block';
+
+  // 后台保存数据
+  const data = await getStudentData(currentUser.name);
+  data.flashcardDone = (data.flashcardDone || 0) + 1;
+  if (selected === correct) {
+    data.flashcardCorrect = (data.flashcardCorrect || 0) + 1;
+    if (!data.wordsKnown.includes(w.word)) data.wordsKnown.push(w.word);
+    data.wordsUnknown = data.wordsUnknown.filter(x => x !== w.word);
+  } else {
     if (!data.wordsUnknown.includes(w.word)) data.wordsUnknown.push(w.word);
     fcWrongWords.push(w);
-    document.getElementById('fcFeedback').innerHTML = `<div style="color:#ef4444;font-size:16px;font-weight:600">❌ 正确答案：${w.meaning}</div><div style="margin-top:6px;font-size:13px;color:#64748b">这个单词稍后会再次出现</div>`;
   }
   data.wordsLearned = new Set([...data.wordsKnown, ...data.wordsUnknown]).size;
   await saveStudentData(currentUser.name, data);
 
-  document.getElementById('fcNextBtn').style.display = 'inline-block';
   fcAutoTimer = setTimeout(() => { fcNextWord(); }, 5000);
 }
 
