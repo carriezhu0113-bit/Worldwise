@@ -4,7 +4,8 @@ async function studentLogin() {
   if (!name) { alert('请输入姓名'); return; }
   currentUser = {type:'student', name:name};
   currentGrade = STUDENT_GRADES[name] || 'default';
-  await getStudentData(name);
+
+  // 先显示界面，不等待 Supabase
   document.getElementById('loginPage').classList.add('hidden');
   document.getElementById('mainApp').classList.remove('hidden');
   document.getElementById('displayName').textContent = '👤 ' + name;
@@ -12,6 +13,9 @@ async function studentLogin() {
   document.getElementById('teacherTabs').classList.add('hidden');
   switchTab('dashboard');
   updateDashboard();
+
+  // 后台加载数据
+  getStudentData(name);
 }
 
 function teacherLogin() {
