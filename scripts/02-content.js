@@ -377,6 +377,14 @@ function getDefaultSentenceAnalysis() {
   return result;
 }
 
+function getDefaultGrammarReview() {
+  let result = '';
+  Object.values(MODULE_LIBRARY.grammar).forEach(mod => {
+    if (mod.review) result = mod.review;
+  });
+  return result;
+}
+
 // 获取当前学生应该看到的内容（根据教师推送配置）
 async function getContent() {
   // 如果有学生登录，检查是否有推送配置
@@ -396,7 +404,7 @@ async function getContent() {
     grammarMC: getDefaultGrammarMC(),
     grammarFill: contentData.grammarFill,
     grammarCorrect: getDefaultGrammarCorrect(),
-    grammarReview: '',
+    grammarReview: getDefaultGrammarReview(),
     sentenceAnalysis: getDefaultSentenceAnalysis()
   };
 }
