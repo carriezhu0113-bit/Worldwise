@@ -76,19 +76,19 @@ function renderFlashcard() {
 }
 
 function speakWord(word) {
-  if (!('speechSynthesis' in window)) {
-    console.warn('浏览器不支持语音合成');
-    return;
-  }
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = 'en-US';
-  utterance.rate = 0.8;
-  // 尝试选择英语语音
-  const voices = speechSynthesis.getVoices();
-  const enVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
-  if (enVoice) utterance.voice = enVoice;
-  speechSynthesis.speak(utterance);
+  // 使用有道词典发音，type=0 为美音，type=1 为英音
+  const audioUrl = `https://dict.youdao.com/dictvoice?type=0&audio=${encodeURIComponent(word)}`;
+  const audio = new Audio(audioUrl);
+  audio.play().catch(() => {
+    // 如果有道发音失败，回退到浏览器语音合成
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.8;
+      speechSynthesis.speak(utterance);
+    }
+  });
 }
 
 async function fcSelectAnswer(selected, correct) {
