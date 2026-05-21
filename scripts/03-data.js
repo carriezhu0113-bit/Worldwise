@@ -1,6 +1,31 @@
 // ==================== DATA MANAGEMENT ====================
+// 内存缓存，避免每次操作都读 Supabase
+let _cachedStudentData = null;
+let _cachedStudentName = null;
+
 async function getStudentData(name) {
   const key = 'eng_app_student_' + name;
+
+  // 优先使用内存缓存
+  if (_cachedStudentName === name && _cachedStudentData) {
+    return _cachedStudentData;
+  }
+
+  // 其次使用 localStorage
+  const cached = localStorage.getItem(key);
+  if (cached) {
+    try {
+      _cachedStudentData = JSON.parse(cached);
+      _cachedStudentName = name;
+      // 后台同步 Supabase（不阻塞）
+      syncToSupabase(name, _cachedStudentData);
+      return _cachedStudentData;
+    } catch(e) {
+      // 缓存损坏，继续
+    }
+  }
+
+  // 最后尝试从 Supabase 读取
   let data = null;
   try {
     const { data: row } = await sb.from('students').select('data').eq('name', name).maybeSingle();
@@ -11,10 +36,7 @@ async function getStudentData(name) {
   } catch(e) {
     console.log('Supabase读取失败，使用本地缓存:', e.message);
   }
-  if (!data) {
-    const cached = localStorage.getItem(key);
-    if (cached) { data = JSON.parse(cached); }
-  }
+
   if (!data) {
     data = {
       name: name,
@@ -34,9 +56,21 @@ async function getStudentData(name) {
       flashcardCorrect: 0,
       lastActive: new Date().toISOString()
     };
-    await saveStudentData(name, data);
+    saveStudentData(name, data);
   }
+
+  _cachedStudentData = data;
+  _cachedStudentName = name;
   return data;
+}
+
+// 后台同步到 Supabase（不阻塞）
+function syncToSupabase(name, data) {
+  try {
+    sb.from('students').upsert({ name: name, data: data, updated_at: new Date().toISOString() }, { onConflict: 'name' });
+  } catch(e) {
+    // 静默失败
+  }
 }
 
 function getAccuracyRate(data) {
@@ -50,11 +84,11 @@ async function saveStudentData(name, data) {
   const key = 'eng_app_student_' + name;
   data.lastActive = new Date().toISOString();
   localStorage.setItem(key, JSON.stringify(data));
-  try {
-    await sb.from('students').upsert({ name: name, data: data, updated_at: new Date().toISOString() }, { onConflict: 'name' });
-  } catch(e) {
-    console.log('Supabase保存失败，仅保存到本地:', e.message);
-  }
+  // 更新内存缓存
+  _cachedStudentData = data;
+  _cachedStudentName = name;
+  // 后台同步到 Supabase（不阻塞）
+  syncToSupabase(name, data);
 }
 
 async function getAllStudents() {
