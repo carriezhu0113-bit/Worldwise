@@ -132,12 +132,19 @@ async function getDefaultVocabularyWords() {
     return dedupeWords(gradeCfg.vocabulary.map(word => cloneVocabularyWord(word)));
   }
 
+  // 优先使用 MODULE_LIBRARY 中的 PET 场景单词（始终可用）
+  if (PET_SCENE_WORDS && PET_SCENE_WORDS.length > 0) {
+    return [...PET_SCENE_WORDS];
+  }
+
+  // 如果 MODULE_LIBRARY 也没有，尝试从 vocab_data.json 加载
   const todayScenes = await getTodayScenes();
   const sceneKeys = gradeCfg.scenes || todayScenes;
   if (sceneKeys && sceneKeys.length > 0) {
-    return getWordsFromVocabularyKeys(sceneKeys);
+    const words = getWordsFromVocabularyKeys(sceneKeys);
+    if (words.length > 0) return words;
   }
-  // 如果没有任何场景配置，返回全部单词
+  // 最后兜底：返回全部单词
   return [...allWordsFlat];
 }
 
