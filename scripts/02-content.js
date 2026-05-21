@@ -176,6 +176,32 @@ const MODULE_LIBRARY = {
       {word:"book",pos:"n.",phonetic:"bʊk",meaning:"书",phrase:"read a book 读书",synonyms:"近: novel, text"},
       {word:"story",pos:"n.",phonetic:"ˈstɔːri",meaning:"故事",phrase:"tell a story 讲故事",synonyms:"近: tale, narrative"}
     ]},
+    "pet_scene_24": { name: "PET场景24-环境与自然", words: [
+      {word:"environment",pos:"n.",phonetic:"ɪnˈvaɪrənmᵊnt",meaning:"环境",phrase:"protect the environment 保护环境",synonyms:"近: surroundings"},
+      {word:"nature",pos:"n.",phonetic:"ˈneɪtʃə",meaning:"自然",phrase:"in nature 在自然界",synonyms:"近: wilderness"},
+      {word:"earth",pos:"n.",phonetic:"ɜːθ",meaning:"地球",phrase:"on earth 在地球上",synonyms:"近: world, globe"},
+      {word:"land",pos:"n.",phonetic:"lænd",meaning:"土地",phrase:"on land 在陆地上",synonyms:"近: ground, soil"},
+      {word:"ground",pos:"n.",phonetic:"ɡraʊnd",meaning:"地面",phrase:"on the ground 在地上",synonyms:"近: floor, land"},
+      {word:"soil",pos:"n.",phonetic:"sɔɪl",meaning:"土壤",phrase:"rich soil 肥沃的土壤",synonyms:"近: earth, dirt"},
+      {word:"water",pos:"n.",phonetic:"ˈwɔːtə",meaning:"水",phrase:"clean water 干净的水",synonyms:"近: liquid"},
+      {word:"air",pos:"n.",phonetic:"eə",meaning:"空气",phrase:"fresh air 新鲜空气",synonyms:"近: atmosphere"},
+      {word:"fire",pos:"n.",phonetic:"ˈfaɪə",meaning:"火",phrase:"make a fire 生火",synonyms:"近: flame, blaze"},
+      {word:"ice",pos:"n.",phonetic:"aɪs",meaning:"冰",phrase:"on ice 在冰上",synonyms:"近: frozen water"},
+      {word:"snow",pos:"n.",phonetic:"snəʊ",meaning:"雪",phrase:"heavy snow 大雪",synonyms:"近: snowfall"},
+      {word:"rain",pos:"n.",phonetic:"reɪn",meaning:"雨",phrase:"heavy rain 大雨",synonyms:"近: shower"},
+      {word:"cloud",pos:"n.",phonetic:"klaʊd",meaning:"云",phrase:"in the clouds 在云中",synonyms:"近: vapor"},
+      {word:"forest",pos:"n.",phonetic:"ˈfɒrɪst",meaning:"森林",phrase:"in the forest 在森林里",synonyms:"近: woods, jungle"},
+      {word:"wood",pos:"n.",phonetic:"wʊd",meaning:"木头；树林",phrase:"in the wood 在树林里",synonyms:"近: forest, timber"},
+      {word:"lake",pos:"n.",phonetic:"leɪk",meaning:"湖",phrase:"by the lake 在湖边",synonyms:"近: pond"},
+      {word:"ocean",pos:"n.",phonetic:"ˈəʊʃᵊn",meaning:"海洋",phrase:"across the ocean 跨越海洋",synonyms:"近: sea"},
+      {word:"beach",pos:"n.",phonetic:"biːtʃ",meaning:"海滩",phrase:"on the beach 在海滩上",synonyms:"近: shore, coast"},
+      {word:"island",pos:"n.",phonetic:"ˈaɪlᵊnd",meaning:"岛",phrase:"on an island 在岛上",synonyms:"近: isle"},
+      {word:"hill",pos:"n.",phonetic:"hɪl",meaning:"小山",phrase:"climb a hill 爬山",synonyms:"近: mountain"},
+      {word:"valley",pos:"n.",phonetic:"ˈvæli",meaning:"山谷",phrase:"in the valley 在山谷里",synonyms:"近: lowland"},
+      {word:"desert",pos:"n.",phonetic:"ˈdezət",meaning:"沙漠",phrase:"in the desert 在沙漠里",synonyms:"近: wasteland"},
+      {word:"field",pos:"n.",phonetic:"fiːld",meaning:"田野；场地",phrase:"in the field 在田野里",synonyms:"近: meadow"},
+      {word:"farm",pos:"n.",phonetic:"fɑːm",meaning:"农场",phrase:"on a farm 在农场",synonyms:"近: ranch"}
+    ]},
     "pet_scene_25": { name: "PET场景25-抽象概念", words: [
       {word:"idea",pos:"n.",phonetic:"aɪˈdɪə",meaning:"想法",phrase:"good idea 好主意",synonyms:"近: thought, concept"},
       {word:"thought",pos:"n.",phonetic:"θɔːt",meaning:"思想",phrase:"deep thought 深思",synonyms:"近: idea, thinking"},
@@ -324,7 +350,7 @@ const MODULE_LIBRARY = {
 };
 
 // 向后兼容：旧代码使用的变量
-const PET_SCENE_WORDS = [...MODULE_LIBRARY.vocabulary.pet_scene_23.words, ...MODULE_LIBRARY.vocabulary.pet_scene_25.words];
+const PET_SCENE_WORDS = [...MODULE_LIBRARY.vocabulary.pet_scene_23.words, ...MODULE_LIBRARY.vocabulary.pet_scene_24.words, ...MODULE_LIBRARY.vocabulary.pet_scene_25.words];
 
 // 从 MODULE_LIBRARY 聚合默认内容
 function getDefaultGrammarMC() {
