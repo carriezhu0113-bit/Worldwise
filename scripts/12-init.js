@@ -96,6 +96,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('teacherPassword').addEventListener('keydown', e => {
     if (e.key === 'Enter') teacherLogin();
   });
+  // 预加载语音列表（部分浏览器需要）
+  if ('speechSynthesis' in window) {
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+  }
   if (!getSpeechRecognitionCtor()) {
     const notes = document.querySelectorAll('.voice-note');
     notes.forEach(note => {
