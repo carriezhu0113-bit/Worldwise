@@ -5,6 +5,14 @@
   "installCommand": null,
   "rewrites": [
     {
+      "source": "/scripts/:path*",
+      "destination": "/scripts/:path*"
+    },
+    {
+      "source": "/:file*.:ext",
+      "destination": "/:file*.:ext"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
