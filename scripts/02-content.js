@@ -133,7 +133,12 @@ async function getDefaultVocabularyWords() {
   }
 
   const todayScenes = await getTodayScenes();
-  return getWordsFromVocabularyKeys(gradeCfg.scenes || todayScenes);
+  const sceneKeys = gradeCfg.scenes || todayScenes;
+  if (sceneKeys && sceneKeys.length > 0) {
+    return getWordsFromVocabularyKeys(sceneKeys);
+  }
+  // 如果没有任何场景配置，返回全部单词
+  return [...allWordsFlat];
 }
 
 async function getTodayWords() {
