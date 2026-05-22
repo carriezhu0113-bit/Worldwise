@@ -3,6 +3,10 @@ let vocabData = null;
 let allScenes = [];
 let allWordsFlat = [];
 
+// 推送配置缓存（避免每次查询 Supabase）
+let _cachedPushConfig = null;
+let _cachedPushStudent = null;
+
 // 学生年级配置：每个学生对应一个年级/内容级别
 const STUDENT_GRADES = {
   // 低年级学生：只推送语法和句子成分拆分
@@ -397,13 +401,43 @@ function getDefaultGrammarReview() {
 async function getContent() {
   // 如果有学生登录，检查是否有推送配置
   if (currentUser && currentUser.type === 'student') {
+    const studentName = currentUser.name;
+    
+    // 优先使用缓存
+    if (_cachedPushStudent === studentName && _cachedPushConfig !== undefined) {
+      if (_cachedPushConfig) {
+        return getContentFromPush(_cachedPushConfig);
+      }
+    } else {
+      // 尝试从 localStorage 加载缓存
+      const cached = localStorage.getItem('push_config_' + studentName);
+      if (cached) {
+        try {
+          _cachedPushConfig = JSON.parse(cached);
+          _cachedPushStudent = studentName;
+          return getContentFromPush(_cachedPushConfig);
+        } catch(e) {
+          // 缓存损坏，继续
+        }
+      }
+    }
+    
+    // 从 Supabase 查询（带超时）
     try {
-      const { data } = await sb.from('push_configs').select('push_config').eq('student_name', currentUser.name).single();
+      const { data } = await sb.from('push_configs').select('push_config').eq('student_name', studentName).single();
       if (data && data.push_config) {
+        _cachedPushConfig = data.push_config;
+        _cachedPushStudent = studentName;
+        localStorage.setItem('push_config_' + studentName, JSON.stringify(data.push_config));
         return getContentFromPush(data.push_config);
+      } else {
+        _cachedPushConfig = null;
+        _cachedPushStudent = studentName;
       }
     } catch(e) {
-      // 无推送配置，使用默认内容
+      // 无推送配置或查询失败，使用默认内容
+      _cachedPushConfig = null;
+      _cachedPushStudent = studentName;
     }
   }
   // 默认内容（无推送时使用）

@@ -192,6 +192,13 @@ async function savePushConfig() {
       updated_at: new Date().toISOString()
     }, { onConflict: 'student_name' });
 
+    // 清除该学生的推送配置缓存
+    localStorage.removeItem('push_config_' + student);
+    if (typeof _cachedPushStudent !== 'undefined' && _cachedPushStudent === student) {
+      _cachedPushConfig = undefined;
+      _cachedPushStudent = null;
+    }
+
     const moduleNames = [
       ...pushConfig.vocabulary.map(k => MODULE_LIBRARY.vocabulary[k]?.name),
       ...pushConfig.grammar.map(k => MODULE_LIBRARY.grammar[k]?.name),
