@@ -123,31 +123,6 @@ function getWordsFromVocabularyKeys(keys = []) {
   return dedupeWords(words);
 }
 
-async function getDefaultVocabularyWords() {
-  const gradeCfg = GRADE_CONTENT[currentGrade] || GRADE_CONTENT.default;
-  if (Array.isArray(gradeCfg.vocabulary) && gradeCfg.vocabulary.length > 0) {
-    if (typeof gradeCfg.vocabulary[0] === 'string') {
-      return getWordsFromVocabularyKeys(gradeCfg.vocabulary);
-    }
-    return dedupeWords(gradeCfg.vocabulary.map(word => cloneVocabularyWord(word)));
-  }
-
-  // 优先使用 MODULE_LIBRARY 中的 PET 场景单词（始终可用）
-  if (PET_SCENE_WORDS && PET_SCENE_WORDS.length > 0) {
-    return [...PET_SCENE_WORDS];
-  }
-
-  // 如果 MODULE_LIBRARY 也没有，尝试从 vocab_data.json 加载
-  const todayScenes = await getTodayScenes();
-  const sceneKeys = gradeCfg.scenes || todayScenes;
-  if (sceneKeys && sceneKeys.length > 0) {
-    const words = getWordsFromVocabularyKeys(sceneKeys);
-    if (words.length > 0) return words;
-  }
-  // 最后兜底：返回全部单词
-  return [...allWordsFlat];
-}
-
 async function getTodayWords() {
   return getDefaultVocabularyWords();
 }
@@ -356,8 +331,34 @@ const MODULE_LIBRARY = {
   }
 };
 
-// 向后兼容：旧代码使用的变量
+// PET 场景单词（23-25）- 必须在 getDefaultVocabularyWords 之前定义
 const PET_SCENE_WORDS = [...MODULE_LIBRARY.vocabulary.pet_scene_23.words, ...MODULE_LIBRARY.vocabulary.pet_scene_24.words, ...MODULE_LIBRARY.vocabulary.pet_scene_25.words];
+
+// 获取默认词汇（使用 PET 场景 23-25）
+async function getDefaultVocabularyWords() {
+  const gradeCfg = GRADE_CONTENT[currentGrade] || GRADE_CONTENT.default;
+  if (Array.isArray(gradeCfg.vocabulary) && gradeCfg.vocabulary.length > 0) {
+    if (typeof gradeCfg.vocabulary[0] === 'string') {
+      return getWordsFromVocabularyKeys(gradeCfg.vocabulary);
+    }
+    return dedupeWords(gradeCfg.vocabulary.map(word => cloneVocabularyWord(word)));
+  }
+
+  // 优先使用 MODULE_LIBRARY 中的 PET 场景单词（始终可用）
+  if (PET_SCENE_WORDS && PET_SCENE_WORDS.length > 0) {
+    return [...PET_SCENE_WORDS];
+  }
+
+  // 如果 MODULE_LIBRARY 也没有，尝试从 vocab_data.json 加载
+  const todayScenes = await getTodayScenes();
+  const sceneKeys = gradeCfg.scenes || todayScenes;
+  if (sceneKeys && sceneKeys.length > 0) {
+    const words = getWordsFromVocabularyKeys(sceneKeys);
+    if (words.length > 0) return words;
+  }
+  // 最后兜底：返回全部单词
+  return [...allWordsFlat];
+}
 
 // 从 MODULE_LIBRARY 聚合默认内容
 function getDefaultGrammarMC() {
