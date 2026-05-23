@@ -10,6 +10,8 @@ async function initSentenceAnalysis() {
   const gc = await getContent();
   saShuffled = [...gc.sentenceAnalysis];
   shuffleArray(saShuffled);
+  // 每次只取10句，避免太多
+  saShuffled = saShuffled.slice(0, 10);
   saSelectedWords = new Set();
   saWordRoles = {};
   saAnswered = false;
@@ -122,7 +124,7 @@ async function submitSentenceAnalysis() {
   if (allCorrect) {
     data.testsCorrect = (data.testsCorrect || 0) + 1;
     data.sentenceAnalysisCorrect = (data.sentenceAnalysisCorrect || 0) + 1;
-    document.getElementById('saFeedback').innerHTML = '<div class="quiz-feedback correct">✅ 找到了主语和谓语，很好！<br>' + item.exp + '<br><br>📖 参考译文：' + correctTrans + '</div>';
+    document.getElementById('saFeedback').innerHTML = '<div class="quiz-feedback correct">✅ 找到了主语和谓语，很好！<br>' + item.exp + '<br><br>📖 参考译文：' + correctTrans + '</div><button class="quiz-submit" onclick="saIndex++;renderSentenceAnalysis()" style="margin-top:12px">下一题 →</button>';
   } else {
     let hints = [];
     if (!subjectOK) hints.push('👀 再找找主语是谁？');
@@ -130,8 +132,7 @@ async function submitSentenceAnalysis() {
     if (!objectOK && hasObject) hints.push('🎯 宾语是动作的承受者，再试试？');
     if (!objectOK && !hasObject) hints.push('💡 这句话没有宾语哦');
     await addError({type:'sentence_analysis',sentence:item.sentence,userRoles:{...saWordRoles},correctRoles:[...item.roles],explanation:item.exp,translation:correctTrans,userTranslation:userTrans}, data);
-    document.getElementById('saFeedback').innerHTML = '<div class="quiz-feedback wrong">' + hints.join('<br>') + '<br><br>📖 参考译文：' + correctTrans + '<br><br>' + item.exp + '</div>';
+    document.getElementById('saFeedback').innerHTML = '<div class="quiz-feedback wrong">' + hints.join('<br>') + '<br><br>📖 参考译文：' + correctTrans + '<br><br>' + item.exp + '</div><button class="quiz-submit" onclick="saIndex++;renderSentenceAnalysis()" style="margin-top:12px">下一题 →</button>';
   }
   await saveStudentData(currentUser.name, data);
-  setTimeout(() => { saIndex++; renderSentenceAnalysis(); }, 5000);
 }
