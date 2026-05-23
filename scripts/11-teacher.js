@@ -130,6 +130,39 @@ async function renderTeacherStudents() {
   }).join('');
 }
 
+// 自动推送：学生首次登录时自动创建推送配置
+async function autoPushForStudent(name) {
+  const grade = STUDENT_GRADES[name];
+  if (!grade || !AUTO_PUSH_CONFIGS[grade]) return; // 无对应配置则跳过
+
+  try {
+    // 先检查是否已有推送配置
+    const { data } = await sb.from('push_configs').select('push_config').eq('student_name', name).single();
+    if (data && data.push_config) return; // 已有配置，不覆盖
+  } catch(e) {
+    // 无配置，继续创建
+  }
+
+  // 自动创建推送配置
+  const pushConfig = AUTO_PUSH_CONFIGS[grade];
+  try {
+    await sb.from('push_configs').upsert({
+      student_name: name,
+      push_config: pushConfig,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'student_name' });
+
+    // 清除缓存
+    localStorage.removeItem('push_config_' + name);
+    if (typeof _cachedPushStudent !== 'undefined' && _cachedPushStudent === name) {
+      _cachedPushConfig = undefined;
+      _cachedPushStudent = null;
+    }
+  } catch(e) {
+    // 自动推送失败不影响登录流程
+  }
+}
+
 
 // ==================== PUSH MANAGEMENT ====================
 async function renderPushManagement() {

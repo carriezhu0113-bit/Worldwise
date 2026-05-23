@@ -9,16 +9,31 @@ let _cachedPushStudent = null;
 
 // 学生年级配置：每个学生对应一个年级/内容级别
 const STUDENT_GRADES = {
-  // 低年级学生：只推送语法和句子成分拆分
+  // 低年级学生：基础词汇 + 基础句子分析
   'Alisa': 'low',
   'Anna': 'low',
   'Cici': 'low',
   'Bruce': 'low',
-  // 高年级学生：推送所有三个模块
+  'Jack': 'low',
+  // 高年级学生：全部模块 + 进阶句子分析
   'Sophia': 'high',
   'Howard': 'high',
   '贺乙桓': 'high',
   'Miranda': 'high'
+};
+
+// 自动推送配置：学生首次登录时自动创建
+const AUTO_PUSH_CONFIGS = {
+  low: {
+    vocabulary: ['pet_scene_24', 'pet_scene_23'],
+    grammar: ['pronoun_basic'],
+    sentences: ['sentence_basic_16']
+  },
+  high: {
+    vocabulary: ['think1_u1_4_daily'],
+    grammar: ['pronoun_basic'],
+    sentences: ['sentence_basic_16', 'sentence_advanced_4']
+  }
 };
 
 // 按年级区分的内容配置
@@ -307,10 +322,184 @@ const MODULE_LIBRARY = {
       {wrong:"The room is very messy. Please clean its up right now.",right:"The room is very messy. Please clean it up right now.",exp:"clean up 是'动词+副词'短语，代词作宾语要放中间，表示'把它打扫干净'，用宾格 it。"},
       {wrong:"She makes her a beautiful dress for the school play.",right:"She makes herself a beautiful dress for the school play.",exp:"当句子的主语（She）和动词的宾语是同一个人时，宾语要用反身代词，指'她给自己（herself）做衣服'。"},
       {wrong:"Look at the house. It's windows are all broken.",right:"Look at the house. Its windows are all broken.",exp:"这里需要形容词性物主代词来修饰 windows（窗户），表示'它的窗户'。It's 是 'It is'（它是）的缩写，语意不通。"}
-    ]}
+    ]},
+    "think1_u1_4": { name: "Think1 U1-4词汇(243词)", words: [
+      {word:'yourself',pos:'pron.',phonetic:'',meaning:'你自己',phrase:'It\'s great to be busy, but it\'s important to look after yourself and have fun, too.',synonyms:''},
+      {word:'ourselves',pos:'pron.',phonetic:'',meaning:'我们自己',phrase:'We all need to think about ourselves and do things we like, whether it is playing an instrument or taking photos.',synonyms:''},
+      {word:'hobby',pos:'n.',phonetic:'',meaning:'爱好',phrase:'I have lots of hobbies.',synonyms:''},
+      {word:'exercise',pos:'n.',phonetic:'',meaning:'锻炼',phrase:'I hate running and doing exercise.',synonyms:''},
+      {word:'occasionally',pos:'adv.',phonetic:'',meaning:'偶尔地',phrase:'I\'m usually busy, but occasionally I\'ve got a bit of free time.',synonyms:''},
+      {word:'once a week',pos:'phr.',phonetic:'',meaning:'一周一次',phrase:'I try and visit a different place in the world at least once a week.',synonyms:''},
+      {word:'mobile',pos:'n.',phonetic:'',meaning:'手机',phrase:'message friends on mobile',synonyms:''},
+      {word:'crossword',pos:'n.',phonetic:'',meaning:'纵横字谜',phrase:'Sometimes it\'s Sudoku, sometimes a crossword or different word game.',synonyms:''},
+      {word:'imagine',pos:'v.',phonetic:'',meaning:'想象',phrase:'I like using \'street view\' and I imagine myself walking in a street somewhere.',synonyms:''},
+      {word:'rugby',pos:'n.',phonetic:'',meaning:'橄榄球',phrase:'It\'s because my uncle and aunt live there and they love rugby, so I watch the games.',synonyms:''},
+      {word:'about 8 hours',pos:'phr.',phonetic:'',meaning:'大约八小时',phrase:'（场景示例：I sleep about 8 hours every day.）',synonyms:''},
+      {word:'less than 8 hours',pos:'phr.',phonetic:'',meaning:'少于八小时',phrase:'（场景示例：I sometimes sleep less than 8 hours on weekends.）',synonyms:''},
+      {word:'at all',pos:'phr.',phonetic:'',meaning:'根本',phrase:'（场景示例：I don\'t like it at all.）',synonyms:''},
+      {word:'queue',pos:'n.',phonetic:'',meaning:'队列',phrase:'（场景示例：We stood in a queue to buy tickets.）',synonyms:''},
+      {word:'sudoku',pos:'n.',phonetic:'',meaning:'数独',phrase:'Sometimes it\'s sudoku, sometimes a crossword or different word game.',synonyms:''},
+      {word:'fast food',pos:'n.',phonetic:'',meaning:'快餐',phrase:'（场景示例：I don\'t eat fast food very often.）',synonyms:''},
+      {word:'get bored',pos:'phr.',phonetic:'',meaning:'感到无聊的',phrase:'（场景示例：I get bored when I have nothing to do.）',synonyms:''},
+      {word:'app',pos:'n.',phonetic:'',meaning:'应用程序',phrase:'（场景示例：I use this app to learn English.）',synonyms:''},
+      {word:'street view',pos:'n.',phonetic:'',meaning:'街景（模式）',phrase:'I like using \'street view\' and I imagine myself walking in a street somewhere.',synonyms:''},
+      {word:'especially',pos:'adv.',phonetic:'',meaning:'特别是；尤其地',phrase:'（场景示例：I love fruits, especially apples.）',synonyms:''},
+      {word:'at least',pos:'phr.',phonetic:'',meaning:'至少',phrase:'I try and visit a different place in the world at least once a week.',synonyms:''},
+      {word:'word puzzle',pos:'phr.',phonetic:'',meaning:'字谜',phrase:'Word puzzles are OK, but number puzzles are boring.',synonyms:''},
+      {word:'number puzzle',pos:'phr.',phonetic:'',meaning:'数字拼图',phrase:'Word puzzles are OK, but number puzzles are boring.',synonyms:''},
+      {word:'message friends online',pos:'phr.',phonetic:'',meaning:'在网上给朋友发信息',phrase:'（场景示例：I message friends online after school.）',synonyms:''},
+      {word:'ask sb. to do sth.',pos:'phr.',phonetic:'',meaning:'让某人去做某事',phrase:'（场景示例：My teacher asks me to do homework every day.）',synonyms:''},
+      {word:'need to do sth.',pos:'phr.',phonetic:'',meaning:'需要做某事',phrase:'We all need to do things we like.',synonyms:''},
+      {word:'do housework',pos:'phr.',phonetic:'',meaning:'做家务',phrase:'（场景示例：I do housework with my parents on Sundays.）',synonyms:''},
+      {word:'give homework',pos:'phr.',phonetic:'',meaning:'布置作业',phrase:'Does your teacher give you homework every day?',synonyms:''},
+      {word:'play an instrument',pos:'phr.',phonetic:'',meaning:'弹奏乐器',phrase:'We all need to do things we like, whether it is playing an instrument or taking photos.',synonyms:''},
+      {word:'take photos',pos:'phr.',phonetic:'',meaning:'照照片',phrase:'We all need to do things we like, whether it is playing an instrument or taking photos.',synonyms:''},
+      {word:'listen to music',pos:'phr.',phonetic:'',meaning:'听音乐',phrase:'I only listen to music when I have time.',synonyms:''},
+      {word:'free time',pos:'phr.',phonetic:'',meaning:'空闲时间',phrase:'I\'m usually busy, but occasionally I\'ve got a bit of free time.',synonyms:''},
+      {word:'collect things',pos:'phr.',phonetic:'',meaning:'收集物品',phrase:'And I collect things with cats on them.',synonyms:''},
+      {word:'do puzzles',pos:'phr.',phonetic:'',meaning:'玩智力游戏',phrase:'I just love doing puzzles.',synonyms:''},
+      {word:'a bit of',pos:'phr.',phonetic:'',meaning:'一点',phrase:'I\'m usually busy, but occasionally I\'ve got a bit of free time.',synonyms:''},
+      {word:'have nothing to do',pos:'phr.',phonetic:'',meaning:'无所事事',phrase:'I can\'t stand having nothing to do.',synonyms:''},
+      {word:'imagine sb. doing sth.',pos:'phr.',phonetic:'',meaning:'想象某人在做某事',phrase:'I like using \'street view\' and I imagine myself walking in a street somewhere.',synonyms:''},
+      {word:'can\'t stand sth./sb.',pos:'phr.',phonetic:'',meaning:'无法忍受某事 / 某人',phrase:'（场景示例：I can\'t stand loud noise.）',synonyms:''},
+      {word:'can\'t stand doing sth.',pos:'phr.',phonetic:'',meaning:'无法忍受做某事',phrase:'I can\'t stand having nothing to do.',synonyms:''},
+      {word:'like doing sth.',pos:'phr.',phonetic:'',meaning:'喜欢做某事',phrase:'I like using \'street view\'.',synonyms:''},
+      {word:'love doing sth.',pos:'phr.',phonetic:'',meaning:'喜爱做某事',phrase:'I love taking photos of them, too.',synonyms:''},
+      {word:'hate doing sth.',pos:'phr.',phonetic:'',meaning:'讨厌做某事',phrase:'I hate running and doing exercise.',synonyms:''},
+      {word:'be crazy about sth.',pos:'phr.',phonetic:'',meaning:'为某事疯狂',phrase:'I\'m crazy about the New Zealand rugby team, the All Blacks.',synonyms:''},
+      {word:'old-fashioned',pos:'adj.',phonetic:'',meaning:'过时的；老旧的',phrase:'It looks a bit old-fashioned though.（不过它看起来有点过时。）',synonyms:''},
+      {word:'second-hand',pos:'adj.',phonetic:'',meaning:'二手的',phrase:'But their clothes are all second-hand.（但他们的衣服都是二手的。）',synonyms:''},
+      {word:'sale',pos:'n.',phonetic:'',meaning:'促销',phrase:'They\'ve got a sale on.（他们正在打折。）',synonyms:''},
+      {word:'sell',pos:'v.',phonetic:'',meaning:'卖',phrase:'They\'re selling everything at 30% off the original price!（他们正在以原价七折出售所有商品！）',synonyms:''},
+      {word:'crowded',pos:'adj.',phonetic:'',meaning:'拥挤的',phrase:'The shop\'s really crowded.（这家商店真的很拥挤。）',synonyms:''},
+      {word:'waste',pos:'v.',phonetic:'',meaning:'浪费',phrase:'I think you\'re wasting your money and my time.（我认为你正在浪费你的钱和我的时间。）',synonyms:''},
+      {word:'bright',pos:'adj.',phonetic:'',meaning:'明亮的；鲜亮的',phrase:'I love wearing bright colours.（我喜欢穿明亮的颜色。）',synonyms:''},
+      {word:'remember',pos:'v.',phonetic:'',meaning:'记得',phrase:'It\'s raining - remember?（下雨了，还记得吗？）',synonyms:''},
+      {word:'look',pos:'v.',phonetic:'',meaning:'看起来',phrase:'It looks a bit old-fashioned though.（不过它看起来有点过时。）',synonyms:''},
+      {word:'sound',pos:'v.',phonetic:'',meaning:'听起来',phrase:'That sounds like a bad idea.（这听起来是个坏主意。）',synonyms:''},
+      {word:'free',pos:'adj.',phonetic:'',meaning:'免费的',phrase:'I live in Liverpool and we have the best museums and they\'re all free.（我住在利物浦，我们有最好的博物馆，而且都是免费的。）',synonyms:''},
+      {word:'blog',pos:'n.',phonetic:'',meaning:'博客',phrase:'Maybe you don\'t want to write a poem or even a blog, so try a story.（也许你不想写诗，甚至不想写博客，所以试着写一个故事。）',synonyms:''},
+      {word:'perfect',pos:'adj.',phonetic:'',meaning:'完美的；理想的',phrase:'It\'s the perfect time to think about all the things I don\'t normally have time to think about.（这是一个理想的时间，去思考那些我通常没有时间思考的事情。）',synonyms:''},
+      {word:'forget',pos:'v.',phonetic:'',meaning:'忘记；遗忘',phrase:'I like forgetting all about them just for a few hours every week.（我喜欢每周只花几个小时，就把它们忘得一干二净。）',synonyms:''},
+      {word:'poem',pos:'n.',phonetic:'',meaning:'诗',phrase:'Maybe you don\'t want to write a poem or even a blog, so try a story.（也许你不想写诗，甚至不想写博客，所以试着写一个故事。）',synonyms:''},
+      {word:'magazine',pos:'n.',phonetic:'',meaning:'杂志',phrase:'I read for at least four hours on a Sunday - books, magazines, websites, newspapers - anything.（我周日至少阅读四个小时 —— 书籍、杂志、网站、报纸 —— 任何读物都可以。）',synonyms:''},
+      {word:'website',pos:'n.',phonetic:'',meaning:'网站',phrase:'I read for at least four hours on a Sunday - books, magazines, websites, newspapers - anything.（我周日至少阅读四个小时 —— 书籍、杂志、网站、报纸 —— 任何读物都可以。）',synonyms:''},
+      {word:'newspaper',pos:'n.',phonetic:'',meaning:'报纸',phrase:'I read for at least four hours on a Sunday - books, magazines, websites, newspapers - anything.（我周日至少阅读四个小时 —— 书籍、杂志、网站、报纸 —— 任何读物都可以。）',synonyms:''},
+      {word:'though',pos:'conj./adv.',phonetic:'',meaning:'虽然；不过',phrase:'It looks a bit old-fashioned though.（不过它看起来有点过时。）',synonyms:''},
+      {word:'original price',pos:'phr.',phonetic:'',meaning:'原价',phrase:'They\'re selling everything at 30% off the original price!（他们正在以原价七折出售所有商品！）',synonyms:''},
+      {word:'stuff',pos:'n.',phonetic:'',meaning:'东西（口语，不可数）',phrase:'I need to buy some stuff for school.（我需要买些上学用的东西。）',synonyms:''},
+      {word:'anyway',pos:'adv.',phonetic:'',meaning:'无论如何',phrase:'It\'s raining, but we\'ll go out anyway.（虽然在下雨，但我们还是要出去。）',synonyms:''},
+      {word:'valuable',pos:'adj.',phonetic:'',meaning:'很重要的；宝贵的',phrase:'Time is valuable, so don\'t waste it.（时间很宝贵，别浪费。）',synonyms:''},
+      {word:'run out',pos:'phr.',phonetic:'',meaning:'用尽；用完',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'on my own',pos:'phr.',phonetic:'',meaning:'独自一人',phrase:'I like to walk on my own sometimes.（我有时喜欢独自散步。）',synonyms:''},
+      {word:'normally',pos:'adv.',phonetic:'',meaning:'通常；正常情况下',phrase:'It\'s the perfect time to think about all the things I don\'t normally have time to think about.（这是一个理想的时间，去思考那些我通常没有时间思考的事情。）',synonyms:''},
+      {word:'poetry',pos:'n.',phonetic:'',meaning:'诗集；诗歌（总称）',phrase:'She likes reading poetry in her free time.（她空闲时喜欢读诗。）',synonyms:''},
+      {word:'upload',pos:'v.',phonetic:'',meaning:'上载；上传',phrase:'I need to upload this photo to my blog.（我需要把这张照片上传到我的博客上。）',synonyms:''},
+      {word:'imagination',pos:'n.',phonetic:'',meaning:'想象力；想象',phrase:'Writing stories needs imagination.（写故事需要想象力。）',synonyms:''},
+      {word:'blog post',pos:'phr.',phonetic:'',meaning:'博客帖子',phrase:'She wrote a new blog post yesterday.（她昨天写了一篇新的博客帖子。）',synonyms:''},
+      {word:'Liverpool',pos:'n.',phonetic:'',meaning:'利物浦（英国城市名）',phrase:'I live in Liverpool and we have the best museums and they\'re all free.（我住在利物浦，我们有最好的博物馆，而且都是免费的。）',synonyms:''},
+      {word:'check out',pos:'phr.',phonetic:'',meaning:'看一看；观望',phrase:'Let\'s check out that new shop downtown.（咱们去市中心那家新商店看看吧。）',synonyms:''},
+      {word:'at least',pos:'phr.',phonetic:'',meaning:'至少',phrase:'I read for at least four hours on a Sunday.（我周日至少阅读四个小时。）',synonyms:''},
+      {word:'banknote',pos:'n.',phonetic:'',meaning:'纸币',phrase:'This banknote is from the UK.（这张纸币来自英国。）',synonyms:''},
+      {word:'represent',pos:'v.',phonetic:'',meaning:'代表',phrase:'The flag represents our country.（这面旗帜代表我们的国家。）',synonyms:''},
+      {word:'various',pos:'adj.',phonetic:'',meaning:'各种各样的',phrase:'There are various books in the library.（图书馆里有各种各样的书。）',synonyms:''},
+      {word:'history',pos:'n.',phonetic:'',meaning:'历史',phrase:'We learn about history at school.（我们在学校学习历史。）',synonyms:''},
+      {word:'currency',pos:'n.',phonetic:'',meaning:'通货；货币',phrase:'What currency do they use in Japan?（日本用什么货币？）',synonyms:''},
+      {word:'founder',pos:'n.',phonetic:'',meaning:'创立者；创始人',phrase:'He is the founder of this company.（他是这家公司的创始人。）',synonyms:''},
+      {word:'well-known',pos:'adj.',phonetic:'',meaning:'众所周知的；著名的',phrase:'This is a well-known museum in London.（这是伦敦一家著名的博物馆。）',synonyms:''},
+      {word:'consist',pos:'v.',phonetic:'',meaning:'包括；由…… 组成',phrase:'The team consists of five students.（这个团队由五名学生组成。）',synonyms:''},
+      {word:'gallery',pos:'n.',phonetic:'',meaning:'（艺术作品的）陈列室；画廊',phrase:'We visited an art gallery last weekend.（我们上周末参观了一家艺术画廊。）',synonyms:''},
+      {word:'offer',pos:'v.',phonetic:'',meaning:'提供',phrase:'The hotel offers free breakfast.（这家酒店提供免费早餐。）',synonyms:''},
+      {word:'admission',pos:'n.',phonetic:'',meaning:'入场费',phrase:'The admission to the museum is free.（这家博物馆免收入场费。）',synonyms:''},
+      {word:'stimulate',pos:'v.',phonetic:'',meaning:'促进；激发',phrase:'Reading can stimulate our imagination.（阅读能激发我们的想象力。）',synonyms:''},
+      {word:'selected brand',pos:'phr.',phonetic:'',meaning:'选定的品牌',phrase:'The shop has a sale for its selected brand.（这家商店为其选定的品牌做促销。）',synonyms:''},
+      {word:'product',pos:'n.',phonetic:'',meaning:'产品',phrase:'This product is very popular.（这个产品很受欢迎。）',synonyms:''},
+      {word:'price reduction',pos:'phr.',phonetic:'',meaning:'降价',phrase:'There is a price reduction on all clothes.（所有衣服都在降价。）',synonyms:''},
+      {word:'company',pos:'n.',phonetic:'',meaning:'公司',phrase:'She works in a big company.（她在一家大公司工作。）',synonyms:''},
+      {word:'achieve',pos:'v.',phonetic:'',meaning:'实现；达到',phrase:'We need to work hard to achieve our goals.（我们需要努力工作来实现目标。）',synonyms:''},
+      {word:'stock',pos:'n.',phonetic:'',meaning:'库存；存货',phrase:'The shop has no more of this shirt in stock.（这家商店的这款衬衫已经没库存了。）',synonyms:''},
+      {word:'loyalty scheme',pos:'phr.',phonetic:'',meaning:'会员积分制度；会员计划',phrase:'The supermarket has a loyalty scheme for regular customers.（这家超市为常客提供会员积分制度。）',synonyms:''},
+      {word:'purchase',pos:'n.',phonetic:'',meaning:'购买；所购物品',phrase:'This is my latest purchase.（这是我最新买的东西。）',synonyms:''},
+      {word:'insect',pos:'n.',phonetic:'',meaning:'昆虫',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'worm',pos:'n.',phonetic:'',meaning:'蠕虫',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'fly',pos:'n.',phonetic:'',meaning:'苍蝇',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'protein',pos:'n.',phonetic:'',meaning:'蛋白质',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'energy',pos:'n.',phonetic:'',meaning:'能源；能量',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'superfood',pos:'n.',phonetic:'',meaning:'超级食物（含高密度营养）',phrase:'They\'re the superfood of the future.（它们是未来的超级食物。）',synonyms:''},
+      {word:'health',pos:'n.',phonetic:'',meaning:'健康',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'healthy',pos:'adj.',phonetic:'',meaning:'健康的',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'enough',pos:'adj./adv.',phonetic:'',meaning:'足够的；足够地',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'seem',pos:'v.',phonetic:'',meaning:'似乎；好像',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'boiled',pos:'adj.',phonetic:'',meaning:'煮熟的；水煮的',phrase:'Maybe because they eat boiled rather than fried meat.（也许是因为他们吃的是煮熟的肉而不是油炸肉。）',synonyms:''},
+      {word:'fried',pos:'adj.',phonetic:'',meaning:'油炸的',phrase:'Maybe because they eat boiled rather than fried meat.（也许是因为他们吃的是煮熟的肉而不是油炸肉。）',synonyms:''},
+      {word:'choice',pos:'n.',phonetic:'',meaning:'选择',phrase:'The Inuits don\'t have a lot of choices for food.（因纽特人没有许多食物可供选择。）',synonyms:''},
+      {word:'choose',pos:'v.',phonetic:'',meaning:'选择',phrase:'I choose to eat fruit every day.（我选择每天吃水果。）',synonyms:''},
+      {word:'during',pos:'prep.',phonetic:'',meaning:'在…… 期间',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'rather than',pos:'phr.',phonetic:'',meaning:'而不是',phrase:'Maybe because they eat boiled rather than fried meat.（也许是因为他们吃的是煮熟的肉而不是油炸肉。）',synonyms:''},
+      {word:'grasshopper',pos:'n.',phonetic:'',meaning:'蝗虫',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'skin',pos:'n.',phonetic:'',meaning:'皮肤',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'hair',pos:'n.',phonetic:'',meaning:'头发',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'important',pos:'adj.',phonetic:'',meaning:'重要的',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'greenhouse gas',pos:'phr.',phonetic:'',meaning:'温室气体',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'create',pos:'v.',phonetic:'',meaning:'创造；产生',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'land',pos:'n.',phonetic:'',meaning:'土地',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'farm',pos:'n.',phonetic:'',meaning:'农场',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'already',pos:'adv.',phonetic:'',meaning:'已经',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'Inuit',pos:'n.',phonetic:'',meaning:'因纽特人',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'animal fat',pos:'phr.',phonetic:'',meaning:'动物脂肪',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'berry',pos:'n.',phonetic:'',meaning:'浆果',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'warmer',pos:'adj.',phonetic:'',meaning:'更温暖的',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'month',pos:'n.',phonetic:'',meaning:'月',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'sometimes',pos:'adv.',phonetic:'',meaning:'有时',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'strange',pos:'adj.',phonetic:'',meaning:'奇怪的',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'Europe',pos:'n.',phonetic:'',meaning:'欧洲',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'country',pos:'n.',phonetic:'',meaning:'国家',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'planet',pos:'n.',phonetic:'',meaning:'星球；行星',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'space',pos:'n.',phonetic:'',meaning:'空间',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'people',pos:'n.',phonetic:'',meaning:'人；人们',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'many',pos:'adj.',phonetic:'',meaning:'许多的',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'so many',pos:'phr.',phonetic:'',meaning:'那么多',phrase:'Have we got enough space on our planet for so many people?（我们的星球上有足够的空间容纳那么多的人吗？）',synonyms:''},
+      {word:'future',pos:'n.',phonetic:'',meaning:'未来',phrase:'They\'re the superfood of the future.（它们是未来的超级食物。）',synonyms:''},
+      {word:'of the future',pos:'phr.',phonetic:'',meaning:'未来的',phrase:'They\'re the superfood of the future.（它们是未来的超级食物。）',synonyms:''},
+      {word:'ask for',pos:'phr.',phonetic:'',meaning:'请求；要求',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'ask for help',pos:'phr.',phonetic:'',meaning:'请求帮助',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'help',pos:'n.',phonetic:'',meaning:'帮助',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'because',pos:'conj.',phonetic:'',meaning:'因为',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'time',pos:'n.',phonetic:'',meaning:'时间',phrase:'I\'m asking for help because time is running out!（我请求帮助是因为时间快要用完了！）',synonyms:''},
+      {word:'water',pos:'n.',phonetic:'',meaning:'水',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'a lot of',pos:'phr.',phonetic:'',meaning:'大量的',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'use',pos:'v.',phonetic:'',meaning:'使用；消耗',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'30%',pos:'phr.',phonetic:'',meaning:'百分之三十',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'world',pos:'n.',phonetic:'',meaning:'世界',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'all',pos:'adj.',phonetic:'',meaning:'所有的',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'all the world',pos:'phr.',phonetic:'',meaning:'全世界的',phrase:'The farms already use 30% of all the world\'s land: they create greenhouse gases and use a lot of water and energy.（这些农场已经使用了世界上 30% 的土地：它们产生了温室气体，消耗了大量的水和能源。）',synonyms:''},
+      {word:'eat',pos:'v.',phonetic:'',meaning:'吃',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'find',pos:'v.',phonetic:'',meaning:'发现；找到',phrase:'They sometimes find berries during the warmer months.（他们有时会在温暖的月份发现浆果。）',synonyms:''},
+      {word:'lot',pos:'n.',phonetic:'',meaning:'大量；许多',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'a lot',pos:'phr.',phonetic:'',meaning:'大量；非常',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'lot of',pos:'phr.',phonetic:'',meaning:'大量的',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'very',pos:'adv.',phonetic:'',meaning:'非常；很',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'for',pos:'prep.',phonetic:'',meaning:'对于；为了',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'other',pos:'adj.',phonetic:'',meaning:'其他的',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'many other',pos:'phr.',phonetic:'',meaning:'许多其他的',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'many other countries',pos:'phr.',phonetic:'',meaning:'许多其他国家',phrase:'But for people in Europe and many other countries, it seems very strange.（但对于欧洲和许多其他国家的人来说，这似乎很奇怪。）',synonyms:''},
+      {word:'but',pos:'conj.',phonetic:'',meaning:'但是',phrase:'But the Inuits eat a lot of animal fat and they are healthy.（但因纽特人吃很多动物脂肪，而且他们很健康。）',synonyms:''},
+      {word:'and',pos:'conj.',phonetic:'',meaning:'和；并且',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'good for',pos:'phr.',phonetic:'',meaning:'对……有好处',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'our',pos:'pron.',phonetic:'',meaning:'我们的',phrase:'Protein is very important for our health, and it\'s good for our hair and our skin.（蛋白质对我们的健康非常重要，对我们的头发和皮肤都有益处。）',synonyms:''},
+      {word:'they',pos:'pron.',phonetic:'',meaning:'它们；他们',phrase:'They\'re the superfood of the future.（它们是未来的超级食物。）',synonyms:''},
+      {word:'they\'re',pos:'pron.',phonetic:'',meaning:'它们是（they are 的缩写）',phrase:'They\'re the superfood of the future.（它们是未来的超级食物。）',synonyms:''},
+      {word:'right',pos:'adv.',phonetic:'',meaning:'对的；正确的',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'that\'s right',pos:'phr.',phonetic:'',meaning:'没错；对的',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'lots of',pos:'phr.',phonetic:'',meaning:'许多；大量',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'lots',pos:'n.',phonetic:'',meaning:'许多；大量',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'other',pos:'adj.',phonetic:'',meaning:'其他的',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''},
+      {word:'lots of other',pos:'phr.',phonetic:'',meaning:'许多其他的',phrase:'That\'s right, grasshoppers, worms, flies and lots of other insects.（没错，蝗虫、蠕虫、苍蝇和许多其他昆虫。）',synonyms:''}
+    ]},
+    "think1_u1_4_daily": { name: "📅 Think1 U1-4每日40词(按顺序推送)", words: [] }
   },
   sentences: {
-    "sentence_basic_20": { name: "句子成分分析20题", items: [
+    "sentence_basic_16": { name: "句子成分分析基础16题", items: [
       {sentence:"The clever boy read an interesting book.",words:["The","clever","boy","read","an","interesting","book","."],roles:[0,0,0,1,2,2,2,-1],translation:"聪明的男孩读了一本有趣的书。",exp:"主语：The clever boy（聪明的男孩）· 谓语：read（读）· 宾语：an interesting book（一本有趣的书）"},
       {sentence:"My mother cooks delicious food every day.",words:["My","mother","cooks","delicious","food","every","day","."],roles:[0,0,1,2,2,-1,-1,-1],translation:"我妈妈每天做美味的食物。",exp:"主语：My mother（我妈妈）· 谓语：cooks（做）· 宾语：delicious food（美味的食物）· 状语：every day（每天）"},
       {sentence:"The cute pandas are eating bamboo.",words:["The","cute","pandas","are","eating","bamboo","."],roles:[0,0,0,1,1,2,-1],translation:"可爱的熊猫正在吃竹子。",exp:"主语：The cute pandas（可爱的熊猫）· 谓语：are eating（正在吃）· 宾语：bamboo（竹子）"},
@@ -326,7 +515,9 @@ const MODULE_LIBRARY = {
       {sentence:"Students must finish their work before nine o'clock.",words:["Students","must","finish","their","work","before","nine","o'clock","."],roles:[0,1,1,2,2,-1,-1,-1,-1],translation:"学生们必须在9点之前完成他们的功课。",exp:"主语：Students（学生们）· 谓语：must finish（必须完成）· 宾语：their work（他们的功课）· 状语：before nine o'clock（在9点之前）"},
       {sentence:"The girl in the red skirt plays the piano well.",words:["The","girl","in","the","red","skirt","plays","the","piano","well","."],roles:[0,0,-1,-1,-1,-1,1,2,2,-1,-1],translation:"穿红裙子的女孩钢琴弹得很好。",exp:"主语：The girl（女孩）· 谓语：plays（弹奏）· 宾语：the piano（钢琴）· 状语：well（好地）· in the red skirt 是定语修饰 girl"},
       {sentence:"I know that he likes playing football.",words:["I","know","that","he","likes","playing","football","."],roles:[0,1,2,2,2,2,2,-1],translation:"我知道他喜欢踢足球。",exp:"主语：I（我）· 谓语：know（知道）· 宾语从句：that he likes playing football（他喜欢踢足球，整个从句做宾语）"},
-      {sentence:"Tom said that he lost his schoolbag.",words:["Tom","said","that","he","lost","his","schoolbag","."],roles:[0,1,2,2,2,2,2,-1],translation:"汤姆说他弄丢了书包。",exp:"主语：Tom（汤姆）· 谓语：said（说）· 宾语从句：that he lost his schoolbag（他弄丢了书包，整个从句做宾语）"},
+      {sentence:"Tom said that he lost his schoolbag.",words:["Tom","said","that","he","lost","his","schoolbag","."],roles:[0,1,2,2,2,2,2,-1],translation:"汤姆说他弄丢了书包。",exp:"主语：Tom（汤姆）· 谓语：said（说）· 宾语从句：that he lost his schoolbag（他弄丢了书包，整个从句做宾语）"}
+    ]},
+    "sentence_advanced_4": { name: "句子成分分析进阶4题", items: [
       {sentence:"If it rains tomorrow, we will stay at home.",words:["If","it","rains","tomorrow","we","will","stay","at","home","."],roles:[-1,-1,-1,-1,0,1,1,-1,-1,-1],translation:"如果明天下雨，我们将呆在家里。",exp:"条件状语从句：If it rains tomorrow（如果明天下雨）· 主语：we（我们）· 谓语：will stay（将呆在）· 状语：at home（在家里）"},
       {sentence:"When the bell rang, the students left the classroom.",words:["When","the","bell","rang","the","students","left","the","classroom","."],roles:[-1,-1,-1,-1,0,0,1,2,2,-1],translation:"当铃声响起的时候，学生们离开了教室。",exp:"时间状语从句：When the bell rang（当铃声响起的时候）· 主语：the students（学生们）· 谓语：left（离开）· 宾语：the classroom（教室）"},
       {sentence:"The man who is wearing a hat is my uncle.",words:["The","man","who","is","wearing","a","hat","is","my","uncle","."],roles:[0,0,-1,-1,-1,-1,-1,1,2,2,-1],translation:"戴帽子的那个人是我的叔叔。",exp:"主语：The man（那个人）· 定语从句：who is wearing a hat（戴着帽子的，修饰 The man）· 系动词：is（是）· 表语：my uncle（我的叔叔）"},
@@ -461,7 +652,7 @@ function getContentFromPush(pushConfig) {
 
   if (pushConfig) {
     const vocabModules = pushConfig.vocabulary || [];
-    words = getWordsFromVocabularyKeys(vocabModules);
+    words = getWordsFromVocabularyKeysWithDaily(vocabModules);
     const grammarModules = pushConfig.grammar || [];
     grammarModules.forEach(modKey => {
       if (MODULE_LIBRARY.grammar[modKey]) {
@@ -488,6 +679,38 @@ function getContentFromPush(pushConfig) {
     grammarReview,
     sentenceAnalysis
   };
+}
+
+// 支持每日40词顺序推送的词汇加载
+function getWordsFromVocabularyKeysWithDaily(keys = []) {
+  let words = [];
+  keys.forEach(key => {
+    // 特殊处理：think1_u1_4_daily 表示按天推送40词
+    if (key === 'think1_u1_4_daily') {
+      const allWords = MODULE_LIBRARY.vocabulary['think1_u1_4']?.words || [];
+      const dailyCount = 40;
+      // 计算从登录日到现在是第几天（以2025-09-01为起始日）
+      const startDate = new Date('2025-09-01');
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      startDate.setHours(0,0,0,0);
+      const dayIndex = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+      const startIdx = Math.max(0, dayIndex * dailyCount);
+      const endIdx = Math.min(allWords.length, startIdx + dailyCount);
+      const todayWords = allWords.slice(startIdx, endIdx);
+      words = words.concat(todayWords.map(word => cloneVocabularyWord(word, { sceneKey: 'think1_u1_4_daily', sceneTitle: `Think1 U1-4 第${dayIndex+1}天(${startIdx+1}-${endIdx}词)` })));
+      return;
+    }
+    if (MODULE_LIBRARY.vocabulary[key]) {
+      const module = MODULE_LIBRARY.vocabulary[key];
+      words = words.concat(module.words.map(word => cloneVocabularyWord(word, { sceneKey: key, sceneTitle: module.name })));
+      return;
+    }
+    if (vocabData && vocabData[key]) {
+      words = words.concat(vocabData[key].words.map(word => cloneVocabularyWord(word, { sceneKey: key, sceneTitle: vocabData[key].title })));
+    }
+  });
+  return dedupeWords(words);
 }
 
 const contentData = {

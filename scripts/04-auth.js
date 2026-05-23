@@ -5,6 +5,9 @@ async function studentLogin() {
   currentUser = {type:'student', name:name};
   currentGrade = STUDENT_GRADES[name] || 'default';
 
+  // 自动推送：检查该学生是否已有推送配置，没有则自动创建
+  await autoPushForStudent(name);
+
   // 先显示界面，不等待 Supabase
   document.getElementById('loginPage').classList.add('hidden');
   document.getElementById('mainApp').classList.remove('hidden');
