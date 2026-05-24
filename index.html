@@ -178,6 +178,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="tab" onclick="switchTab('flashcards')">🃏 单词闪卡</button>
       <button class="tab" onclick="switchTab('spelling')">✏️ 听写</button>
       <button class="tab" onclick="switchTab('grammar')">📝 语法</button>
+      <button class="tab" onclick="switchTab('verbs')">🔤 动词过去式</button>
       <button class="tab" onclick="switchTab('sentence')">🔍 句子分析</button>
       <button class="tab" onclick="switchTab('errors')">❌ 错题<span class="badge" id="errorCount">0</span></button>
     </div>
@@ -247,6 +248,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <h3>📝 语法练习</h3>
         <div class="subtitle" id="grammarType">选择题</div>
         <div id="grammarContent"></div>
+      </div>
+    </div>
+
+    <!-- Irregular Verbs -->
+    <div id="tab-verbs" class="hidden">
+      <div class="card">
+        <h3>🔤 不规则动词过去式</h3>
+        <div class="subtitle" id="verbModeLabel">学习模式 - 熟悉动词的过去式和过去分词</div>
+        <div id="verbContent"></div>
       </div>
     </div>
 
@@ -346,7 +356,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script src="scripts/08-grammar.js"></script>
 <script src="scripts/09-sentence-analysis.js"></script>
 <script src="scripts/10-errors.js"></script>
-<script src="scripts/11-teacher.js"></script>
-<script src="scripts/12-init.js"></script>
+<script src="scripts/11-verbs.js"></script>
+<script src="scripts/12-teacher.js"></script>
+<script src="scripts/13-init.js"></script>
 </body>
 </html>
