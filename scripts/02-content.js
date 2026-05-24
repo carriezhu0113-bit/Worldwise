@@ -638,7 +638,8 @@ async function getContent() {
     grammarFill: contentData.grammarFill,
     grammarCorrect: getDefaultGrammarCorrect(),
     grammarReview: getDefaultGrammarReview(),
-    sentenceAnalysis: getDefaultSentenceAnalysis()
+    sentenceAnalysis: getDefaultSentenceAnalysis(),
+    irregularVerbs: contentData.irregularVerbs
   };
 }
 
@@ -677,7 +678,8 @@ function getContentFromPush(pushConfig) {
     grammarFill: contentData.grammarFill,
     grammarCorrect,
     grammarReview,
-    sentenceAnalysis
+    sentenceAnalysis,
+    irregularVerbs: contentData.irregularVerbs
   };
 }
 
