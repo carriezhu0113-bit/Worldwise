@@ -135,22 +135,31 @@ async function autoPushForStudent(name) {
   const grade = STUDENT_GRADES[name];
   if (!grade || !AUTO_PUSH_CONFIGS[grade]) return; // 无对应配置则跳过
 
+  // 超时保护：最多等待 3 秒
+  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+
   try {
     // 先检查是否已有推送配置
-    const { data } = await sb.from('push_configs').select('push_config').eq('student_name', name).single();
+    const { data } = await Promise.race([
+      sb.from('push_configs').select('push_config').eq('student_name', name).single(),
+      timeout
+    ]);
     if (data && data.push_config) return; // 已有配置，不覆盖
   } catch(e) {
-    // 无配置，继续创建
+    // 无配置或超时，继续创建
   }
 
   // 自动创建推送配置
   const pushConfig = AUTO_PUSH_CONFIGS[grade];
   try {
-    await sb.from('push_configs').upsert({
-      student_name: name,
-      push_config: pushConfig,
-      updated_at: new Date().toISOString()
-    }, { onConflict: 'student_name' });
+    await Promise.race([
+      sb.from('push_configs').upsert({
+        student_name: name,
+        push_config: pushConfig,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'student_name' }),
+      timeout
+    ]);
 
     // 清除缓存
     localStorage.removeItem('push_config_' + name);
