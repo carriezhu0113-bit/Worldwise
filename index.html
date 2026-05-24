@@ -149,6 +149,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- Login Page -->
 <div id="loginPage" class="login-page">
   <div class="login-card">
+    <img src="logo.png" alt="Worldwise English" style="width:180px;height:auto;margin-bottom:16px">
     <h1>📚 英语学习</h1>
     <p>初中英语提分训练系统</p>
     <input type="text" id="studentName" placeholder="输入你的姓名">
@@ -164,7 +165,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- Main App -->
 <div id="mainApp" class="hidden">
   <div class="header">
-    <h2>📚 英语学习</h2>
+    <div style="display:flex;align-items:center;gap:8px">
+      <img src="logo.png" alt="Worldwise" style="width:32px;height:32px;border-radius:50%">
+      <h2>📚 英语学习</h2>
+    </div>
     <div class="user-info">
       <span id="displayName"></span>
       <button onclick="logout()">退出</button>
