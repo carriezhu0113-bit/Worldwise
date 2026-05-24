@@ -83,7 +83,7 @@ function renderGrammar() {
     container.innerHTML = `
       <div class="quiz-question">${grammarCorrectIndex+1}. 找出错误并改正：</div>
       <div style="background:#fef2f2;padding:12px;border-radius:8px;margin-bottom:12px;font-size:15px"><b>错误句子：</b>${q.wrong}</div>
-      <input type="text" class="fill-input" id="correctAnswer" placeholder="输入正确的句子" autocomplete="off" style="width:100%">
+      <input type="text" class="fill-input" id="correctAnswer" placeholder="输入改正后的单词" autocomplete="off" style="width:100%">
       <button class="quiz-submit" onclick="submitGrammarCorrect()">提交答案</button>
       <div id="grammarFeedback"></div>
     `;
@@ -155,7 +155,7 @@ async function submitGrammarCorrect() {
   grammarAnswered = true;
   const q = grammarCorrectShuffled[grammarCorrectIndex];
   const input = document.getElementById('correctAnswer').value.trim().toLowerCase();
-  const correct = q.right.toLowerCase();
+  const correct = q.correctWord.toLowerCase();
   const data = await getStudentData(currentUser.name);
   data.testsCompleted = (data.testsCompleted || 0) + 1;
   data.grammarDone = (data.grammarDone || 0) + 1;
@@ -168,8 +168,8 @@ async function submitGrammarCorrect() {
     document.getElementById('grammarFeedback').innerHTML = `<div class="quiz-feedback correct">✅ 正确！${q.exp}</div>`;
   } else {
     el.className = 'fill-input wrong';
-    await addError({type:'grammar_correct',wrong:q.wrong,correct:q.right,userAnswer:input,explanation:q.exp}, data);
-    document.getElementById('grammarFeedback').innerHTML = `<div class="quiz-feedback wrong">❌ 错误！正确答案是：<b>${q.right}</b>。${q.exp}</div>`;
+    await addError({type:'grammar_correct',wrong:q.wrong,correct:q.correctWord,userAnswer:input,explanation:q.exp}, data);
+    document.getElementById('grammarFeedback').innerHTML = `<div class="quiz-feedback wrong"> 错误！正确答案是：<b>${q.correctWord}</b>。${q.exp}</div>`;
   }
   await saveStudentData(currentUser.name, data);
   setTimeout(() => { grammarCorrectIndex++; renderGrammar(); }, 2000);

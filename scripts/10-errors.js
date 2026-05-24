@@ -4,7 +4,8 @@ function buildErrorRecord(err) {
     ...err,
     id: Date.now() + Math.floor(Math.random() * 1000),
     reviewed: 0,
-    nextReview: Date.now()
+    createdAt: Date.now(),
+    nextReview: Date.now() + 24 * 60 * 60 * 1000
   };
 }
 

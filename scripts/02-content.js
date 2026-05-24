@@ -312,16 +312,16 @@ const MODULE_LIBRARY = {
       {q:"I can't find my eraser. Can I use ______?",opts:["she","her","hers","herself"],ans:2,exp:"表示'用她的橡皮'，后面没有名词，用名词性物主代词 hers。"},
       {q:"Let ______ help you carry this heavy box, Grandma.",opts:["I","me","my","mine"],ans:1,exp:"Let 是使役动词，后面接人称代词宾格作宾补，Let me...（让我……）。"}
     ], correct: [
-      {wrong:"Him is very good at playing the piano.",right:"He is very good at playing the piano.",exp:"作句子开头的主语，必须用主格 He。"},
-      {wrong:"This is my kite and that one is your.",right:"This is my kite and that one is yours.",exp:"后面没有名词，不能用形容词性物主代词 your，必须换成名词性物主代词 yours。"},
-      {wrong:"Please tell we the truth about the broken vase.",right:"Please tell us the truth about the broken vase.",exp:"动词 tell 后面接宾语，用宾格 us。"},
-      {wrong:"The cat is washing it face with its paws.",right:"The cat is washing its face with its paws.",exp:"修饰名词 face（脸），表示'它的脸'，用形容词性物主代词 its。"},
-      {wrong:"Mrs. King invited my sister and I to her birthday party.",right:"Mrs. King invited my sister and me to her birthday party.",exp:"动词 invited 后面是宾语位置，My sister and me 共同作宾语，用宾格 me。"},
-      {wrong:"These books aren't their. They belong to the school.",right:"These books aren't theirs. They belong to the school.",exp:"句尾没有名词，表示'他们的书'，用名词性物主代词 theirs。"},
-      {wrong:"Us are planning a surprise party for our teacher.",right:"We are planning a surprise party for our teacher.",exp:"作全句的主语，用主格 We。"},
-      {wrong:"The room is very messy. Please clean its up right now.",right:"The room is very messy. Please clean it up right now.",exp:"clean up 是'动词+副词'短语，代词作宾语要放中间，表示'把它打扫干净'，用宾格 it。"},
-      {wrong:"She makes her a beautiful dress for the school play.",right:"She makes herself a beautiful dress for the school play.",exp:"当句子的主语（She）和动词的宾语是同一个人时，宾语要用反身代词，指'她给自己（herself）做衣服'。"},
-      {wrong:"Look at the house. It's windows are all broken.",right:"Look at the house. Its windows are all broken.",exp:"这里需要形容词性物主代词来修饰 windows（窗户），表示'它的窗户'。It's 是 'It is'（它是）的缩写，语意不通。"}
+      {wrong:"Him is very good at playing the piano.",right:"He is very good at playing the piano.",correctWord:"He",exp:"作句子开头的主语，必须用主格 He。"},
+      {wrong:"This is my kite and that one is your.",right:"This is my kite and that one is yours.",correctWord:"yours",exp:"后面没有名词，不能用形容词性物主代词 your，必须换成名词性物主代词 yours。"},
+      {wrong:"Please tell we the truth about the broken vase.",right:"Please tell us the truth about the broken vase.",correctWord:"us",exp:"动词 tell 后面接宾语，用宾格 us。"},
+      {wrong:"The cat is washing it face with its paws.",right:"The cat is washing its face with its paws.",correctWord:"its",exp:"修饰名词 face（脸），表示'它的脸'，用形容词性物主代词 its。"},
+      {wrong:"Mrs. King invited my sister and I to her birthday party.",right:"Mrs. King invited my sister and me to her birthday party.",correctWord:"me",exp:"动词 invited 后面是宾语位置，My sister and me 共同作宾语，用宾格 me。"},
+      {wrong:"These books aren't their. They belong to the school.",right:"These books aren't theirs. They belong to the school.",correctWord:"theirs",exp:"句尾没有名词，表示'他们的书'，用名词性物主代词 theirs。"},
+      {wrong:"Us are planning a surprise party for our teacher.",right:"We are planning a surprise party for our teacher.",correctWord:"We",exp:"作全句的主语，用主格 We。"},
+      {wrong:"The room is very messy. Please clean its up right now.",right:"The room is very messy. Please clean it up right now.",correctWord:"it",exp:"clean up 是'动词+副词'短语，代词作宾语要放中间，表示'把它打扫干净'，用宾格 it。"},
+      {wrong:"She makes her a beautiful dress for the school play.",right:"She makes herself a beautiful dress for the school play.",correctWord:"herself",exp:"当句子的主语（She）和动词的宾语是同一个人时，宾语要用反身代词，指'她给自己（herself）做衣服'。"},
+      {wrong:"Look at the house. It's windows are all broken.",right:"Look at the house. Its windows are all broken.",correctWord:"Its",exp:"这里需要形容词性物主代词来修饰 windows（窗户），表示'它的窗户'。It's 是 'It is'（它是）的缩写，语意不通。"}
     ]},
     "think1_u1_4": { name: "Think1 U1-4词汇(243词)", words: [
       {word:'yourself',pos:'pron.',phonetic:'',meaning:'你自己',phrase:'It\'s great to be busy, but it\'s important to look after yourself and have fun, too.',synonyms:''},
