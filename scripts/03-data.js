@@ -54,7 +54,8 @@ async function getStudentData(name) {
       sentenceAnalysisCorrect: 0,
       flashcardDone: 0,
       flashcardCorrect: 0,
-      lastActive: new Date().toISOString()
+      lastActive: new Date().toISOString(),
+      sessions: []
     };
     saveStudentData(name, data);
   }

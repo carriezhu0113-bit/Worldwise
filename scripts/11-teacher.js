@@ -1,4 +1,23 @@
 // ==================== TEACHER ====================
+function formatSessionHistory(sessions) {
+  if (!sessions || sessions.length === 0) {
+    return '<div style="color:#94a3b8">暂无学习记录</div>';
+  }
+  const sorted = [...sessions].reverse().slice(0, 20);
+  return sorted.map(s => {
+    const start = new Date(s.startTime);
+    const date = start.toLocaleDateString('zh-CN');
+    const time = start.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
+    const duration = s.endTime ? Math.round((new Date(s.endTime) - start) / 60000) : null;
+    const durText = duration !== null ? `${duration}分钟` : '进行中';
+    return `<div style="display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f1f5f9;font-size:13px">
+      <span>${date}</span>
+      <span>${time}</span>
+      <span style="color:#64748b">${durText}</span>
+    </div>`;
+  }).join('');
+}
+
 async function renderTeacherOverview() {
   const students = await getAllStudents();
   const container = document.getElementById('teacherStats');
@@ -101,6 +120,10 @@ async function showStudentDetail(name) {
           return `<div style="padding:10px;background:#fef2f2;border-radius:8px;margin-bottom:8px;font-size:13px;line-height:1.6">${content}</div>`;
         }).join('')
       }
+    </div>
+    <div class="card">
+      <h4>🕐 学习记录</h4>
+      ${formatSessionHistory(data.sessions || [])}
     </div>
     <div class="card">
       <h4>🎯 教学建议</h4>
