@@ -26,11 +26,15 @@ async function renderTeacherOverview() {
     const spAcc = (s.spellingDone||0) > 0 ? Math.round((s.spellingCorrect||0) / s.spellingDone * 100) : 0;
     const grAcc = (s.grammarDone||0) > 0 ? Math.round((s.grammarCorrect||0) / s.grammarDone * 100) : 0;
     const saAcc = (s.sentenceAnalysisDone||0) > 0 ? Math.round((s.sentenceAnalysisCorrect||0) / s.sentenceAnalysisDone * 100) : 0;
+    const grWrong = (s.grammarDone||0) - (s.grammarCorrect||0);
+    const saWrong = (s.sentenceAnalysisDone||0) - (s.sentenceAnalysisCorrect||0);
+    const spWrong = (s.spellingDone||0) - (s.spellingCorrect||0);
+    const fcWrong = (s.flashcardDone||0) - (s.flashcardCorrect||0);
     return `<div class="student-row" onclick="showStudentDetail('${s.name}')">
       <div>
         <div class="student-name">👤 ${s.name}</div>
-        <div class="student-stats">📖单词${fcAcc}% · ✏️拼写${spAcc}% · 📝语法${grAcc}% · 🔍句子${saAcc}%</div>
-        <div class="student-stats" style="margin-top:2px">错题${(s.errors||[]).length}道 · 测试${s.testsCompleted||0}次</div>
+        <div class="student-stats">📖单词${s.wordsLearned||0}词(${wordsPct}%) · ✏️拼写${s.spellingDone||0}次(错${spWrong}) · 📝语法${s.grammarDone||0}次(错${grWrong}) · 🔍句子${s.sentenceAnalysisDone||0}次(错${saWrong})</div>
+        <div class="student-stats" style="margin-top:2px">闪卡${s.flashcardDone||0}次(错${fcWrong}) · 错题${(s.errors||[]).length}道 · 测试${s.testsCompleted||0}次</div>
         <div class="progress-bar"><div class="fill" style="width:${wordsPct}%"></div></div>
       </div>
       <span style="color:#2563eb">查看 →</span>
