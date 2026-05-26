@@ -67,11 +67,10 @@ async function getStudentData(name) {
 
 // 后台同步到 Supabase（不阻塞）
 function syncToSupabase(name, data) {
-  try {
-    sb.from('students').upsert({ name: name, data: data, updated_at: new Date().toISOString() }, { onConflict: 'name' });
-  } catch(e) {
-    // 静默失败
-  }
+  sb.from('students').upsert({ name: name, data: data, updated_at: new Date().toISOString() }, { onConflict: 'name' })
+    .then(({ error }) => {
+      if (error) console.log('Supabase同步失败:', name, error.message);
+    });
 }
 
 function getAccuracyRate(data) {

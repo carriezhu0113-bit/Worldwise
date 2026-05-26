@@ -11,6 +11,9 @@ async function studentLogin() {
   data.sessions.push({startTime: new Date().toISOString(), endTime: null});
   saveStudentData(name, data);
 
+  // 确保数据同步到 Supabase（等待完成）
+  await new Promise(resolve => setTimeout(resolve, 500));
+
   // 自动推送：检查该学生是否已有推送配置，没有则自动创建
   await autoPushForStudent(name);
 
