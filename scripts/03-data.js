@@ -100,15 +100,29 @@ async function getAllStudents() {
   } catch(e) {
     console.log('Supabase读取失败，使用本地缓存:', e.message);
   }
-  if (rows.length === 0) {
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key.startsWith('eng_app_student_')) {
-        const name = key.replace('eng_app_student_', '');
+  
+  // 同时读取 localStorage 中的数据
+  const localRows = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('eng_app_student_')) {
+      const name = key.replace('eng_app_student_', '');
+      try {
         const data = JSON.parse(localStorage.getItem(key));
-        rows.push({name, data});
+        localRows.push({name, data});
+      } catch(e) {
+        // 忽略损坏的数据
       }
     }
   }
+  
+  // 合并 Supabase 和 localStorage 数据（Supabase 优先）
+  const nameSet = new Set(rows.map(r => r.name));
+  for (const lr of localRows) {
+    if (!nameSet.has(lr.name)) {
+      rows.push(lr);
+    }
+  }
+  
   return rows.map(r => ({name: r.name, ...r.data}));
 }
