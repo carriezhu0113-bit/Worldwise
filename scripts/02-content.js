@@ -25,7 +25,7 @@ const STUDENT_GRADES = {
 // 自动推送配置：学生首次登录时自动创建
 const AUTO_PUSH_CONFIGS = {
   low: {
-    vocabulary: ['pet_scene_24', 'pet_scene_23'],
+    vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material'],
     grammar: ['pronoun_basic'],
     sentences: ['sentence_basic_16']
   },
@@ -150,6 +150,28 @@ async function getTodayWords() {
 // ==================== MODULE LIBRARY ====================
 const MODULE_LIBRARY = {
   vocabulary: {
+    "low_subject_material": { name: "学科与材料", words: [
+      {word:"geography",pos:"n.",phonetic:"dʒiˈɒɡrəfi",meaning:"地理",phrase:"study geography 学习地理",synonyms:"近: earth science"},
+      {word:"history",pos:"n.",phonetic:"ˈhɪstri",meaning:"历史",phrase:"learn history 学习历史",synonyms:"近: the past"},
+      {word:"sports",pos:"n.",phonetic:"spɔːts",meaning:"体育运动",phrase:"play sports 做运动",synonyms:"近: athletics, games"},
+      {word:"maths",pos:"n.",phonetic:"mæθs",meaning:"数学",phrase:"do maths 做数学题",synonyms:"近: mathematics"},
+      {word:"language",pos:"n.",phonetic:"ˈlæŋɡwɪdʒ",meaning:"语言",phrase:"speak a language 说一种语言",synonyms:"近: tongue"},
+      {word:"music",pos:"n.",phonetic:"ˈmjuːzɪk",meaning:"音乐",phrase:"listen to music 听音乐",synonyms:"近: melody, tune"},
+      {word:"science",pos:"n.",phonetic:"ˈsaɪᵊns",meaning:"科学",phrase:"science class 科学课",synonyms:"近: natural science"},
+      {word:"IT",pos:"n.",phonetic:"aɪ tiː",meaning:"信息技术",phrase:"IT skills 信息技术技能",synonyms:"近: information technology"},
+      {word:"art",pos:"n.",phonetic:"ɑːt",meaning:"艺术；美术",phrase:"art class 美术课",synonyms:"近: creativity"},
+      {word:"favourite",pos:"adj.",phonetic:"ˈfeɪvərɪt",meaning:"最喜欢的",phrase:"my favourite subject 我最喜欢的科目",synonyms:"近: preferred"},
+      {word:"subject",pos:"n.",phonetic:"ˈsʌbdʒɪkt",meaning:"科目；学科",phrase:"school subject 学校科目",synonyms:"近: topic, course"},
+      {word:"metal",pos:"n.",phonetic:"ˈmetᵊl",meaning:"金属",phrase:"made of metal 金属制成的",synonyms:"近: iron, steel"},
+      {word:"wool",pos:"n.",phonetic:"wʊl",meaning:"羊毛",phrase:"made of wool 羊毛制成的",synonyms:"近: fleece"},
+      {word:"plastic",pos:"n./adj.",phonetic:"ˈplæstɪk",meaning:"塑料（的）",phrase:"plastic bottle 塑料瓶",synonyms:"近: synthetic"},
+      {word:"wood",pos:"n.",phonetic:"wʊd",meaning:"木头",phrase:"made of wood 木头制成的",synonyms:"近: timber, forest"},
+      {word:"silver",pos:"n./adj.",phonetic:"ˈsɪlvə",meaning:"银（的）",phrase:"silver ring 银戒指",synonyms:"近: metallic"},
+      {word:"glass",pos:"n.",phonetic:"ɡlɑːs",meaning:"玻璃",phrase:"made of glass 玻璃制成的",synonyms:"近: crystal"},
+      {word:"gold",pos:"n./adj.",phonetic:"ɡəʊld",meaning:"金（的）",phrase:"gold medal 金牌",synonyms:"近: golden"},
+      {word:"striped",pos:"adj.",phonetic:"straɪpt",meaning:"有条纹的",phrase:"striped shirt 条纹衬衫",synonyms:"近: striated"},
+      {word:"spotted",pos:"adj.",phonetic:"ˈspɒtɪd",meaning:"有斑点的",phrase:"spotted dress 波点连衣裙",synonyms:"近: dotted, speckled"}
+    ]},
     "pet_scene_23": { name: "PET场景23-社会与文化", words: [
       {word:"country",pos:"n.",phonetic:"ˈkʌntri",meaning:"国家；乡村",phrase:"my country 我的国家",synonyms:"近: nation, state"},
       {word:"nation",pos:"n.",phonetic:"ˈneɪʃᵊn",meaning:"国家",phrase:"the whole nation 全国",synonyms:"近: country"},
