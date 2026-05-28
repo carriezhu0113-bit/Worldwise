@@ -25,7 +25,7 @@ const STUDENT_GRADES = {
 // 自动推送配置：学生首次登录时自动创建
 const AUTO_PUSH_CONFIGS = {
   low: {
-    vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material'],
+    vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material', 'low_adverbs'],
     grammar: ['pronoun_basic'],
     sentences: ['sentence_basic_16']
   },
@@ -171,6 +171,14 @@ const MODULE_LIBRARY = {
       {word:"gold",pos:"n./adj.",phonetic:"ɡəʊld",meaning:"金（的）",phrase:"gold medal 金牌",synonyms:"近: golden"},
       {word:"striped",pos:"adj.",phonetic:"straɪpt",meaning:"有条纹的",phrase:"striped shirt 条纹衬衫",synonyms:"近: striated"},
       {word:"spotted",pos:"adj.",phonetic:"ˈspɒtɪd",meaning:"有斑点的",phrase:"spotted dress 波点连衣裙",synonyms:"近: dotted, speckled"}
+    ]},
+    "low_adverbs": { name: "常用副词", words: [
+      {word:"quickly",pos:"adv.",phonetic:"ˈkwɪkli",meaning:"快速地",phrase:"run quickly 快速地跑",synonyms:"近: fast, rapidly"},
+      {word:"fast",pos:"adv./adj.",phonetic:"fɑːst",meaning:"快地；快速的",phrase:"run fast 跑得快",synonyms:"近: quickly, rapid"},
+      {word:"loudly",pos:"adv.",phonetic:"ˈlaʊdli",meaning:"大声地",phrase:"speak loudly 大声说话",synonyms:"近: noisily 反: quietly"},
+      {word:"slowly",pos:"adv.",phonetic:"ˈsləʊli",meaning:"慢慢地",phrase:"walk slowly 慢慢地走",synonyms:"近: gradually 反: quickly"},
+      {word:"quietly",pos:"adv.",phonetic:"ˈkwaɪətli",meaning:"安静地",phrase:"sit quietly 安静地坐着",synonyms:"近: silently 反: loudly"},
+      {word:"beautifully",pos:"adv.",phonetic:"ˈbjuːtɪfʊli",meaning:"美丽地；优美地",phrase:"sing beautifully 唱得优美",synonyms:"近: wonderfully, gracefully"}
     ]},
     "pet_scene_23": { name: "PET场景23-社会与文化", words: [
       {word:"country",pos:"n.",phonetic:"ˈkʌntri",meaning:"国家；乡村",phrase:"my country 我的国家",synonyms:"近: nation, state"},
