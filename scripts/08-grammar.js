@@ -1,23 +1,48 @@
 // ==================== GRAMMAR ====================
-let grammarMode = 'mc';
+let grammarMode = 'review';
 let grammarMCIndex = 0, grammarFillIndex = 0, grammarCorrectIndex = 0;
 let grammarMCShuffled = [], grammarFillShuffled = [], grammarCorrectShuffled = [];
 let selectedOption = -1;
 let grammarAnswered = false;
 let grammarReviewShown = false;
 let grammarReviewContent = '';
+let currentGrammarModule = '';
+let grammarModules = [];
 
 async function initGrammar() {
+  const gc = await getContent();
+  grammarModules = gc.grammarModules || [];
+  currentGrammarModule = grammarModules.length > 0 ? grammarModules[0].key : '';
+  renderGrammarSubTabs();
+  if (currentGrammarModule) {
+    loadGrammarModule(currentGrammarModule);
+  }
+}
+
+function renderGrammarSubTabs() {
+  const container = document.getElementById('grammarSubTabs');
+  if (!container) return;
+  container.innerHTML = grammarModules.map(m =>
+    `<button onclick="loadGrammarModule('${m.key}')" style="padding:6px 14px;border:2px solid ${m.key === currentGrammarModule ? '#2563eb' : '#e2e8f0'};border-radius:20px;background:${m.key === currentGrammarModule ? '#2563eb' : '#fff'};color:${m.key === currentGrammarModule ? '#fff' : '#64748b'};cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s">${m.icon || '📝'} ${m.name}</button>`
+  ).join('');
+}
+
+async function loadGrammarModule(key) {
+  currentGrammarModule = key;
+  renderGrammarSubTabs();
+  const gc = await getContent();
+  const mod = gc.grammarModuleData[key];
+  if (!mod) return;
+
   grammarMode = 'review';
   grammarMCIndex = 0; grammarFillIndex = 0; grammarCorrectIndex = 0;
-  const gc = await getContent();
-  grammarMCShuffled = [...gc.grammarMC]; shuffleArray(grammarMCShuffled);
-  grammarFillShuffled = [...gc.grammarFill]; shuffleArray(grammarFillShuffled);
-  grammarCorrectShuffled = [...gc.grammarCorrect]; shuffleArray(grammarCorrectShuffled);
+  grammarMCShuffled = [...(mod.mc || [])]; shuffleArray(grammarMCShuffled);
+  grammarFillShuffled = [...(mod.fill || [])]; shuffleArray(grammarFillShuffled);
+  grammarCorrectShuffled = [...(mod.correct || [])]; shuffleArray(grammarCorrectShuffled);
   selectedOption = -1;
   grammarAnswered = false;
   grammarReviewShown = false;
-  grammarReviewContent = gc.grammarReview || '';
+  grammarReviewContent = mod.review || '';
   renderGrammar();
 }
 
@@ -74,7 +99,7 @@ function renderGrammar() {
     `;
   } else if (grammarMode === 'correct') {
     if (grammarCorrectIndex >= grammarCorrectShuffled.length) {
-      container.innerHTML = '<div style="text-align:center;padding:40px"><h3>🎉 语法练习全部完成！</h3><p style="color:#64748b;margin-top:8px">点击首页查看学习数据</p><button class="quiz-submit" style="margin-top:16px" onclick="initGrammar()">重新练习</button></div>';
+      container.innerHTML = '<div style="text-align:center;padding:40px"><h3>🎉 语法练习全部完成！</h3><p style="color:#64748b;margin-top:8px">点击首页查看学习数据</p><button class="quiz-submit" style="margin-top:16px" onclick="loadGrammarModule(currentGrammarModule)">重新练习</button></div>';
       return;
     }
     typeLabel.textContent = '改错题 (' + (grammarCorrectIndex+1) + '/' + grammarCorrectShuffled.length + ')';

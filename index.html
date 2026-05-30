@@ -180,6 +180,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="tab" onclick="switchTab('grammar')">📝 语法</button>
       <button class="tab" onclick="switchTab('verbs')">🔤 动词过去式</button>
       <button class="tab" onclick="switchTab('sentence')">🔍 句子分析</button>
+      <button class="tab" onclick="switchTab('reading')">📖 阅读理解</button>
       <button class="tab" onclick="switchTab('errors')">❌ 错题<span class="badge" id="errorCount">0</span></button>
     </div>
     <div class="tabs hidden" id="teacherTabs">
@@ -246,6 +247,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div id="tab-grammar" class="hidden">
       <div class="card">
         <h3>📝 语法练习</h3>
+        <div id="grammarSubTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div class="subtitle" id="grammarType">选择题</div>
         <div id="grammarContent"></div>
       </div>
@@ -284,6 +286,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <button class="quiz-submit" onclick="submitSentenceAnalysis()">提交答案</button>
         <div id="saFeedback" style="margin-top:12px;text-align:center"></div>
         <div class="subtitle" style="text-align:center;margin-top:8px" id="saProgress">1 / 10</div>
+      </div>
+    </div>
+
+    <!-- Reading -->
+    <div id="tab-reading" class="hidden">
+      <div class="card">
+        <h3>📖 阅读理解</h3>
+        <div id="readingContent"></div>
       </div>
     </div>
 
@@ -357,6 +367,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script src="scripts/09-sentence-analysis.js"></script>
 <script src="scripts/10-errors.js"></script>
 <script src="scripts/11-verbs.js"></script>
+<script src="scripts/12-reading.js"></script>
 <script src="scripts/11-teacher.js"></script>
 <script src="scripts/12-init.js"></script>
 </body>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>KET语法知识点检测清单</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; padding: 25px 30px; color: #333; font-size: 13px; line-height: 1.6; }
+    .header { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #2563eb; padding-bottom: 10px; }
+    .header h1 { font-size: 20px; color: #2563eb; margin-bottom: 5px; }
+    .header p { font-size: 12px; color: #666; }
+    .info { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px; }
+    .info span { border-bottom: 1px solid #333; padding: 0 40px 0 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+    .section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+    .section h3 { font-size: 14px; color: #2563eb; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #e2e8f0; }
+    .section h3 .icon { margin-right: 5px; }
+    .item { display: flex; align-items: flex-start; margin-bottom: 4px; font-size: 12px; }
+    .item input[type="checkbox"] { margin-right: 6px; margin-top: 2px; flex-shrink: 0; }
+    .item .label { flex: 1; }
+    .item .label .en { color: #059669; font-weight: 500; }
+    .item .label .zh { color: #64748b; font-size: 11px; }
+    .item .label .ex { color: #888; font-size: 11px; font-style: italic; }
+    .footer { margin-top: 15px; text-align: center; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+    .score-box { display: inline-block; border: 2px solid #2563eb; padding: 5px 15px; border-radius: 8px; margin-top: 8px; font-size: 13px; }
+    @media print {
+      body { padding: 15px 20px; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="text-align:center;margin-bottom:15px;">
+    <button onclick="window.print()" style="padding:8px 25px;font-size:14px;cursor:pointer;background:#2563eb;color:#fff;border:none;border-radius:6px;">🖨️ 打印</button>
+  </div>
+
+  <div class="header">
+    <h1>📋 KET 语法知识点检测清单</h1>
+    <p>六年级适用 · 自己检测哪些语法点已经掌握，哪些还需要复习</p>
+  </div>
+
+  <div class="info">
+    <div>姓名：<span></span></div>
+    <div>日期：<span></span></div>
+    <div>已掌握：<span></span> / 47</div>
+  </div>
+
+  <div class="grid">
+    <div class="section">
+      <h3><span class="icon">1️⃣</span>名词与冠词</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">可数名词单复数</span><br><span class="zh">规则变化加-s/-es，不规则变化（child→children）</span><br><span class="ex">例：one book → two books</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">不可数名词</span><br><span class="zh">water, milk, information 等不能加-s</span><br><span class="ex">例：I need some water.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">a / an 的用法</span><br><span class="zh">a + 辅音开头，an + 元音开头</span><br><span class="ex">例：a dog, an apple</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">the 的用法</span><br><span class="zh">特指、双方都知道的事物、独一无二的事物</span><br><span class="ex">例：The sun is bright.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">名词所有格</span><br><span class="zh">'s 表示"……的"</span><br><span class="ex">例：Tom's bag, my mother's car</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">some / any</span><br><span class="zh">some 用于肯定句，any 用于否定/疑问句</span><br><span class="ex">例：I have some apples. Do you have any?</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">2️⃣</span>代词</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">人称代词主格与宾格</span><br><span class="zh">I/me, he/him, she/her, we/us, they/them</span><br><span class="ex">例：He likes me. I like him.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">形容词性物主代词</span><br><span class="zh">my, your, his, her, its, our, their（后面必须带名词）</span><br><span class="ex">例：This is my book.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">名词性物主代词</span><br><span class="zh">mine, yours, his, hers, ours, theirs（后面不带名词）</span><br><span class="ex">例：This book is mine.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">反身代词</span><br><span class="zh">myself, yourself, himself, herself, itself, ourselves, themselves</span><br><span class="ex">例：I did it by myself.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">this / that / these / those</span><br><span class="zh">近指/远指，单数/复数</span><br><span class="ex">例：This is my pen. Those are her books.</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">3️⃣</span>动词时态</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">一般现在时</span><br><span class="zh">习惯、事实、经常性动作（注意第三人称单数加-s）</span><br><span class="ex">例：She goes to school every day.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">一般过去时</span><br><span class="zh">过去发生的动作（规则动词加-ed，不规则动词需记忆）</span><br><span class="ex">例：I went to the park yesterday.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">现在进行时</span><br><span class="zh">正在进行的动作：be + doing</span><br><span class="ex">例：They are playing football now.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">一般将来时</span><br><span class="zh">will + 动词原形 / be going to + 动词原形</span><br><span class="ex">例：I will visit my grandma tomorrow.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">现在完成时（基础）</span><br><span class="zh">have/has + 过去分词，表示过去的动作对现在的影响</span><br><span class="ex">例：I have already finished my homework.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">情态动词 can / must / should</span><br><span class="zh">能力、必须、建议</span><br><span class="ex">例：I can swim. You must be quiet.</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">4️⃣</span>介词</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">时间介词 in / on / at</span><br><span class="zh">in + 月/年/季节，on + 具体日期，at + 具体时刻</span><br><span class="ex">例：in May, on Monday, at 3 o'clock</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">地点介词 in / on / under / behind / between / next to / in front of</span><br><span class="zh">描述位置关系</span><br><span class="ex">例：The cat is under the table.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">方向介词 to / from / into / out of / through</span><br><span class="zh">表示移动方向</span><br><span class="ex">例：Go to the door. Walk through the tunnel.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">其他常用介词 with / without / about / for / of</span><br><span class="zh">搭配用法</span><br><span class="ex">例：a cup of tea, talk about, good at</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">5️⃣</span>形容词与副词</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">形容词比较级</span><br><span class="zh">短词加-er，长词加 more，不规则：good→better, bad→worse</span><br><span class="ex">例：She is taller than me.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">形容词最高级</span><br><span class="zh">短词加-est，长词加 most，前面加 the</span><br><span class="ex">例：He is the tallest in our class.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">副词的基本用法</span><br><span class="zh">修饰动词，通常加-ly</span><br><span class="ex">例：She sings beautifully.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">good / well 的区别</span><br><span class="zh">good 是形容词，well 是副词</span><br><span class="ex">例：She is a good student. She speaks English well.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">much / many / a lot of / a few / a little</span><br><span class="zh">much + 不可数，many + 可数复数，a few + 可数，a little + 不可数</span><br><span class="ex">例：a few books, a little water</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">6️⃣</span>句型结构</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">There is / There are</span><br><span class="zh">表示"有"，单数用 is，复数用 are</span><br><span class="ex">例：There is a cat. There are two dogs.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">一般疑问句与否定句</span><br><span class="zh">be动词/助动词提前，not 构成否定</span><br><span class="ex">例：Do you like it? I don't like it.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">特殊疑问句</span><br><span class="zh">what, where, when, who, why, how, which, how many/much/often/long</span><br><span class="ex">例：Where do you live? How old are you?</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">祈使句</span><br><span class="zh">动词原形开头，表示命令、请求、建议</span><br><span class="ex">例：Open the door. Don't run!</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">感叹句</span><br><span class="zh">What + (a/an) + adj. + n. / How + adj./adv.</span><br><span class="ex">例：What a beautiful day! How fast he runs!</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">7️⃣</span>连词与从句</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">并列连词 and / but / or / so</span><br><span class="zh">连接并列成分</span><br><span class="ex">例：I like apples but I don't like bananas.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">because 引导原因状语从句</span><br><span class="zh">表示原因</span><br><span class="ex">例：I'm happy because I passed the exam.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">if / when 引导条件/时间状语从句</span><br><span class="zh">如果……/当……时候</span><br><span class="ex">例：If it rains, we will stay at home.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">that 引导宾语从句（基础）</span><br><span class="zh">跟在 think, know, say 等动词后面</span><br><span class="ex">例：I think that he is right.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">Zero Conditional（零条件句）</span><br><span class="zh">If + 一般现在时, 一般现在时（表示客观事实/普遍真理）</span><br><span class="ex">例：If you heat water to 100°C, it boils.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">First Conditional（第一条件句）</span><br><span class="zh">If + 一般现在时, will + 动词原形（表示将来可能发生的情况）</span><br><span class="ex">例：If it rains tomorrow, I will take an umbrella.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">who / which / that 引导定语从句（基础）</span><br><span class="zh">修饰前面的名词</span><br><span class="ex">例：The boy who is running is my brother.</span></div></div>
+    </div>
+
+    <div class="section">
+      <h3><span class="icon">8️⃣</span>常用固定搭配</h3>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">like / love / enjoy + doing</span><br><span class="zh">喜欢做某事</span><br><span class="ex">例：I enjoy reading books.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">want / would like + to do</span><br><span class="zh">想要做某事</span><br><span class="ex">例：I want to go home.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">be good at / be interested in / be afraid of</span><br><span class="zh">擅长/感兴趣/害怕</span><br><span class="ex">例：She is good at math.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">look forward to + doing</span><br><span class="zh">期待做某事</span><br><span class="ex">例：I look forward to seeing you.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">too + adj. / adj. + enough</span><br><span class="zh">太……/足够……</span><br><span class="ex">例：It's too cold. He is tall enough.</span></div></div>
+      <div class="item"><input type="checkbox"><div class="label"><span class="en">have to / don't have to</span><br><span class="zh">必须/不必</span><br><span class="ex">例：I have to finish my homework.</span></div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="score-box">📊 自我评估：已掌握 ______ 项 · 还需复习 ______ 项 · 完全不会 ______ 项</div>
+    <p style="margin-top:8px">Worldwise English · KET语法知识点检测清单 · 共47个核心语法点</p>
+  </div>
+</body>
+</html>

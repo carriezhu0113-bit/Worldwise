@@ -26,12 +26,12 @@ const STUDENT_GRADES = {
 const AUTO_PUSH_CONFIGS = {
   low: {
     vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material', 'low_adverbs'],
-    grammar: ['pronoun_basic'],
+    grammar: ['pronoun_basic', 'present_simple_continuous'],
     sentences: ['sentence_basic_16']
   },
   high: {
     vocabulary: ['think1_u1_4_daily'],
-    grammar: ['pronoun_basic'],
+    grammar: ['pronoun_basic', 'present_simple_continuous'],
     sentences: ['sentence_basic_16', 'sentence_advanced_4']
   }
 };
@@ -353,6 +353,97 @@ const MODULE_LIBRARY = {
       {wrong:"She makes her a beautiful dress for the school play.",right:"She makes herself a beautiful dress for the school play.",correctWord:"herself",exp:"当句子的主语（She）和动词的宾语是同一个人时，宾语要用反身代词，指'她给自己（herself）做衣服'。"},
       {wrong:"Look at the house. It's windows are all broken.",right:"Look at the house. Its windows are all broken.",correctWord:"Its",exp:"这里需要形容词性物主代词来修饰 windows（窗户），表示'它的窗户'。It's 是 'It is'（它是）的缩写，语意不通。"}
     ]},
+    "present_simple_continuous": { name: "一般现在时与现在进行时(五年级)", review: `
+<div style="text-align:left;line-height:1.8">
+<h3 style="text-align:center;color:#2563eb;margin-bottom:16px">📚 一般现在时 vs 现在进行时</h3>
+
+<div style="background:#eff6ff;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#1e40af;margin-bottom:8px">⏰ 一般现在时（Simple Present）</h4>
+<p>• <b>用法</b>：表示经常性、习惯性的动作，或客观事实、真理</p>
+<p>• <b>结构</b>：主语 + 动词原形（第三人称单数加 -s/-es）</p>
+<p>• <b>常见时间状语</b>：every day, every week, usually, often, sometimes, always, never, on Mondays</p>
+<p style="background:#fef9c3;padding:8px;border-radius:8px;margin:6px 0">例：She <b>goes</b> to school every day.（她每天去上学。）</p>
+<p style="background:#fef9c3;padding:8px;border-radius:8px;margin:6px 0">例：The sun <b>rises</b> in the east.（太阳从东方升起。）</p>
+</div>
+
+<div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#166534;margin-bottom:8px">🔄 现在进行时（Present Continuous）</h4>
+<p>• <b>用法</b>：表示现在（说话瞬间）正在进行的动作，或现阶段正在做的事</p>
+<p>• <b>结构</b>：主语 + am/is/are + 动词-ing</p>
+<p>• <b>常见时间状语</b>：now, right now, at the moment, at present, today, Look!, Listen!</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">例：She <b>is doing</b> her homework now.（她现在正在做作业。）</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">例：<b>Look!</b> The boys <b>are playing</b> football.（看！男孩们正在踢足球。）</p>
+</div>
+
+<div style="background:#fefce8;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#854d0e;margin-bottom:8px">🌟 核心对比</h4>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<tr style="background:#fef9c3"><th style="padding:8px;border:1px solid #fde68a">对比项</th><th style="padding:8px;border:1px solid #fde68a">一般现在时</th><th style="padding:8px;border:1px solid #fde68a">现在进行时</th></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb">含义</td><td style="padding:6px;border:1px solid #e5e7eb">经常/习惯/事实</td><td style="padding:6px;border:1px solid #e5e7eb">此刻正在进行</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb">标志词</td><td style="padding:6px;border:1px solid #e5e7eb">every day, usually, often</td><td style="padding:6px;border:1px solid #e5e7eb">now, at the moment, Look!</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb">例句</td><td style="padding:6px;border:1px solid #e5e7eb">I <b>play</b> tennis every Sunday.</td><td style="padding:6px;border:1px solid #e5e7eb">I <b>am playing</b> tennis now.</td></tr>
+</table>
+</div>
+
+<div style="background:#fef2f2;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#991b1b;margin-bottom:8px">⚠️ 重点：第三人称单数变化规则</h4>
+<p>• 一般情况加 <b>-s</b>：play → plays, read → reads</p>
+<p>• 以 s, x, ch, sh, o 结尾加 <b>-es</b>：go → goes, watch → watches, wash → washes</p>
+<p>• 以辅音字母 + y 结尾，变 y 为 i 加 <b>-es</b>：study → studies, fly → flies</p>
+<p>• 不规则：have → <b>has</b>, be → <b>is</b>, do → <b>does</b></p>
+<p style="background:#fee2e2;padding:8px;border-radius:8px;margin:6px 0">❗ 只有主语是 <b>he / she / it / 单数名词</b> 时，动词才用三单形式！</p>
+</div>
+
+<div style="background:#f5f3ff;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#5b21b6;margin-bottom:8px">📋 否定句和疑问句</h4>
+<p><b>一般现在时：</b></p>
+<p>• 否定：主语 + don't / doesn't + 动词原形（注意：doesn't 后动词还原！）</p>
+<p style="background:#ede9fe;padding:8px;border-radius:8px;margin:4px 0">例：She <b>doesn't like</b> coffee.（她不喜欢咖啡。）</p>
+<p>• 疑问：Do / Does + 主语 + 动词原形？</p>
+<p style="background:#ede9fe;padding:8px;border-radius:8px;margin:4px 0">例：<b>Does</b> he <b>play</b> basketball?（他打篮球吗？）</p>
+
+<p style="margin-top:12px"><b>现在进行时：</b></p>
+<p>• 否定：主语 + am/is/are + not + 动词-ing</p>
+<p style="background:#ede9fe;padding:8px;border-radius:8px;margin:4px 0">例：They <b>are not sleeping</b> now.（他们现在没在睡觉。）</p>
+<p>• 疑问：Am / Is / Are + 主语 + 动词-ing？</p>
+<p style="background:#ede9fe;padding:8px;border-radius:8px;margin:4px 0">例：<b>Is</b> she <b>reading</b> a book?（她正在看书吗？）</p>
+</div>
+
+<p style="text-align:center;color:#6b7280;font-size:14px">🌟 复习好了吗？点击下面的按钮开始通关测试吧！</p>
+</div>`, mc: [
+      {q:"Look! The children ______ in the pool.",opts:["swim","swims","are swimming","swimming"],ans:2,exp:"Look! 提示现在进行时，结构为 be + doing。主语 The children 是复数，用 are swimming。"},
+      {q:"My father ______ to work by car every day.",opts:["go","goes","is going","going"],ans:1,exp:"every day 是一般现在时标志词。主语 My father 是第三人称单数，动词用 goes。"},
+      {q:"— What ______ you doing now? — I'm reading a book.",opts:["do","does","are","is"],ans:2,exp:"now 提示现在进行时，疑问句结构为 Be + 主语 + doing？主语 you 搭配 are。"},
+      {q:"She usually ______ her homework after dinner.",opts:["do","does","is doing","doing"],ans:1,exp:"usually 是一般现在时标志词。主语 She 是第三人称单数，do 的三单形式是 does。"},
+      {q:"Listen! Someone ______ at the door.",opts:["knock","knocks","is knocking","knocked"],ans:2,exp:"Listen! 提示现在进行时，表示此刻正在发生的动作。Someone 是单数，用 is knocking。"},
+      {q:"Tom ______ like playing computer games.",opts:["don't","doesn't","isn't","aren't"],ans:1,exp:"一般现在时否定句，主语 Tom 是第三人称单数，用 doesn't + 动词原形。"},
+      {q:"We ______ watching a movie at the moment.",opts:["is","are","do","does"],ans:1,exp:"at the moment 提示现在进行时。主语 We 搭配 are。"},
+      {q:"The earth ______ around the sun.",opts:["move","moves","is moving","moved"],ans:1,exp:"客观事实用一般现在时。The earth 是第三人称单数，用 moves。"},
+      {q:"— ______ your sister ______ English every morning? — Yes, she does.",opts:["Does; read","Is; reading","Do; read","Is; read"],ans:0,exp:"every morning 是一般现在时。主语 your sister 是三单，疑问句用 Does + 主语 + 动词原形。"},
+      {q:"Be quiet! The baby ______.",opts:["sleep","sleeps","is sleeping","sleeping"],ans:2,exp:"Be quiet! 暗示此刻正在发生的事，用现在进行时。The baby 是单数，用 is sleeping。"},
+      {q:"I ______ not interested in playing the piano.",opts:["do","does","am","is"],ans:2,exp:"be interested in 是固定搭配。主语 I 搭配 am。"},
+      {q:"My mother ______ dinner in the kitchen now.",opts:["cook","cooks","is cooking","cooking"],ans:2,exp:"now 提示现在进行时。主语 My mother 是单数，用 is cooking。"},
+      {q:"He ______ his teeth every morning and every night.",opts:["brush","brushes","is brushing","brushed"],ans:1,exp:"every morning and every night 是一般现在时标志。主语 He 是三单，brush 以 sh 结尾加 -es。"},
+      {q:"______ they playing football on the playground today?",opts:["Do","Does","Are","Is"],ans:2,exp:"today 在此表示现阶段正在做的事，用现在进行时。主语 they 搭配 Are。"},
+      {q:"Water ______ at 100 degrees Celsius.",opts:["boil","boils","is boiling","boiled"],ans:1,exp:"科学事实/客观真理用一般现在时。Water 是不可数名词（三单），用 boils。"}
+    ], fill: [
+      {q:"She ______ (go) to school by bus every day.",ans:"goes",exp:"every day 是一般现在时标志，主语 She 是三单，go 加 -es。"},
+      {q:"Look! The cat ______ (sleep) on the sofa.",ans:"is sleeping",exp:"Look! 提示现在进行时，主语 The cat 是单数，用 is sleeping。"},
+      {q:"My brother ______ (not like) vegetables.",ans:"doesn't like",exp:"一般现在时否定句，主语 My brother 是三单，用 doesn't + 动词原形。"},
+      {q:"They ______ (play) basketball on the playground at the moment.",ans:"are playing",exp:"at the moment 提示现在进行时，主语 They 是复数，用 are playing。"},
+      {q:"______ (do) your father watch TV in the evening?",ans:"Does",exp:"一般现在时疑问句，主语 your father 是三单，用 Does 开头。"},
+      {q:"Listen! The birds ______ (sing) in the tree.",ans:"are singing",exp:"Listen! 提示现在进行时，主语 The birds 是复数，用 are singing。"},
+      {q:"She ______ (study) English every morning.",ans:"studies",exp:"every morning 是一般现在时标志，主语 She 是三单，study 变 y 为 i 加 -es。"},
+      {q:"I ______ (not do) my homework right now.",ans:"am not doing",exp:"right now 提示现在进行时，主语 I 搭配 am not doing。"},
+      {q:"The sun ______ (rise) in the east every day.",ans:"rises",exp:"客观事实用一般现在时，主语 The sun 是三单，用 rises。"},
+      {q:"______ (be) your mother cooking dinner now?",ans:"Is",exp:"now 提示现在进行时疑问句，主语 your mother 是单数，用 Is 开头。"}
+    ], correct: [
+      {wrong:"She go to school every day.",right:"She goes to school every day.",correctWord:"goes",exp:"主语 She 是第三人称单数，一般现在时动词要加 -es，go → goes。"},
+      {wrong:"Look! They plays football on the playground.",right:"Look! They are playing football on the playground.",correctWord:"are playing",exp:"Look! 提示现在进行时，结构为 be + doing。They 搭配 are playing。"},
+      {wrong:"He don't like eating carrots.",right:"He doesn't like eating carrots.",correctWord:"doesn't",exp:"一般现在时否定句，主语 He 是三单，用 doesn't，不能用 don't。"},
+      {wrong:"My sister is watch TV at the moment.",right:"My sister is watching TV at the moment.",correctWord:"watching",exp:"at the moment 提示现在进行时，结构为 is + doing，watch → watching。"},
+      {wrong:"Does she reading a book now?",right:"Is she reading a book now?",correctWord:"Is",exp:"now 提示现在进行时，疑问句用 Is/Are 开头，不是 Does。"}
+    ]},
     "think1_u1_4": { name: "Think1 U1-4词汇(243词)", words: [
       {word:'yourself',pos:'pron.',phonetic:'',meaning:'你自己',phrase:'It\'s great to be busy, but it\'s important to look after yourself and have fun, too.',synonyms:''},
       {word:'ourselves',pos:'pron.',phonetic:'',meaning:'我们自己',phrase:'We all need to think about ourselves and do things we like, whether it is playing an instrument or taking photos.',synonyms:''},
@@ -553,6 +644,50 @@ const MODULE_LIBRARY = {
       {sentence:"The man who is wearing a hat is my uncle.",words:["The","man","who","is","wearing","a","hat","is","my","uncle","."],roles:[0,0,-1,-1,-1,-1,-1,1,2,2,-1],translation:"戴帽子的那个人是我的叔叔。",exp:"主语：The man（那个人）· 定语从句：who is wearing a hat（戴着帽子的，修饰 The man）· 系动词：is（是）· 表语：my uncle（我的叔叔）"},
       {sentence:"I like the book which you gave me.",words:["I","like","the","book","which","you","gave","me","."],roles:[0,1,2,2,-1,-1,-1,-1,-1],translation:"我喜欢你给我的那本书。",exp:"主语：I（我）· 谓语：like（喜欢）· 宾语：the book（这本书）· 定语从句：which you gave me（你给我的，修饰 the book）"}
     ]}
+  },
+  reading: {
+    "icarus_myth": {
+      name: " 伊卡洛斯的神话",
+      text: `One morning on the island of Crete, Icarus and his father Daedalus were in their workshop. Daedalus was an inventor. Suddenly, King Minos arrived and he spoke to Daedalus. 'I'd like you to build me a labyrinth,' he said. 'I want to put that Minotaur inside it.' The Minotaur was a terrible monster. He had the head of a bull and the body of a man.
+
+King Minos was pleased when he saw Daedalus's work. He put the Minotaur inside the labyrinth. Then he locked Daedalus and Icarus inside a tower. 'What are you doing?' said Daedalus. 'Well,' said the King, 'you know the secret of how to get out of the labyrinth. And I don't want anyone else to know it.'
+
+Daedalus and his son felt sad. Days passed, then Daedalus had an idea. He collected feathers from the birds that flew to the window of the tower. Then he made wings with the feathers. He used wax from a candle to stick the feathers together.
+
+Daedalus told Icarus what to do. 'Follow me. Don't go too high because the sun will melt the wax in your wings. Don't go too low because the sea will make the feathers in your wings wet. Are you ready? Go!' Daedalus and Icarus jumped out of the window. They flew away from the island, and away from King Minos.
+
+Daedalus flew in front, Icarus followed behind. Icarus loved flying. He was just like a bird! He forgot his father's words and he flew higher and higher. But as he got nearer to the sun, the wax between the feathers began to melt.
+
+When Daedalus looked behind him, he couldn't see his son. 'Icarus!' he shouted. 'Icarus! Where are you?' Daedalus looked down. There were feathers in the sea. Daedalus went to the nearest island. He sat and looked at the sea for a long time, and he felt sad for his son. That island is now called Icaria, and the sea around it is called the Icarian Sea.`,
+      vocabulary: [
+        {word:"inventor",pos:"n.",meaning:"发明家"},
+        {word:"labyrinth",pos:"n.",meaning:"迷宫"},
+        {word:"monster",pos:"n.",meaning:"怪物"},
+        {word:"secret",pos:"n.",meaning:"秘密"},
+        {word:"feather",pos:"n.",meaning:"羽毛"},
+        {word:"wax",pos:"n.",meaning:"蜡"},
+        {word:"melt",pos:"v.",meaning:"融化"},
+        {word:"collect",pos:"v.",meaning:"收集"}
+      ],
+      sentenceAnalysis: [
+        {sentence:"One morning on the island of Crete, Icarus and his father Daedalus were in their workshop.",words:["One","morning","on","the","island","of","Crete","Icarus","and","his","father","Daedalus","were","in","their","workshop","."],roles:[-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,1,2,2,2,-1],translation:"一天早上，在克里特岛上，伊卡洛斯和他的父亲代达罗斯在他们的工作室里。",exp:"时间状语：One morning（一天早上）· 地点状语：on the island of Crete（在克里特岛上）· 主语：Icarus and his father Daedalus（伊卡洛斯和他的父亲代达罗斯）· 系动词：were（在）· 表语：in their workshop（在他们的工作室里）"},
+        {sentence:"The Minotaur was a terrible monster.",words:["The","Minotaur","was","a","terrible","monster","."],roles:[0,0,1,2,2,2,-1],translation:"米诺陶是一个可怕的怪物。",exp:"主语：The Minotaur（米诺陶）· 系动词：was（是）· 表语：a terrible monster（一个可怕的怪物）"},
+        {sentence:"King Minos was pleased when he saw Daedalus's work.",words:["King","Minos","was","pleased","when","he","saw","Daedalus's","work","."],roles:[0,0,1,2,-1,-1,-1,-1,-1,-1],translation:"当米诺斯国王看到代达罗斯的作品时，他很高兴。",exp:"主语：King Minos（米诺斯国王）· 系动词：was（是）· 表语：pleased（高兴的）· 时间状语从句：when he saw Daedalus's work（当他看到代达罗斯的作品时）"},
+        {sentence:"Then he locked Daedalus and Icarus inside a tower.",words:["Then","he","locked","Daedalus","and","Icarus","inside","a","tower","."],roles:[-1,0,1,2,2,2,-1,-1,-1,-1],translation:"然后他把代达罗斯和伊卡洛斯锁在塔里。",exp:"状语：Then（然后）· 主语：he（他）· 谓语：locked（锁）· 宾语：Daedalus and Icarus（代达罗斯和伊卡洛斯）· 地点状语：inside a tower（在塔里）"},
+        {sentence:"He collected feathers from the birds that flew to the window of the tower.",words:["He","collected","feathers","from","the","birds","that","flew","to","the","window","of","the","tower","."],roles:[0,1,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],translation:"他收集了飞到塔窗口的鸟的羽毛。",exp:"主语：He（他）· 谓语：collected（收集）· 宾语：feathers（羽毛）· 状语：from the birds（从鸟身上）· 定语从句：that flew to the window of the tower（飞到塔窗口的，修饰 birds）"},
+        {sentence:"He used wax from a candle to stick the feathers together.",words:["He","used","wax","from","a","candle","to","stick","the","feathers","together","."],roles:[0,1,2,-1,-1,-1,-1,-1,-1,-1,-1,-1],translation:"他用蜡烛的蜡把羽毛粘在一起。",exp:"主语：He（他）· 谓语：used（使用）· 宾语：wax（蜡）· 状语：from a candle（从蜡烛上）· 目的状语：to stick the feathers together（把羽毛粘在一起）"},
+        {sentence:"Don't go too high because the sun will melt the wax in your wings.",words:["Don't","go","too","high","because","the","sun","will","melt","the","wax","in","your","wings","."],roles:[-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],translation:"不要飞得太高，因为太阳会融化你翅膀上的蜡。",exp:"否定祈使句：Don't go too high（不要飞得太高）· 原因状语从句：because the sun will melt the wax in your wings（因为太阳会融化你翅膀上的蜡）"},
+        {sentence:"Don't go too low because the sea will make the feathers in your wings wet.",words:["Don't","go","too","low","because","the","sea","will","make","the","feathers","in","your","wings","wet","."],roles:[-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],translation:"不要飞得太低，因为海水会弄湿你翅膀上的羽毛。",exp:"否定祈使句：Don't go too low（不要飞得太低）· 原因状语从句：because the sea will make the feathers in your wings wet（因为海水会弄湿你翅膀上的羽毛）"},
+        {sentence:"But as he got nearer to the sun, the wax between the feathers began to melt.",words:["But","as","he","got","nearer","to","the","sun","the","wax","between","the","feathers","began","to","melt","."],roles:[-1,-1,-1,-1,-1,-1,-1,-1,0,0,-1,-1,-1,1,2,2,-1],translation:"但是当他离太阳越来越近时，羽毛之间的蜡开始融化。",exp:"转折连词：But（但是）· 时间状语从句：as he got nearer to the sun（当他离太阳越来越近时）· 主语：the wax between the feathers（羽毛之间的蜡）· 谓语：began to melt（开始融化）"},
+        {sentence:"He sat and looked at the sea for a long time, and he felt sad for his son.",words:["He","sat","and","looked","at","the","sea","for","a","long","time","and","he","felt","sad","for","his","son","."],roles:[0,1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,2,-1,-1,-1,-1],translation:"他坐着看了大海很久，他为他的儿子感到悲伤。",exp:"主语：He（他）· 谓语1：sat and looked at the sea（坐着看大海）· 状语：for a long time（很久）· 并列句：and he felt sad for his son（他为他的儿子感到悲伤）"}
+      ],
+      mc: [
+        {q:"Why did King Minos lock Daedalus and Icarus in the tower?",opts:["A. Because they were bad people.","B. Because Daedalus knew the secret of the labyrinth.","C. Because the King wanted to punish them.","D. Because the tower was their home."],ans:1,exp:"国王说：'你知道如何走出迷宫的秘密，我不想让其他人知道。'所以他把他们锁在塔里。"},
+        {q:"What did Daedalus use to make the wings?",opts:["A. Paper and glue.","B. Wood and nails.","C. Feathers and wax.","D. Cloth and thread."],ans:2,exp:"文中提到：'He collected feathers from the birds... He used wax from a candle to stick the feathers together.'他用羽毛和蜡制作了翅膀。"},
+        {q:"What did Daedalus warn Icarus NOT to do?",opts:["A. Not to fly too fast or too slow.","B. Not to fly too high or too low.","C. Not to fly during the night.","D. Not to fly over the sea."],ans:1,exp:"代达罗斯警告儿子：'Don't go too high because the sun will melt the wax... Don't go too low because the sea will make the feathers wet.'不要飞得太高或太低。"},
+        {q:"What happened to Icarus in the end?",opts:["A. He flew safely to another island.","B. He landed on the nearest island.","C. The wax melted and he fell into the sea.","D. He flew back to the tower."],ans:2,exp:"文中描述：'as he got nearer to the sun, the wax between the feathers began to melt.'蜡融化后他坠入海中。"}
+      ]
+    }
   }
 };
 
@@ -662,14 +797,36 @@ async function getContent() {
     }
   }
   // 默认内容（无推送时使用）
+  const grammarModuleKeys = currentUser && STUDENT_GRADES[currentUser.name] === 'high'
+    ? ['pronoun_basic', 'present_simple_continuous']
+    : ['pronoun_basic', 'present_simple_continuous'];
+  const grammarModules = grammarModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.grammar[k]?.name || k, icon: k === 'pronoun_basic' ? '👤' : '⏰'}));
+  const grammarModuleData = {};
+  grammarModuleKeys.forEach(k => {
+    const mod = MODULE_LIBRARY.grammar[k];
+    if (mod) grammarModuleData[k] = {review: mod.review || '', mc: mod.mc || [], fill: mod.fill || [], correct: mod.correct || []};
+  });
+
+  const readingModuleKeys = ['icarus_myth'];
+  const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
+  const readingModuleData = {};
+  readingModuleKeys.forEach(k => {
+    const mod = MODULE_LIBRARY.reading[k];
+    if (mod) readingModuleData[k] = {text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+  });
+
   return {
     vocabulary: await getDefaultVocabularyWords(),
+    grammarModules,
+    grammarModuleData,
+    readingModules,
+    readingModuleData,
     grammarMC: getDefaultGrammarMC(),
     grammarFill: contentData.grammarFill,
     grammarCorrect: getDefaultGrammarCorrect(),
     grammarReview: getDefaultGrammarReview(),
     sentenceAnalysis: getDefaultSentenceAnalysis(),
-    irregularVerbs: contentData.irregularVerbs
+    irregularVerbs: currentUser && STUDENT_GRADES[currentUser.name] === 'high' ? contentData.irregularVerbs : contentData.irregularVerbsLow
   };
 }
 
@@ -681,11 +838,18 @@ function getContentFromPush(pushConfig) {
   let grammarReview = '';
   let sentenceAnalysis = [];
 
+  const grammarModuleKeys = pushConfig ? (pushConfig.grammar || []) : [];
+  const grammarModules = grammarModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.grammar[k]?.name || k, icon: k === 'pronoun_basic' ? '👤' : '⏰'}));
+  const grammarModuleData = {};
+  grammarModuleKeys.forEach(k => {
+    const mod = MODULE_LIBRARY.grammar[k];
+    if (mod) grammarModuleData[k] = {review: mod.review || '', mc: mod.mc || [], fill: mod.fill || [], correct: mod.correct || []};
+  });
+
   if (pushConfig) {
     const vocabModules = pushConfig.vocabulary || [];
     words = getWordsFromVocabularyKeysWithDaily(vocabModules);
-    const grammarModules = pushConfig.grammar || [];
-    grammarModules.forEach(modKey => {
+    grammarModuleKeys.forEach(modKey => {
       if (MODULE_LIBRARY.grammar[modKey]) {
         grammarMC = grammarMC.concat(MODULE_LIBRARY.grammar[modKey].mc || []);
         grammarCorrect = grammarCorrect.concat(MODULE_LIBRARY.grammar[modKey].correct || []);
@@ -702,14 +866,26 @@ function getContentFromPush(pushConfig) {
     });
   }
 
+  const readingModuleKeys = pushConfig ? (pushConfig.reading || ['icarus_myth']) : ['icarus_myth'];
+  const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
+  const readingModuleData = {};
+  readingModuleKeys.forEach(k => {
+    const mod = MODULE_LIBRARY.reading[k];
+    if (mod) readingModuleData[k] = {text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+  });
+
   return {
     vocabulary: dedupeWords(words),
+    grammarModules,
+    grammarModuleData,
+    readingModules,
+    readingModuleData,
     grammarMC,
     grammarFill: contentData.grammarFill,
     grammarCorrect,
     grammarReview,
     sentenceAnalysis,
-    irregularVerbs: contentData.irregularVerbs
+    irregularVerbs: currentUser && STUDENT_GRADES[currentUser.name] === 'high' ? contentData.irregularVerbs : contentData.irregularVerbsLow
   };
 }
 
@@ -828,5 +1004,47 @@ const contentData = {
     {word:'wear',meaning:'穿；戴',past:'wore',pp:'worn'},
     {word:'win',meaning:'赢；获胜',past:'won',pp:'won'},
     {word:'write',meaning:'写',past:'wrote',pp:'written'}
+  ],
+  irregularVerbsLow: [
+    {word:'be',meaning:'是',past:'was/were',pp:'been'},
+    {word:'become',meaning:'变成；成为',past:'became',pp:'become'},
+    {word:'begin',meaning:'开始',past:'began',pp:'begun'},
+    {word:'break',meaning:'打破；弄坏',past:'broke',pp:'broken'},
+    {word:'bring',meaning:'带来；拿来',past:'brought',pp:'brought'},
+    {word:'build',meaning:'建造；建筑',past:'built',pp:'built'},
+    {word:'buy',meaning:'买；购买',past:'bought',pp:'bought'},
+    {word:'catch',meaning:'抓住；接住',past:'caught',pp:'caught'},
+    {word:'come',meaning:'来；来到',past:'came',pp:'come'},
+    {word:'cost',meaning:'花费',past:'cost',pp:'cost'},
+    {word:'cut',meaning:'切；割',past:'cut',pp:'cut'},
+    {word:'do',meaning:'做；干',past:'did',pp:'done'},
+    {word:'draw',meaning:'画',past:'drew',pp:'drawn'},
+    {word:'drink',meaning:'喝；饮',past:'drank',pp:'drunk'},
+    {word:'drive',meaning:'驾驶；开车',past:'drove',pp:'driven'},
+    {word:'eat',meaning:'吃',past:'ate',pp:'eaten'},
+    {word:'fall',meaning:'落下；跌倒',past:'fell',pp:'fallen'},
+    {word:'feel',meaning:'感觉；觉得',past:'felt',pp:'felt'},
+    {word:'find',meaning:'找到；发现',past:'found',pp:'found'},
+    {word:'forget',meaning:'忘记；遗忘',past:'forgot',pp:'forgotten'},
+    {word:'get',meaning:'得到；获得',past:'got',pp:'got'},
+    {word:'give',meaning:'给；给予',past:'gave',pp:'given'},
+    {word:'go',meaning:'去；走',past:'went',pp:'gone'},
+    {word:'have',meaning:'有；吃；喝',past:'had',pp:'had'},
+    {word:'hear',meaning:'听见；听到',past:'heard',pp:'heard'},
+    {word:'hit',meaning:'击打',past:'hit',pp:'hit'},
+    {word:'hurt',meaning:'使受伤；伤害',past:'hurt',pp:'hurt'},
+    {word:'keep',meaning:'保持；保留',past:'kept',pp:'kept'},
+    {word:'know',meaning:'知道；了解',past:'knew',pp:'known'},
+    {word:'leave',meaning:'离开；留下',past:'left',pp:'left'},
+    {word:'let',meaning:'让；允许',past:'let',pp:'let'},
+    {word:'lose',meaning:'丢失；失去',past:'lost',pp:'lost'},
+    {word:'make',meaning:'制作；制造',past:'made',pp:'made'},
+    {word:'meet',meaning:'遇见；会面',past:'met',pp:'met'},
+    {word:'pay',meaning:'支付；付钱',past:'paid',pp:'paid'},
+    {word:'put',meaning:'放；安置',past:'put',pp:'put'},
+    {word:'read',meaning:'阅读',past:'read /red/',pp:'read /red/'},
+    {word:'run',meaning:'跑；奔跑',past:'ran',pp:'run'},
+    {word:'say',meaning:'说；讲',past:'said',pp:'said'},
+    {word:'see',meaning:'看见',past:'saw',pp:'seen'}
   ]
 };

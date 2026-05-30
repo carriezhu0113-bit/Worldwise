@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>不规则动词过去式 + 人称代词 测试</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; padding: 40px; color: #333; }
+    .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+    .header h1 { font-size: 24px; margin-bottom: 10px; }
+    .header p { font-size: 14px; color: #666; }
+    .info { display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 16px; }
+    .info span { border-bottom: 1px solid #333; padding: 0 50px 0 10px; }
+    .section-title { font-size: 18px; font-weight: bold; margin: 30px 0 15px; padding: 8px 16px; background: #f0f0f0; border-left: 4px solid #2563eb; }
+    .questions { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 40px; }
+    .q { font-size: 15px; line-height: 2; }
+    .q .blank { display: inline-block; width: 120px; border-bottom: 1px solid #333; margin: 0 5px; }
+    .q .hint { font-size: 13px; color: #888; }
+    .q-grammar { font-size: 15px; line-height: 2.2; margin-bottom: 8px; }
+    .q-grammar .blank { display: inline-block; width: 100px; border-bottom: 1px solid #333; margin: 0 3px; }
+    .q-grammar .opts { font-size: 13px; color: #555; margin-left: 10px; }
+    .footer { margin-top: 40px; text-align: center; font-size: 14px; color: #888; border-top: 1px solid #ddd; padding-top: 15px; }
+    @media print {
+      body { padding: 20px; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="text-align:center;margin-bottom:20px;">
+    <button onclick="window.print()" style="padding:10px 30px;font-size:16px;cursor:pointer;background:#2563eb;color:#fff;border:none;border-radius:8px;">🖨️ 打印</button>
+  </div>
+
+  <div class="header">
+    <h1>� 英语专项测试</h1>
+    <p>不规则动词过去式 + 人称代词</p>
+  </div>
+
+  <div class="info">
+    <div>姓名：<span></span></div>
+    <div>日期：<span></span></div>
+    <div>得分：<span></span> / 45</div>
+  </div>
+
+  <div class="section-title">第一部分：不规则动词过去式填空（25题）</div>
+  <p style="font-size:14px;color:#666;margin-bottom:15px;">根据中文意思和原形动词，写出正确的过去式。</p>
+  <div class="questions" id="verbQuestions"></div>
+
+  <div class="section-title">第二部分：人称代词填空（20题）</div>
+  <p style="font-size:14px;color:#666;margin-bottom:15px;">选择正确的人称代词填入空白处。</p>
+  <div class="questions" id="grammarQuestions"></div>
+
+  <div class="footer">
+    <p>Worldwise English · 动词过去式 + 人称代词专项练习</p>
+  </div>
+
+  <script>
+    const verbs = [
+      {word:'be',meaning:'是'},
+      {word:'become',meaning:'变成；成为'},
+      {word:'begin',meaning:'开始'},
+      {word:'break',meaning:'打破；弄坏'},
+      {word:'bring',meaning:'带来；拿来'},
+      {word:'build',meaning:'建造；建筑'},
+      {word:'buy',meaning:'买；购买'},
+      {word:'catch',meaning:'抓住；接住'},
+      {word:'come',meaning:'来；来到'},
+      {word:'do',meaning:'做；干'},
+      {word:'draw',meaning:'画'},
+      {word:'drink',meaning:'喝；饮'},
+      {word:'drive',meaning:'驾驶；开车'},
+      {word:'eat',meaning:'吃'},
+      {word:'fall',meaning:'落下；跌倒'},
+      {word:'find',meaning:'找到；发现'},
+      {word:'forget',meaning:'忘记；遗忘'},
+      {word:'get',meaning:'得到；获得'},
+      {word:'give',meaning:'给；给予'},
+      {word:'go',meaning:'去；走'},
+      {word:'have',meaning:'有；吃；喝'},
+      {word:'hear',meaning:'听见；听到'},
+      {word:'know',meaning:'知道；了解'},
+      {word:'leave',meaning:'离开；留下'},
+      {word:'make',meaning:'制作；制造'}
+    ];
+
+    const grammar = [
+      {q:"My brother and ______ like playing basketball after school.",opts:["A. I","B. me","C. my","D. mine"]},
+      {q:"Miss White is our new teacher. We all like ______ very much.",opts:["A. she","B. her","C. hers","D. herself"]},
+      {q:"— Is this blue schoolbag yours, Tom? — No, ______ is yellow.",opts:["A. my","B. me","C. mine","D. myself"]},
+      {q:"The twins look the same, but ______ hobbies are quite different.",opts:["A. they","B. them","C. their","D. theirs"]},
+      {q:"Don't worry about the little dog. It can look after ______.",opts:["A. it","B. its","C. itself","D. out"]},
+      {q:"Pass ______ the salt, please. I need it for the soup.",opts:["A. I","B. me","C. my","D. mine"]},
+      {q:"This isn't my coat. ______ is over there on the chair.",opts:["A. Your","B. Yours","C. You","D. Me"]},
+      {q:"Excuse ______, could you tell me the way to the library?",opts:["A. I","B. my","C. me","D. mine"]},
+      {q:"The kids are having a great time in the park. Look at ______!",opts:["A. they","B. them","C. their","D. theirs"]},
+      {q:"That beautiful garden belongs to Mr. and Mrs. Green. It's ______.",opts:["A. they","B. them","C. their","D. theirs"]},
+      {q:"Lily, you should finish the homework by ______. Don't copy others'.",opts:["A. you","B. your","C. yourself","D. yourselves"]},
+      {q:"— Who is knocking at the door? — It's ______, Lucy. Open the door, please.",opts:["A. I","B. me","C. my","D. mine"]},
+      {q:"The bird hurt ______ wing when it flew through the trees.",opts:["A. it","B. its","C. itself","D. it's"]},
+      {q:"Our school is big, but ______ is much bigger than ours.",opts:["A. you","B. your","C. yours","D. we"]},
+      {q:"Help ______ to some fruit, children! There are plenty of apples and bananas.",opts:["A. you","B. your","C. yourself","D. yourselves"]},
+      {q:"My storybook is lost. Can I borrow ______?",opts:["A. you","B. your","C. yours","D. him"]},
+      {q:"Grandma told ______ an exciting story about a brave knight last night.",opts:["A. we","B. us","C. our","D. ours"]},
+      {q:"Tim and Jim are good friends. ______ go to school together every morning.",opts:["A. They","B. Them","C. Their","D. Theirs"]},
+      {q:"I can't find my eraser. Can I use ______?",opts:["A. she","B. her","C. hers","D. herself"]},
+      {q:"Let ______ help you carry this heavy box, Grandma.",opts:["A. I","B. me","C. my","D. mine"]}
+    ];
+
+    const verbContainer = document.getElementById('verbQuestions');
+    verbContainer.innerHTML = verbs.map((v, i) => 
+      `<div class="q">
+        <b>${i + 1}.</b> 
+        ${v.word} → <span class="blank"></span>
+        <span class="hint">（${v.meaning}）</span>
+      </div>`
+    ).join('');
+
+    const grammarContainer = document.getElementById('grammarQuestions');
+    grammarContainer.innerHTML = grammar.map((g, i) => 
+      `<div class="q-grammar">
+        <b>${i + 26}.</b> ${g.q.replace('______', '<span class="blank"></span>')}
+        <div class="opts">${g.opts.join('    ')}</div>
+      </div>`
+    ).join('');
+  </script>
+</body>
+</html>

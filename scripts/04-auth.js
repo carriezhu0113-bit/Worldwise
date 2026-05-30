@@ -70,7 +70,7 @@ function switchTab(tab) {
   document.querySelectorAll('#studentTabs .tab').forEach(t => {
     if (t.textContent.includes(getTabLabel(tab))) t.classList.add('active');
   });
-  ['dashboard','flashcards','spelling','grammar','verbs','sentence','errors'].forEach(t => {
+  ['dashboard','flashcards','spelling','grammar','verbs','sentence','reading','errors'].forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
   });
   document.getElementById('tab-'+tab).classList.remove('hidden');
@@ -81,11 +81,12 @@ function switchTab(tab) {
   if (tab === 'grammar') initGrammar();
   if (tab === 'verbs') initVerbs();
   if (tab === 'sentence') initSentenceAnalysis();
+  if (tab === 'reading') initReading();
   if (tab === 'errors') renderErrors();
 }
 
 function getTabLabel(tab) {
-  const map = {dashboard:'首页',flashcards:'闪卡',spelling:'听写',grammar:'语法',verbs:'动词',sentence:'句子分析',errors:'错题'};
+  const map = {dashboard:'首页',flashcards:'闪卡',spelling:'听写',grammar:'语法',verbs:'动词',sentence:'句子分析',reading:'阅读',errors:'错题'};
   return map[tab] || '';
 }
 
