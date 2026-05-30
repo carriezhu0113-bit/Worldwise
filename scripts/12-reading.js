@@ -87,16 +87,24 @@ function renderReadingSA(item) {
 
   let html = `
     <div style="font-size:14px;color:#64748b;margin-bottom:8px">句子结构分析 (${readingSAIndex + 1}/${items.length})</div>
+    <div class="sa-legend">
+      <span><span class="dot" style="background:#3b82f6"></span> 主语</span>
+      <span><span class="dot" style="background:#ef4444"></span> 谓语</span>
+      <span><span class="dot" style="background:#10b981"></span> 宾语</span>
+      <span><span class="dot" style="background:#f59e0b"></span> 状语</span>
+    </div>
     <div class="sa-sentence" id="readingSAWords">
   `;
   item.words.forEach((w, i) => {
     html += `<span class="sa-word" id="rsaw${i}" onclick="toggleReadingSAWord(${i})">${w}</span>`;
   });
   html += `</div>
+    <input type="text" class="fill-input" id="readingSATranslation" placeholder="输入中文翻译" autocomplete="off" style="width:100%;margin:12px 0">
     <div class="sa-roles">
       <button class="sa-role-btn" onclick="markReadingSARole('subject')"> 主语</button>
       <button class="sa-role-btn" onclick="markReadingSARole('predicate')">🔴 谓语</button>
       <button class="sa-role-btn" onclick="markReadingSARole('object')">🟢 宾语</button>
+      <button class="sa-role-btn" onclick="markReadingSARole('adverbial')"> 状语</button>
       <button class="sa-clear-btn" onclick="clearReadingSASelection()">↩ 取消选中</button>
     </div>
     <button class="quiz-submit" onclick="submitReadingSA()">提交答案</button>
@@ -141,16 +149,16 @@ async function submitReadingSA() {
   if (readingSAAnswered) return;
   const items = readingModule.sentenceAnalysis || [];
   const item = items[readingSAIndex];
-  const roleMap = {subject:0, predicate:1, object:2};
+  const roleMap = {subject:0, predicate:1, object:2, adverbial:3};
   const data = await getStudentData(currentUser.name);
   data.testsCompleted = (data.testsCompleted || 0) + 1;
   data.sentenceAnalysisDone = (data.sentenceAnalysisDone || 0) + 1;
 
-  const correctSets = {0:[], 1:[], 2:[]};
-  const userSets = {0:[], 1:[], 2:[]};
+  const correctSets = {0:[], 1:[], 2:[], 3:[]};
+  const userSets = {0:[], 1:[], 2:[], 3:[]};
   item.words.forEach((_, i) => {
     const cr = item.roles[i];
-    if (cr >= 0 && cr <= 2) correctSets[cr].push(i);
+    if (cr >= 0 && cr <= 3) correctSets[cr].push(i);
     const ur = readingSAWordRoles[i];
     if (ur && roleMap[ur] !== undefined) userSets[roleMap[ur]].push(i);
   });
@@ -159,14 +167,16 @@ async function submitReadingSA() {
   const predicateOK = correctSets[1].length === 0 ? userSets[1].length === 0 : userSets[1].some(idx => correctSets[1].includes(idx));
   const hasObject = correctSets[2].length > 0;
   const objectOK = hasObject ? (userSets[2].some(idx => correctSets[2].includes(idx))) : true;
+  const hasAdverbial = correctSets[3].length > 0;
+  const adverbialOK = hasAdverbial ? (userSets[3].some(idx => correctSets[3].includes(idx))) : true;
 
-  const allCorrect = subjectOK && predicateOK && objectOK;
+  const allCorrect = subjectOK && predicateOK && objectOK && adverbialOK;
 
   item.words.forEach((_, i) => {
     const el = document.getElementById('rsaw' + i);
     const ur = readingSAWordRoles[i];
     const cr = item.roles[i];
-    if (cr >= 0 && cr <= 2 && ur && roleMap[ur] === cr) {
+    if (cr >= 0 && cr <= 3 && ur && roleMap[ur] === cr) {
       el.classList.add('role-correct');
     } else if (ur) {
       el.classList.add('role-wrong');
@@ -175,18 +185,20 @@ async function submitReadingSA() {
 
   readingSAAnswered = true;
 
+  const userTrans = document.getElementById('readingSATranslation').value.trim();
+
   if (allCorrect) {
     data.testsCorrect = (data.testsCorrect || 0) + 1;
     data.sentenceAnalysisCorrect = (data.sentenceAnalysisCorrect || 0) + 1;
   } else {
-    await addError({type:'reading_sa',sentence:item.sentence,correctRoles:item.roles,userRoles:readingSAWordRoles,explanation:item.exp}, data);
+    await addError({type:'reading_sa',sentence:item.sentence,correctRoles:item.roles,userRoles:readingSAWordRoles,explanation:item.exp,translation:item.translation,userTranslation:userTrans}, data);
   }
   await saveStudentData(currentUser.name, data);
 
   document.getElementById('readingSAFeedback').innerHTML = `
     <div class="quiz-feedback ${allCorrect?'correct':'wrong'}">${allCorrect?'✅ 正确！':'❌ 有错误，请查看解析'}</div>
     <div style="background:#f0f9ff;padding:12px;border-radius:8px;margin-top:8px;text-align:left;font-size:13px;line-height:1.8">
-      <div><b>翻译：</b>${item.translation}</div>
+      <div><b>参考译文：</b>${item.translation}</div>
       <div style="margin-top:6px"><b>解析：</b>${item.exp}</div>
     </div>
     <button class="quiz-submit" style="margin-top:12px" onclick="readingSAIndex++;renderReading()">下一句</button>

@@ -120,6 +120,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sa-word.role-subject{background:#dbeafe;border-color:#3b82f6;color:#1e40af}
 .sa-word.role-predicate{background:#fee2e2;border-color:#ef4444;color:#991b1b}
 .sa-word.role-object{background:#d1fae5;border-color:#10b981;color:#065f46}
+.sa-word.role-adverbial{background:#fef3c7;border-color:#f59e0b;color:#92400e}
 .sa-word.role-correct{box-shadow:0 0 0 3px rgba(16,185,129,.4)}
 .sa-word.role-wrong{box-shadow:0 0 0 3px rgba(239,68,68,.4)}
 .sa-roles{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0}
@@ -128,6 +129,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sa-role-btn.active-subject{background:#3b82f6;color:#fff;border-color:#3b82f6}
 .sa-role-btn.active-predicate{background:#ef4444;color:#fff;border-color:#ef4444}
 .sa-role-btn.active-object{background:#10b981;color:#fff;border-color:#10b981}
+.sa-role-btn.active-adverbial{background:#f59e0b;color:#fff;border-color:#f59e0b}
 .sa-legend{display:flex;gap:16px;justify-content:center;font-size:12px;color:#64748b;margin-bottom:12px;flex-wrap:wrap}
 .sa-legend span{display:flex;align-items:center;gap:4px}
 .sa-legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
@@ -277,6 +279,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <button class="sa-role-btn" onclick="markRole('subject')">🔵 主语</button>
           <button class="sa-role-btn" onclick="markRole('predicate')">🔴 谓语</button>
           <button class="sa-role-btn" onclick="markRole('object')">🟢 宾语</button>
+          <button class="sa-role-btn" onclick="markRole('adverbial')">🟡 状语</button>
           <button class="sa-clear-btn" onclick="clearSelection()">↩ 取消选中</button>
         </div>
         <div style="margin:12px 0">

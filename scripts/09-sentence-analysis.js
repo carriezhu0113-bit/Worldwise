@@ -84,16 +84,16 @@ function roleHasCorrectHit(userSelected, correctWords) {
 async function submitSentenceAnalysis() {
   if (saAnswered) return;
   const item = saShuffled[saIndex];
-  const roleMap = {subject:0, predicate:1, object:2};
+  const roleMap = {subject:0, predicate:1, object:2, adverbial:3};
   const data = await getStudentData(currentUser.name);
   data.testsCompleted = (data.testsCompleted || 0) + 1;
   data.sentenceAnalysisDone = (data.sentenceAnalysisDone || 0) + 1;
 
-  const correctSets = {0:[], 1:[], 2:[]};
-  const userSets = {0:[], 1:[], 2:[]};
+  const correctSets = {0:[], 1:[], 2:[], 3:[]};
+  const userSets = {0:[], 1:[], 2:[], 3:[]};
   item.words.forEach((_, i) => {
     const cr = item.roles[i];
-    if (cr >= 0 && cr <= 2) correctSets[cr].push(i);
+    if (cr >= 0 && cr <= 3) correctSets[cr].push(i);
     const ur = saWordRoles[i];
     if (ur && roleMap[ur] !== undefined) userSets[roleMap[ur]].push(i);
   });
@@ -102,14 +102,16 @@ async function submitSentenceAnalysis() {
   const predicateOK = roleHasCorrectHit(userSets[1], correctSets[1]);
   const hasObject = correctSets[2].length > 0;
   const objectOK = roleHasCorrectHit(userSets[2], correctSets[2]);
+  const hasAdverbial = correctSets[3].length > 0;
+  const adverbialOK = roleHasCorrectHit(userSets[3], correctSets[3]);
 
-  const allCorrect = subjectOK && predicateOK && objectOK;
+  const allCorrect = subjectOK && predicateOK && objectOK && adverbialOK;
 
   item.words.forEach((_, i) => {
     const el = document.getElementById('saw' + i);
     const ur = saWordRoles[i];
     const cr = item.roles[i];
-    if (cr >= 0 && cr <= 2 && ur && roleMap[ur] === cr) {
+    if (cr >= 0 && cr <= 3 && ur && roleMap[ur] === cr) {
       el.classList.add('role-correct');
     } else if (ur) {
       el.classList.add('role-wrong');
