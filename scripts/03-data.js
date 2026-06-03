@@ -138,15 +138,21 @@ async function saveStudentData(name, data) {
 }
 
 async function getAllStudents() {
+  // 优先从 Supabase 读取（教师端需要看到所有学生的数据）
   let rows = [];
   try {
-    const { data } = await sb.from('students').select('name,data');
-    if (data) rows = data;
+    const { data, error } = await sb.from('students').select('name,data,updated_at');
+    if (error) {
+      console.error('Supabase读取失败:', error.message, error.details);
+    } else if (data) {
+      rows = data;
+      console.log('从 Supabase 读取到', rows.length, '个学生');
+    }
   } catch(e) {
-    console.log('Supabase读取失败，使用本地缓存:', e.message);
+    console.error('Supabase异常:', e.message);
   }
   
-  // 同时读取 localStorage 中的数据
+  // 同时读取 localStorage 中的数据（作为补充）
   const localRows = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -161,7 +167,7 @@ async function getAllStudents() {
     }
   }
   
-  // 合并 Supabase 和 localStorage 数据（优先使用更新的数据）
+  // 合并数据：以 Supabase 为主，localStorage 作为补充
   const mergedMap = new Map();
   
   // 先添加 Supabase 数据
@@ -169,20 +175,18 @@ async function getAllStudents() {
     mergedMap.set(sr.name, {name: sr.name, ...sr.data});
   }
   
-  // 再添加/覆盖 localStorage 数据（本地数据通常更新）
+  // 再添加 localStorage 中独有的数据（Supabase 中没有的）
   for (const lr of localRows) {
-    const existing = mergedMap.get(lr.name);
-    if (!existing) {
-      // 本地独有，直接添加
+    if (!mergedMap.has(lr.name)) {
       mergedMap.set(lr.name, {name: lr.name, ...lr.data});
     } else {
-      // 比较更新时间，使用更新的
-      const localTime = lr.data.lastActive || lr.data.updated_at || '1970';
-      const serverTime = existing.lastActive || existing.updated_at || '1970';
-      if (localTime >= serverTime) {
+      // 如果两边都有，比较更新时间，使用更新的
+      const existing = mergedMap.get(lr.name);
+      const localTime = lr.data.lastActive || '1970';
+      const serverTime = existing.lastActive || '1970';
+      if (localTime > serverTime) {
         mergedMap.set(lr.name, {name: lr.name, ...lr.data});
       }
-      // 否则保留服务器数据
     }
   }
   

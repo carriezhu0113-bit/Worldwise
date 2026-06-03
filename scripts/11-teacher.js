@@ -27,24 +27,11 @@ async function renderTeacherOverview() {
   const totalErrors = students.reduce((s, st) => s + (st.errors ? st.errors.length : 0), 0);
   const avgAcc = totalTests > 0 ? Math.round(totalCorrect / totalTests * 100) : 0;
 
-  // 调试信息：显示数据来源
-  let debugInfo = '';
-  try {
-    const { data: supabaseRows } = await sb.from('students').select('name,data,updated_at');
-    debugInfo = `<div style="margin-top:8px;font-size:11px;color:#94a3b8">Supabase 学生数：${supabaseRows?.length || 0} | 本地学生数：${students.length}</div>`;
-    if (supabaseRows && supabaseRows.length > 0) {
-      debugInfo += `<div style="font-size:11px;color:#94a3b8">Supabase 数据：${supabaseRows.map(r => `${r.name}(${r.updated_at})`).join(', ')}</div>`;
-    }
-  } catch(e) {
-    debugInfo = `<div style="margin-top:8px;font-size:11px;color:#ef4444">Supabase 连接失败：${e.message}</div>`;
-  }
-
   container.innerHTML = `
     <div class="stat-card"><div class="num">${totalStudents}</div><div class="label">学生总数</div></div>
     <div class="stat-card"><div class="num">${totalTests}</div><div class="label">总测试数</div></div>
     <div class="stat-card"><div class="num">${avgAcc}%</div><div class="label">平均正确率</div></div>
     <div class="stat-card"><div class="num">${totalErrors}</div><div class="label">待复习错题</div></div>
-    ${debugInfo}
   `;
 
   const listContainer = document.getElementById('studentList');
