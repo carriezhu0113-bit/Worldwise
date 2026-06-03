@@ -45,15 +45,21 @@ async function renderTeacherOverview() {
     const spAcc = (s.spellingDone||0) > 0 ? Math.round((s.spellingCorrect||0) / s.spellingDone * 100) : 0;
     const grAcc = (s.grammarDone||0) > 0 ? Math.round((s.grammarCorrect||0) / s.grammarDone * 100) : 0;
     const saAcc = (s.sentenceAnalysisDone||0) > 0 ? Math.round((s.sentenceAnalysisCorrect||0) / s.sentenceAnalysisDone * 100) : 0;
+    const rdAcc = (s.readingDone||0) > 0 ? Math.round((s.readingCorrect||0) / s.readingDone * 100) : 0;
+    const vbAcc = (s.verbDone||0) > 0 ? Math.round((s.verbCorrect||0) / s.verbDone * 100) : 0;
     const grWrong = (s.grammarDone||0) - (s.grammarCorrect||0);
     const saWrong = (s.sentenceAnalysisDone||0) - (s.sentenceAnalysisCorrect||0);
     const spWrong = (s.spellingDone||0) - (s.spellingCorrect||0);
     const fcWrong = (s.flashcardDone||0) - (s.flashcardCorrect||0);
+    const rdWrong = (s.readingDone||0) - (s.readingCorrect||0);
+    const vbWrong = (s.verbDone||0) - (s.verbCorrect||0);
+    const lastActive = s.lastActive ? new Date(s.lastActive).toLocaleDateString('zh-CN') : '未知';
     return `<div class="student-row" onclick="showStudentDetail('${s.name}')">
       <div>
         <div class="student-name">👤 ${s.name}</div>
         <div class="student-stats">📖单词${s.wordsLearned||0}词(${wordsPct}%) · ✏️拼写${s.spellingDone||0}次(错${spWrong}) · 📝语法${s.grammarDone||0}次(错${grWrong}) · 🔍句子${s.sentenceAnalysisDone||0}次(错${saWrong})</div>
-        <div class="student-stats" style="margin-top:2px">闪卡${s.flashcardDone||0}次(错${fcWrong}) · 错题${(s.errors||[]).length}道 · 测试${s.testsCompleted||0}次</div>
+        <div class="student-stats" style="margin-top:2px">闪卡${s.flashcardDone||0}次(错${fcWrong}) · 阅读${s.readingDone||0}次(错${rdWrong}) · 动词${s.verbDone||0}次(错${vbWrong}) · 错题${(s.errors||[]).length}道 · 测试${s.testsCompleted||0}次</div>
+        <div class="student-stats" style="margin-top:2px;color:#94a3b8">最后活跃：${lastActive}</div>
         <div class="progress-bar"><div class="fill" style="width:${wordsPct}%"></div></div>
       </div>
       <span style="color:#2563eb">查看 →</span>
@@ -70,6 +76,16 @@ async function showStudentDetail(name) {
   const spAcc = (data.spellingDone||0) > 0 ? Math.round((data.spellingCorrect||0) / data.spellingDone * 100) : 0;
   const grAcc = (data.grammarDone||0) > 0 ? Math.round((data.grammarCorrect||0) / data.grammarDone * 100) : 0;
   const saAcc = (data.sentenceAnalysisDone||0) > 0 ? Math.round((data.sentenceAnalysisCorrect||0) / data.sentenceAnalysisDone * 100) : 0;
+  const rdAcc = (data.readingDone||0) > 0 ? Math.round((data.readingCorrect||0) / data.readingDone * 100) : 0;
+  const vbAcc = (data.verbDone||0) > 0 ? Math.round((data.verbCorrect||0) / data.verbDone * 100) : 0;
+
+  // 计算总学习时长
+  const totalMinutes = (data.sessions || []).reduce((sum, s) => {
+    if (s.endTime) {
+      return sum + Math.round((new Date(s.endTime) - new Date(s.startTime)) / 60000);
+    }
+    return sum;
+  }, 0);
 
   document.getElementById('studentDetail').innerHTML = `
     <h3>👤 ${name} 的学习报告</h3>
@@ -85,7 +101,7 @@ async function showStudentDetail(name) {
         <div style="padding:10px;background:#eff6ff;border-radius:8px">
           <div style="font-weight:600;color:#2563eb">📖 单词闪卡</div>
           <div>练习${data.flashcardDone||0}次 · 正确率 <b>${fcAcc}%</b></div>
-          <div style="font-size:12px;color:#64748b">认识${data.wordsKnown.length}词 · 不认识${data.wordsUnknown.length}词</div>
+          <div style="font-size:12px;color:#64748b">认识${(data.wordsKnown||[]).length}词 · 不认识${(data.wordsUnknown||[]).length}词</div>
         </div>
         <div style="padding:10px;background:#fef3c7;border-radius:8px">
           <div style="font-weight:600;color:#d97706">✏️ 拼写</div>
@@ -99,6 +115,14 @@ async function showStudentDetail(name) {
           <div style="font-weight:600;color:#059669">🔍 句子分析</div>
           <div>练习${data.sentenceAnalysisDone||0}次 · 正确率 <b>${saAcc}%</b></div>
         </div>
+        <div style="padding:10px;background:#f5f3ff;border-radius:8px">
+          <div style="font-weight:600;color:#7c3aed">📚 阅读理解</div>
+          <div>练习${data.readingDone||0}次 · 正确率 <b>${rdAcc}%</b></div>
+        </div>
+        <div style="padding:10px;background:#fdf2f8;border-radius:8px">
+          <div style="font-weight:600;color:#db2777">🔤 动词过去式</div>
+          <div>练习${data.verbDone||0}次 · 正确率 <b>${vbAcc}%</b></div>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -106,6 +130,8 @@ async function showStudentDetail(name) {
       <div class="subtitle">单词学习进度</div>
       <div class="progress-bar"><div class="fill" style="width:${wordsPct}%"></div></div>
       <div style="margin-top:4px;font-size:12px;color:#64748b">${wordsPct}% (${data.wordsLearned||0}/${allWordsFlat.length})</div>
+      <div class="subtitle" style="margin-top:12px">累计学习时长</div>
+      <div style="font-size:14px;color:#475569">${totalMinutes > 60 ? Math.floor(totalMinutes/60) + '小时' : ''}${totalMinutes % 60}分钟</div>
     </div>
     <div class="card">
       <h4>❌ 错题详情 (${(data.errors||[]).length}道)</h4>
@@ -117,6 +143,8 @@ async function showStudentDetail(name) {
           else if (e.type === 'grammar_correct') content = `📝改错题：${e.wrong}<br>学生答案：<span style="color:#ef4444">${e.userAnswer||'（未填）'}</span> · 正确答案：<span style="color:#059669">${e.correct}</span><br><span style="color:#64748b;font-size:12px">${e.explanation||''}</span>`;
           else if (e.type === 'spelling') content = `✏️听写：${e.word}<br>学生答案：<span style="color:#ef4444">${e.userAnswer||'（未填）'}</span>`;
           else if (e.type === 'sentence_analysis') content = `🔍句子分析：${e.sentence}<br>学生翻译：${e.userTranslation||'（未填写）'}<br>参考译文：${e.translation||''}<br><span style="color:#64748b;font-size:12px">${e.explanation||''}</span>`;
+          else if (e.type === 'reading_sa') content = `📚阅读句子分析：${e.sentence}<br>学生翻译：${e.userTranslation||'（未填写）'}<br>参考译文：${e.translation||''}<br><span style="color:#64748b;font-size:12px">${e.explanation||''}</span>`;
+          else if (e.type === 'reading_mc') content = `📚阅读理解：${e.question}<br>学生答案：${String.fromCharCode(65+(e.userAnswer||0))} · 正确答案：${String.fromCharCode(65+e.correct)}<br><span style="color:#64748b;font-size:12px">${e.explanation||''}</span>`;
           return `<div style="padding:10px;background:#fef2f2;border-radius:8px;margin-bottom:8px;font-size:13px;line-height:1.6">${content}</div>`;
         }).join('')
       }
@@ -132,9 +160,11 @@ async function showStudentDetail(name) {
         ${spAcc < 50 && data.spellingDone > 3 ? '⚠️ 拼写正确率偏低，建议增加听写练习。<br>' : ''}
         ${grAcc < 50 && data.grammarDone > 3 ? '⚠️ 语法正确率偏低，建议针对错题类型进行专项讲解。<br>' : ''}
         ${saAcc < 50 && data.sentenceAnalysisDone > 3 ? '⚠️ 句子分析正确率偏低，建议加强句子结构讲解。<br>' : ''}
+        ${rdAcc < 50 && data.readingDone > 3 ? '⚠️ 阅读理解正确率偏低，建议加强阅读训练。<br>' : ''}
+        ${vbAcc < 50 && data.verbDone > 3 ? '⚠️ 动词过去式正确率偏低，建议加强动词记忆训练。<br>' : ''}
         ${(data.errors||[]).length > 10 ? '📌 错题较多，建议安排错题复习课。<br>' : ''}
         ${(data.wordsLearned||0) < 10 ? '📖 单词学习进度较慢，建议增加每日单词学习量。<br>' : ''}
-        ${fcAcc >= 80 && spAcc >= 80 && grAcc >= 80 ? '👍 各模块表现良好，可以加大学习难度。' : ''}
+        ${fcAcc >= 80 && spAcc >= 80 && grAcc >= 80 && saAcc >= 80 ? '👍 各模块表现良好，可以加大学习难度。' : ''}
       </div>
     </div>
     <button class="quiz-submit" onclick="switchTeacherTab('overview');renderTeacherOverview()" style="margin-top:12px">← 返回学生列表</button>

@@ -154,6 +154,15 @@ function submitVerbQuiz() {
     feedback.innerHTML = `<div class="quiz-feedback wrong">❌ 错误！正确答案是：<b>${verbQuizType === 'past' ? v.past : v.pp}</b></div>`;
   }
 
+  // 保存动词学习数据
+  getStudentData(currentUser.name).then(data => {
+    data.verbDone = (data.verbDone || 0) + 1;
+    if (isCorrect) {
+      data.verbCorrect = (data.verbCorrect || 0) + 1;
+    }
+    saveStudentData(currentUser.name, data);
+  });
+
   verbQuizType = verbQuizType === 'past' ? 'pp' : 'past';
 
   setTimeout(() => { verbQuizIndex++; renderVerbs(); }, 2000);

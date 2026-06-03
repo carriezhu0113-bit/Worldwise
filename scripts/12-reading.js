@@ -153,6 +153,7 @@ async function submitReadingSA() {
   const data = await getStudentData(currentUser.name);
   data.testsCompleted = (data.testsCompleted || 0) + 1;
   data.sentenceAnalysisDone = (data.sentenceAnalysisDone || 0) + 1;
+  data.readingDone = (data.readingDone || 0) + 1;
 
   const correctSets = {0:[], 1:[], 2:[], 3:[]};
   const userSets = {0:[], 1:[], 2:[], 3:[]};
@@ -190,6 +191,7 @@ async function submitReadingSA() {
   if (allCorrect) {
     data.testsCorrect = (data.testsCorrect || 0) + 1;
     data.sentenceAnalysisCorrect = (data.sentenceAnalysisCorrect || 0) + 1;
+    data.readingCorrect = (data.readingCorrect || 0) + 1;
   } else {
     await addError({type:'reading_sa',sentence:item.sentence,correctRoles:item.roles,userRoles:readingSAWordRoles,explanation:item.exp,translation:item.translation,userTranslation:userTrans}, data);
   }
@@ -237,6 +239,7 @@ async function submitReadingMC() {
   const correct = item.ans;
   const data = await getStudentData(currentUser.name);
   data.testsCompleted = (data.testsCompleted || 0) + 1;
+  data.readingDone = (data.readingDone || 0) + 1;
 
   document.getElementById('rmcopt'+correct).classList.add('correct');
   if (readingMCSelected !== correct) {
@@ -244,6 +247,7 @@ async function submitReadingMC() {
     await addError({type:'reading_mc',question:item.q,options:item.opts,correct:correct,userAnswer:readingMCSelected,explanation:item.exp}, data);
   } else {
     data.testsCorrect = (data.testsCorrect || 0) + 1;
+    data.readingCorrect = (data.readingCorrect || 0) + 1;
   }
   await saveStudentData(currentUser.name, data);
 
