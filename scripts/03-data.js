@@ -4,7 +4,10 @@ let _cachedStudentData = null;
 let _cachedStudentName = null;
 let _syncQueue = [];
 let _syncing = false;
+let _syncRetryCount = 0;
+const MAX_SYNC_RETRIES = 3;
 
+// 获取学生数据
 async function getStudentData(name) {
   const key = 'eng_app_student_' + name;
 
@@ -19,24 +22,26 @@ async function getStudentData(name) {
     try {
       _cachedStudentData = JSON.parse(cached);
       _cachedStudentName = name;
-      // 立即同步到 Supabase（确保数据不丢失）
-      await syncToSupabase(name, _cachedStudentData);
+      // 后台同步到 Supabase（不阻塞）
+      syncToSupabase(name, _cachedStudentData);
       return _cachedStudentData;
     } catch(e) {
-      console.log('localStorage解析失败:', e.message);
+      console.error('localStorage解析失败:', e.message);
     }
   }
 
   // 最后尝试从 Supabase 读取
   let data = null;
   try {
-    const { data: row } = await sb.from('students').select('data').eq('name', name).maybeSingle();
-    if (row && row.data) {
+    const { data: row, error } = await sb.from('students').select('data').eq('name', name).maybeSingle();
+    if (error) {
+      console.error('Supabase读取失败:', error.message);
+    } else if (row && row.data) {
       data = row.data;
       localStorage.setItem(key, JSON.stringify(data));
     }
   } catch(e) {
-    console.log('Supabase读取失败，使用本地缓存:', e.message);
+    console.error('Supabase异常:', e.message);
   }
 
   if (!data) {
@@ -63,7 +68,11 @@ async function getStudentData(name) {
       lastActive: new Date().toISOString(),
       sessions: []
     };
-    saveStudentData(name, data);
+    // 立即保存到本地和 Supabase
+    localStorage.setItem(key, JSON.stringify(data));
+    _cachedStudentData = data;
+    _cachedStudentName = name;
+    syncToSupabase(name, data);
   }
 
   _cachedStudentData = data;
@@ -74,21 +83,26 @@ async function getStudentData(name) {
 // 同步到 Supabase（带队列和重试）
 async function syncToSupabase(name, data) {
   try {
-    const { error } = await sb.from('students').upsert(
-      { name: name, data: data, updated_at: new Date().toISOString() },
-      { onConflict: 'name' }
-    );
+    const payload = {
+      name: name,
+      data: data,
+      updated_at: new Date().toISOString()
+    };
+    
+    const { error } = await sb.from('students').upsert(payload, { onConflict: 'name' });
+    
     if (error) {
-      console.warn('Supabase同步失败:', name, error.message, error.details);
+      console.warn('Supabase同步失败:', name, error.message);
       // 加入队列稍后重试
-      _syncQueue.push({ name, data, time: Date.now() });
+      _syncQueue.push({ name, data, time: Date.now(), retries: 0 });
       if (!_syncing) processSyncQueue();
     } else {
       console.log('Supabase同步成功:', name);
+      _syncRetryCount = 0;
     }
   } catch(e) {
     console.error('Supabase同步异常:', e.message);
-    _syncQueue.push({ name, data, time: Date.now() });
+    _syncQueue.push({ name, data, time: Date.now(), retries: 0 });
     if (!_syncing) processSyncQueue();
   }
 }
@@ -99,20 +113,32 @@ async function processSyncQueue() {
   _syncing = true;
   
   while (_syncQueue.length > 0) {
-    const item = _syncQueue.shift();
+    const item = _syncQueue[0]; // 查看队首元素
+    
+    if (item.retries >= MAX_SYNC_RETRIES) {
+      console.error('同步重试次数已达上限，放弃:', item.name);
+      _syncQueue.shift(); // 移除失败的项
+      continue;
+    }
+    
     try {
       const { error } = await sb.from('students').upsert(
         { name: item.name, data: item.data, updated_at: new Date().toISOString() },
         { onConflict: 'name' }
       );
+      
       if (error) {
-        // 重试失败，放回队列
-        _syncQueue.unshift(item);
-        await new Promise(r => setTimeout(r, 2000)); // 等待2秒再重试
+        item.retries++;
+        console.warn(`同步重试 ${item.retries}/${MAX_SYNC_RETRIES}:`, item.name, error.message);
+        await new Promise(r => setTimeout(r, 2000 * item.retries)); // 指数退避
+      } else {
+        _syncQueue.shift(); // 成功，移除
+        console.log('队列同步成功:', item.name);
       }
     } catch(e) {
-      _syncQueue.unshift(item);
-      await new Promise(r => setTimeout(r, 2000));
+      item.retries++;
+      console.error(`同步重试异常 ${item.retries}/${MAX_SYNC_RETRIES}:`, e.message);
+      await new Promise(r => setTimeout(r, 2000 * item.retries));
     }
   }
   
@@ -126,24 +152,30 @@ function getAccuracyRate(data) {
   return Math.round(totalCorrect / totalAttempts * 100);
 }
 
+// 保存学生数据（核心方法）
 async function saveStudentData(name, data) {
   const key = 'eng_app_student_' + name;
   data.lastActive = new Date().toISOString();
+  
+  // 1. 立即保存到 localStorage
   localStorage.setItem(key, JSON.stringify(data));
-  // 更新内存缓存
+  
+  // 2. 更新内存缓存
   _cachedStudentData = data;
   _cachedStudentName = name;
-  // 同步到 Supabase（确保数据不丢失）
+  
+  // 3. 同步到 Supabase（等待完成）
   await syncToSupabase(name, data);
 }
 
+// 获取所有学生数据（教师端使用）
 async function getAllStudents() {
-  // 优先从 Supabase 读取（教师端需要看到所有学生的数据）
+  // 1. 从 Supabase 读取所有学生数据
   let rows = [];
   try {
     const { data, error } = await sb.from('students').select('name,data,updated_at');
     if (error) {
-      console.error('Supabase读取失败:', error.message, error.details);
+      console.error('Supabase读取失败:', error.message);
     } else if (data) {
       rows = data;
       console.log('从 Supabase 读取到', rows.length, '个学生');
@@ -152,7 +184,7 @@ async function getAllStudents() {
     console.error('Supabase异常:', e.message);
   }
   
-  // 同时读取 localStorage 中的数据（作为补充）
+  // 2. 同时读取 localStorage 中的数据（作为补充）
   const localRows = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -167,7 +199,7 @@ async function getAllStudents() {
     }
   }
   
-  // 合并数据：以 Supabase 为主，localStorage 作为补充
+  // 3. 合并数据：以 Supabase 为主，localStorage 作为补充
   const mergedMap = new Map();
   
   // 先添加 Supabase 数据
@@ -207,7 +239,8 @@ window.addEventListener('beforeunload', () => {
       headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'resolution=merge-duplicates'
       },
       body: payload,
       keepalive: true
@@ -221,3 +254,10 @@ document.addEventListener('visibilitychange', () => {
     syncToSupabase(_cachedStudentName, _cachedStudentData);
   }
 });
+
+// 定期同步（每30秒）
+setInterval(() => {
+  if (_cachedStudentData && _cachedStudentName) {
+    syncToSupabase(_cachedStudentName, _cachedStudentData);
+  }
+}, 30000);

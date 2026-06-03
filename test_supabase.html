@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Supabase 连接测试</title>
+<style>
+body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+.log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: auto; }
+.success { color: green; }
+.error { color: red; }
+</style>
+</head>
+<body>
+<h1>Supabase 连接测试</h1>
+<button onclick="testConnection()">测试连接</button>
+<button onclick="testWrite()">测试写入</button>
+<button onclick="testRead()">测试读取</button>
+<button onclick="clearLog()">清空日志</button>
+<div class="log" id="log"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://oqcdhkhxodifxhevqusr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_njoQhSyOTW7aTRwteqq24g_Y5l6pkNV';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function log(msg, type = 'info') {
+  const div = document.createElement('div');
+  div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  div.className = type;
+  document.getElementById('log').appendChild(div);
+}
+
+function clearLog() {
+  document.getElementById('log').innerHTML = '';
+}
+
+async function testConnection() {
+  log('测试连接...');
+  try {
+    const { data, error } = await sb.from('students').select('*').limit(1);
+    if (error) {
+      log(`连接失败: ${error.message}`, 'error');
+    } else {
+      log(`连接成功! 表中有 ${data?.length || 0} 条记录`, 'success');
+    }
+  } catch(e) {
+    log(`异常: ${e.message}`, 'error');
+  }
+}
+
+async function testWrite() {
+  const testName = '测试学生_' + Date.now();
+  log(`测试写入数据: ${testName}`);
+  try {
+    const { data, error } = await sb.from('students').upsert({
+      name: testName,
+      data: { testsCompleted: 1, wordsLearned: 5 },
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'name' });
+    if (error) {
+      log(`写入失败: ${error.message}`, 'error');
+    } else {
+      log(`写入成功!`, 'success');
+    }
+  } catch(e) {
+    log(`异常: ${e.message}`, 'error');
+  }
+}
+
+async function testRead() {
+  log('测试读取所有学生数据...');
+  try {
+    const { data, error } = await sb.from('students').select('name,data,updated_at');
+    if (error) {
+      log(`读取失败: ${error.message}`, 'error');
+    } else {
+      log(`读取成功! 共 ${data?.length || 0} 个学生`, 'success');
+      if (data && data.length > 0) {
+        data.forEach(s => {
+          log(`  - ${s.name}: ${JSON.stringify(s.data).substring(0, 100)}... (更新于 ${s.updated_at})`);
+        });
+      }
+    }
+  } catch(e) {
+    log(`异常: ${e.message}`, 'error');
+  }
+}
+</script>
+</body>
+</html>
