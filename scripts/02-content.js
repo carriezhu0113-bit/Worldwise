@@ -619,6 +619,112 @@ const MODULE_LIBRARY = {
     ]},
     "think1_u1_4_daily": { name: "📅 Think1 U1-4每日40词(按顺序推送)", words: [] }
   },
+  grammar: {
+    "prepositional_phrases": { name: "介词短语(形容词+介词)", review: `
+<div style="text-align:left;line-height:1.8">
+<h3 style="text-align:center;color:#2563eb;margin-bottom:16px">📚 介词短语复习</h3>
+
+<div style="background:#fefce8;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#854d0e;margin-bottom:8px">📐 核心句型结构</h4>
+<div style="background:#fef9c3;padding:12px;border-radius:8px;text-align:center;font-size:18px;font-weight:bold;margin-bottom:12px">
+主语 + be + 形容词 + 介词 + 名词
+</div>
+<p><b>例句：</b></p>
+<p>• She <b>is</b> good <b>at</b> maths.（她擅长数学。）</p>
+<p>• He <b>is</b> afraid <b>of</b> dogs.（他害怕狗。）</p>
+<p>• I <b>am</b> interested <b>in</b> sport.（我对运动感兴趣。）</p>
+<div style="background:#fee2e2;padding:12px;border-radius:8px;margin-top:12px">
+<p style="font-weight:bold;color:#991b1b;margin:0">⚠️ 重要规则：介词后面只能接名词（或名词短语）</p>
+<p style="margin:6px 0 0">✅ good at <b>maths</b>（名词）</p>
+<p style="margin:4px 0 0">✅ good at <b>playing</b> games（动名词，本质是名词）</p>
+<p style="margin:4px 0 0">❌ good at <b>play</b> games（动词原形，错误）</p>
+</div>
+</div>
+
+<div style="background:#eff6ff;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#1e40af;margin-bottom:8px">📌 形容词 + 介词 固定搭配</h4>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<tr style="background:#dbeafe"><th style="padding:8px;border:1px solid #93c5fd">搭配</th><th style="padding:8px;border:1px solid #93c5fd">中文意思</th><th style="padding:8px;border:1px solid #93c5fd">例句</th></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>afraid of</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">害怕...</td><td style="padding:6px;border:1px solid #e5e7eb">He's afraid <b>of</b> dogs.（他害怕狗。）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>angry with</b> somebody</td><td style="padding:6px;border:1px solid #e5e7eb">生某人的气</td><td style="padding:6px;border:1px solid #e5e7eb">Why are you angry <b>with</b> me?（你为什么生我的气？）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>angry about</b> something</td><td style="padding:6px;border:1px solid #e5e7eb">对某事生气</td><td style="padding:6px;border:1px solid #e5e7eb">Are you angry <b>about</b> last night?（你对昨晚的事生气吗？）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>different from/to</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">与...不同</td><td style="padding:6px;border:1px solid #e5e7eb">Lisa is very different <b>from</b> her sister.（Lisa和她姐姐很不一样。）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>fed up with</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">对...感到厌烦</td><td style="padding:6px;border:1px solid #e5e7eb">I'm fed up <b>with</b> my job.（我对我的工作厌烦了。）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>full of</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">充满...</td><td style="padding:6px;border:1px solid #e5e7eb">The room was full <b>of</b> people.（房间里挤满了人。）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>good at</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">擅长...</td><td style="padding:6px;border:1px solid #e5e7eb">Are you good <b>at</b> maths?（你擅长数学吗？）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>interested in</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">对...感兴趣</td><td style="padding:6px;border:1px solid #e5e7eb">I'm not interested <b>in</b> sport.（我对运动不感兴趣。）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>married to</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">和...结婚</td><td style="padding:6px;border:1px solid #e5e7eb">Sue is married <b>to</b> a dentist.（Sue嫁给了一位牙医。）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>nice/kind of</b> sb <b>to</b> ...</td><td style="padding:6px;border:1px solid #e5e7eb">某人真好，做了...</td><td style="padding:6px;border:1px solid #e5e7eb">It was kind <b>of</b> you <b>to</b> help us.（你真好，帮助了我们。）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>be nice/kind to</b> somebody</td><td style="padding:6px;border:1px solid #e5e7eb">对某人友好</td><td style="padding:6px;border:1px solid #e5e7eb">He's always very nice <b>to</b> me.（他总是对我很好。）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>sorry about</b> a situation</td><td style="padding:6px;border:1px solid #e5e7eb">对某情况感到抱歉</td><td style="padding:6px;border:1px solid #e5e7eb">I'm sorry <b>about</b> that.（对此我很抱歉。）</td></tr>
+<tr><td style="padding:6px;border:1px solid #e5e7eb"><b>sorry for/about</b> doing</td><td style="padding:6px;border:1px solid #e5e7eb">为做了某事道歉</td><td style="padding:6px;border:1px solid #e5e7eb">I'm sorry <b>for</b> not phoning you.（我很抱歉没给你打电话。）</td></tr>
+<tr style="background:#f9fafb"><td style="padding:6px;border:1px solid #e5e7eb"><b>be/feel sorry for</b> sb</td><td style="padding:6px;border:1px solid #e5e7eb">为某人感到难过/同情</td><td style="padding:6px;border:1px solid #e5e7eb">I feel sorry <b>for</b> them.（我为他们感到难过。）</td></tr>
+</table>
+</div>
+
+<div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#166534;margin-bottom:8px">📌 介词 + -ing 形式</h4>
+<p>介词（of/at/for 等）后面的动词要用 <b>-ing</b> 形式：</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">I'm not very good <b>at telling</b> stories.</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">Are you fed up <b>with doing</b> the same thing every day?</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">I'm sorry <b>for not phoning</b> you yesterday.</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">Thank you <b>for helping</b> me.</p>
+<p style="background:#dcfce7;padding:8px;border-radius:8px;margin:6px 0">Tom left <b>without saying</b> goodbye.</p>
+</div>
+
+<div style="background:#fefce8;border-radius:12px;padding:16px;margin-bottom:16px">
+<h4 style="color:#854d0e;margin-bottom:8px">🌟 核心口诀</h4>
+<p><b>1. 形容词 + 介词 = 固定搭配，不能随便换</b></p>
+<p>• afraid <b>of</b>（怕...）≠ afraid <b>with</b> ❌</p>
+<p>• good <b>at</b>（擅长）≠ good <b>in</b> ❌</p>
+<p>• interested <b>in</b>（对...感兴趣）≠ interested <b>at</b> ❌</p>
+
+<p style="margin-top:12px"><b>2. 介词后面跟动词 → 必须加 -ing</b></p>
+<p>• good at <b>telling</b> ✅ / good at <b>tell</b> ❌</p>
+<p>• sorry for <b>not phoning</b> ✅ / sorry for <b>not phone</b> ❌</p>
+
+<p style="margin-top:12px"><b>3. 易混淆搭配</b></p>
+<p>• angry <b>with</b> 人 / angry <b>about</b> 事</p>
+<p>• sorry <b>about</b> 情况 / sorry <b>for</b> 做了某事 / sorry <b>for</b> 某人</p>
+<p>• kind <b>of</b> you <b>to</b> do（你真好，做了...）/ kind <b>to</b> somebody（对某人友好）</p>
+</div>
+
+<p style="text-align:center;color:#6b7280;font-size:14px">复习好了吗？点击下面的按钮开始通关测试吧！</p>
+</div>`, mc: [
+      {q:"She's very good ______ languages.",opts:["in","at","on","for"],ans:1,exp:"good at 是固定搭配，表示'擅长'。"},
+      {q:"I'm not interested ______ sport.",opts:["at","on","in","for"],ans:2,exp:"interested in 是固定搭配，表示'对...感兴趣'。"},
+      {q:"He's afraid ______ dogs.",opts:["with","about","in","of"],ans:3,exp:"afraid of 是固定搭配，表示'害怕...'。"},
+      {q:"Sue is married ______ a dentist.",opts:["with","to","for","at"],ans:1,exp:"married to 是固定搭配，表示'和...结婚'。"},
+      {q:"I'm fed up ______ my job.",opts:["of","about","with","for"],ans:2,exp:"fed up with 是固定搭配，表示'对...感到厌烦'。"},
+      {q:"The room was full ______ people.",opts:["with","of","in","by"],ans:1,exp:"full of 是固定搭配，表示'充满...'。"},
+      {q:"Lisa is very different ______ her sister.",opts:["to","with","at","from"],ans:3,exp:"different from 是固定搭配，表示'与...不同'。"},
+      {q:"It was kind ______ you to help us.",opts:["to","for","of","with"],ans:2,exp:"It was kind of you to... 是固定句型，表示'你真好，做了...'。"},
+      {q:"He's always very nice ______ me.",opts:["of","for","about","to"],ans:3,exp:"be nice to somebody 是固定搭配，表示'对某人友好'。"},
+      {q:"I feel sorry ______ them. They are in a difficult situation.",opts:["about","for","of","with"],ans:1,exp:"feel sorry for somebody 表示'为某人感到难过/同情'。"},
+      {q:"I'm sorry ______ not phoning you yesterday.",opts:["about","of","with","for"],ans:3,exp:"sorry for doing something 表示'为做了某事道歉'。"},
+      {q:"Why are you angry ______ me? What have I done?",opts:["about","for","with","of"],ans:2,exp:"angry with somebody 表示'生某人的气'。"},
+      {q:"Are you angry ______ last night?",opts:["with","for","about","of"],ans:2,exp:"angry about something 表示'对某事生气'。"},
+      {q:"I'm sorry ______ that. I can't help you.",opts:["for","about","with","of"],ans:1,exp:"sorry about a situation 表示'对某个情况感到抱歉'。"},
+      {q:"I'm not very good ______ stories.",opts:["in","for","at","on"],ans:2,exp:"good at 是固定搭配。后面跟动词要用 -ing 形式：good at telling stories。"},
+      {q:"Thank you ______ helping me.",opts:["of","for","about","with"],ans:1,exp:"Thank you for doing something 是固定搭配，表示'谢谢你做了...'。"},
+      {q:"Tom left without ______ goodbye.",opts:["say","says","saying","said"],ans:2,exp:"without 是介词，后面跟动词要用 -ing 形式。"},
+      {q:"Are you fed up with ______ the same thing every day?",opts:["do","does","doing","did"],ans:2,exp:"with 是介词，后面跟动词要用 -ing 形式。"},
+      {q:"Mark is thinking of ______ a new car.",opts:["buy","buys","buying","bought"],ans:2,exp:"of 是介词，后面跟动词要用 -ing 形式。"},
+      {q:"She's interested ______ in the cinema.",opts:["go","goes","going","went"],ans:2,exp:"interested in 后面跟动词要用 -ing 形式。"}
+    ], fill: [
+      {q:"He's afraid ___ dogs.",ans:"of",exp:"afraid of 是固定搭配。"},
+      {q:"She's very good ___ maths.",ans:"at",exp:"good at 是固定搭配。"},
+      {q:"I'm not interested ___ sport.",ans:"in",exp:"interested in 是固定搭配。"},
+      {q:"Sue is married ___ a dentist.",ans:"to",exp:"married to 是固定搭配。"},
+      {q:"I'm fed up ___ my job.",ans:"with",exp:"fed up with 是固定搭配。"}
+    ], correct: [
+      {wrong:"He's afraid with dogs.",right:"He's afraid of dogs.",correctWord:"of",exp:"afraid 后面跟 of，不是 with。"},
+      {wrong:"She's very good in languages.",right:"She's very good at languages.",correctWord:"at",exp:"good 后面跟 at，不是 in。"},
+      {wrong:"I'm not interested at sport.",right:"I'm not interested in sport.",correctWord:"in",exp:"interested 后面跟 in，不是 at。"},
+      {wrong:"Tom left without say goodbye.",right:"Tom left without saying goodbye.",correctWord:"saying",exp:"without 是介词，后面跟动词要用 -ing 形式。"},
+      {wrong:"I'm sorry for not phone you.",right:"I'm sorry for not phoning you.",correctWord:"phoning",exp:"for 是介词，后面跟动词要用 -ing 形式。"}
+    ]}
+  },
   sentences: {
     "sentence_basic_16": { name: "句子成分分析基础16题", items: [
       {sentence:"The clever boy read an interesting book.",words:["The","clever","boy","read","an","interesting","book","."],roles:[0,0,0,1,2,2,2,-1],translation:"聪明的男孩读了一本有趣的书。",exp:"主语：The clever boy（聪明的男孩）· 谓语：read（读）· 宾语：an interesting book（一本有趣的书）"},
