@@ -987,7 +987,7 @@ function getContentFromPush(pushConfig) {
   let grammarReview = '';
   let sentenceAnalysis = [];
 
-  const grammarModuleKeys = pushConfig ? (pushConfig.grammar || []) : [];
+  let grammarModuleKeys = pushConfig ? (pushConfig.grammar ? [...pushConfig.grammar] : []) : [];
   // 自动补充介词短语模块（确保所有学生都能看到）
   if (!grammarModuleKeys.includes('prepositional_phrases')) {
     grammarModuleKeys.push('prepositional_phrases');
@@ -1019,7 +1019,7 @@ function getContentFromPush(pushConfig) {
     });
   }
 
-  const readingModuleKeys = pushConfig ? (pushConfig.reading || ['icarus_myth', 'don_quixote']) : ['icarus_myth', 'don_quixote'];
+  let readingModuleKeys = pushConfig ? (pushConfig.reading ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote']) : ['icarus_myth', 'don_quixote'];
   // 自动补充堂吉诃德阅读模块（确保所有学生都能看到）
   if (!readingModuleKeys.includes('don_quixote')) {
     readingModuleKeys.push('don_quixote');
