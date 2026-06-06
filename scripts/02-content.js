@@ -988,6 +988,10 @@ function getContentFromPush(pushConfig) {
   let sentenceAnalysis = [];
 
   const grammarModuleKeys = pushConfig ? (pushConfig.grammar || []) : [];
+  // 自动补充介词短语模块（确保所有学生都能看到）
+  if (!grammarModuleKeys.includes('prepositional_phrases')) {
+    grammarModuleKeys.push('prepositional_phrases');
+  }
   const grammarModules = grammarModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.grammar[k]?.name || k, icon: k === 'pronoun_basic' ? '👤' : '⏰'}));
   const grammarModuleData = {};
   grammarModuleKeys.forEach(k => {
