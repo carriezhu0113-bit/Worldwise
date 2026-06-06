@@ -26,12 +26,12 @@ const STUDENT_GRADES = {
 const AUTO_PUSH_CONFIGS = {
   low: {
     vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material', 'low_adverbs'],
-    grammar: ['pronoun_basic', 'present_simple_continuous'],
+    grammar: ['pronoun_basic', 'present_simple_continuous', 'prepositional_phrases'],
     sentences: ['sentence_basic_16']
   },
   high: {
     vocabulary: ['think1_u1_4_daily'],
-    grammar: ['pronoun_basic', 'present_simple_continuous'],
+    grammar: ['pronoun_basic', 'present_simple_continuous', 'prepositional_phrases'],
     sentences: ['sentence_basic_16', 'sentence_advanced_4']
   }
 };
@@ -947,8 +947,8 @@ async function getContent() {
   }
   // 默认内容（无推送时使用）
   const grammarModuleKeys = currentUser && STUDENT_GRADES[currentUser.name] === 'high'
-    ? ['pronoun_basic', 'present_simple_continuous']
-    : ['pronoun_basic', 'present_simple_continuous'];
+    ? ['pronoun_basic', 'present_simple_continuous', 'prepositional_phrases']
+    : ['pronoun_basic', 'present_simple_continuous', 'prepositional_phrases'];
   const grammarModules = grammarModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.grammar[k]?.name || k, icon: k === 'pronoun_basic' ? '👤' : '⏰'}));
   const grammarModuleData = {};
   grammarModuleKeys.forEach(k => {
