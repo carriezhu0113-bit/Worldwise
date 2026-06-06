@@ -1020,6 +1020,10 @@ function getContentFromPush(pushConfig) {
   }
 
   const readingModuleKeys = pushConfig ? (pushConfig.reading || ['icarus_myth', 'don_quixote']) : ['icarus_myth', 'don_quixote'];
+  // 自动补充堂吉诃德阅读模块（确保所有学生都能看到）
+  if (!readingModuleKeys.includes('don_quixote')) {
+    readingModuleKeys.push('don_quixote');
+  }
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
