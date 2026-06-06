@@ -53,7 +53,9 @@ function renderReading() {
       <button class="quiz-submit" onclick="readingVocabIndex++;renderReading()">下一个</button>
     `;
   } else if (readingStep === 'text') {
+    const introHtml = readingModule.intro ? `<div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;padding:16px;margin-bottom:16px;line-height:1.8;font-size:14px;color:#555"><div style="font-weight:bold;color:#92400e;margin-bottom:8px">📖 故事介绍</div>${readingModule.intro}</div>` : '';
     container.innerHTML = `
+      ${introHtml}
       <div style="background:#f0f9ff;border-radius:12px;padding:20px;margin-bottom:16px;line-height:1.9;font-size:15px;color:#1e293b">
         ${readingModule.text.split('\n\n').map(p => `<p style="margin-bottom:12px;text-indent:2em">${p}</p>`).join('')}
       </div>

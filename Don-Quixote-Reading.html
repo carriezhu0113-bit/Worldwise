@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don Quixote, Sancho and the Windmills</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Georgia", "Times New Roman", serif; font-size: 16px; line-height: 1.8; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background: #faf9f6; }
+  .page { display: none; }
+  .page.active { display: block; }
+  h1 { text-align: center; font-size: 26px; color: #2d5016; margin-bottom: 20px; }
+  h2 { font-size: 20px; color: #2d5016; margin: 20px 0 12px; border-bottom: 2px solid #a8d5a2; padding-bottom: 8px; }
+  .flashcard { background: white; border: 2px solid #a8d5a2; border-radius: 12px; padding: 20px; margin: 16px 0; cursor: pointer; min-height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; transition: transform 0.3s; }
+  .flashcard:hover { transform: scale(1.02); }
+  .flashcard .front { font-size: 22px; font-weight: bold; color: #2d5016; }
+  .flashcard .back { font-size: 18px; color: #555; display: none; }
+  .flashcard.flipped .front { display: none; }
+  .flashcard.flipped .back { display: block; }
+  .flashcard-hint { text-align: center; color: #888; font-size: 13px; margin-top: 8px; }
+  .article { background: white; border-radius: 12px; padding: 24px; margin: 16px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .article p { margin: 12px 0; text-indent: 2em; }
+  .dialogue { margin: 12px 0; padding-left: 20px; }
+  .dialogue .speaker { font-weight: bold; color: #2d5016; }
+  .stage-direction { font-style: italic; color: #666; margin: 12px 0; }
+  .question { background: white; border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px; margin: 16px 0; }
+  .question p { margin: 8px 0; }
+  .options { margin-left: 20px; }
+  .options label { display: block; margin: 6px 0; cursor: pointer; }
+  .options input[type="radio"] { margin-right: 8px; }
+  .nav { text-align: center; margin: 24px 0; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .nav button { padding: 12px 32px; margin: 0 8px; background: #2d5016; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+  .nav button:hover { background: #1a3a0a; }
+  .nav button:disabled { background: #ccc; cursor: not-allowed; }
+  .page-indicator { margin-top: 12px; color: #666; font-size: 14px; }
+  .check-btn { display: block; margin: 20px auto; padding: 12px 32px; background: #2d5016; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+  .check-btn:hover { background: #1a3a0a; }
+  .result { text-align: center; margin: 16px 0; font-size: 18px; font-weight: bold; }
+  .correct { color: #16a34a; }
+  .incorrect { color: #dc2626; }
+</style>
+</head>
+<body>
+
+<h1>Don Quixote, Sancho and the Windmills</h1>
+
+<!-- Story Introduction -->
+<div style="background: #fef9c3; border: 2px solid #fbbf24; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;">
+  <h3 style="color: #92400e; margin-bottom: 12px;"> 故事介绍</h3>
+  <p style="line-height: 2; color: #555;">《堂吉诃德》是西班牙作家塞万提斯于1605年创作的世界文学名著。故事讲述了一位名叫阿隆索·吉哈诺的乡绅，因为沉迷于骑士小说，幻想自己成为一名骑士，改名"堂吉诃德"，穿上祖传的盔甲，骑着瘦马，带着仆人桑丘，踏上了行侠仗义的冒险之旅。他最著名的"冒险"就是把风车当成巨人去战斗，闹出了许多令人啼笑皆非的故事。这个故事告诉我们：想象很美好，但也要分清现实和幻想。</p>
+</div>
+
+<!-- Page 1: Vocabulary Flashcards -->
+<div class="page active" id="page1">
+  <h2>📚 Vocabulary Flashcards</h2>
+  <p style="text-align: center; color: #666; margin-bottom: 16px;">点击卡片查看中文意思</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">knight</div>
+    <div class="back">骑士（中世纪穿盔甲的战士）</div>
+  </div>
+  <p class="flashcard-hint">例句：He dreamed about becoming a brave knight.</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">armour</div>
+    <div class="back">盔甲（金属制成的防护服装）</div>
+  </div>
+  <p class="flashcard-hint">例句：He put on his grandfather's armour.</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">fantastic</div>
+    <div class="back">极好的；奇异的；了不起的</div>
+  </div>
+  <p class="flashcard-hint">例句：This story is about one of their fantastic adventures.</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">adventure</div>
+    <div class="back">冒险；奇遇</div>
+  </div>
+  <p class="flashcard-hint">例句：Our next great adventure. Can you see them?</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">giant</div>
+    <div class="back">巨人（传说中体型巨大的人）</div>
+  </div>
+  <p class="flashcard-hint">例句：Thirty or forty giants over there.</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">windmill</div>
+    <div class="back">风车（利用风力转动的机器）</div>
+  </div>
+  <p class="flashcard-hint">例句：They're windmills and the arms you can see are their sails.</p>
+
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="front">sail</div>
+    <div class="back">帆（船或风车上用来兜风的布）</div>
+  </div>
+  <p class="flashcard-hint">例句：The arms you can see are their sails blowing in the wind.</p>
+</div>
+
+<!-- Page 2: Article -->
+<div class="page" id="page2">
+  <h2>📖 Reading Passage</h2>
+  
+  <div class="article">
+    <p><strong>Narrator:</strong> A long time ago in Spain in a land called La Mancha, there was a quiet village with a large house. The man who lived in the house was called Alonso Quijano. Alonso read books all day about brave knights. He read so much that sometimes he forgot to eat or sleep. He dreamed about saving women in danger and fighting dragons. One day he decided to become a knight and he changed his name to Don Quixote. He put on his grandfather's armour and he rode his horse Rocinante. He asked his good friend Sancho Panza to join him and he promised to pay him lots of money in return. This story is about one of their fantastic adventures ...</p>
+
+    <div class="dialogue">
+      <p><span class="speaker">Quixote:</span> Look, Sancho! Our next great adventure. Can you see them?</p>
+      <p><span class="speaker">Sancho:</span> What?</p>
+      <p><span class="speaker">Quixote:</span> Thirty or forty giants over there.</p>
+      <p><span class="speaker">Sancho:</span> What giants?</p>
+      <p><span class="speaker">Quixote:</span> Over there! Look how long their arms are. They're moving in all directions.</p>
+      <p><span class="speaker">Sancho:</span> Dear friend. You think they look like giants but they're windmills and the arms you can see are their sails blowing in the wind.</p>
+    </div>
+
+    <div class="dialogue">
+      <p><span class="speaker">Quixote:</span> Be quiet, Sancho! And prepare my horse for me! If you are afraid, you can stay here.</p>
+      <p><span class="speaker">Sancho:</span> No, I'm not afraid. What I mean is ...</p>
+      <p><span class="speaker">Quixote:</span> Let's go, Rocinante.</p>
+    </div>
+
+    <p class="stage-direction">[Don Quixote and his horse ride quickly towards the windmills.]</p>
+
+    <div class="dialogue">
+      <p><span class="speaker">Quixote:</span> Don't run, unkind giants!</p>
+    </div>
+
+    <p class="stage-direction">[The windmill catches Don Quixote and Rocinante and then throws them down.]</p>
+
+    <div class="dialogue">
+      <p><span class="speaker">Sancho:</span> Friend! Are you alright? I told you that ...</p>
+      <p><span class="speaker">Quixote:</span> Be quiet, Sancho! Someone changed the giants into windmills. It's magic!</p>
+      <p><span class="speaker">Sancho:</span> Yes, yes, my friend. Let me help you.</p>
+    </div>
+
+    <p><strong>Narrator:</strong> And they continued on their journey to find their next adventure.</p>
+  </div>
+</div>
+
+<!-- Page 3: Questions -->
+<div class="page" id="page3">
+  <h2>️ Reading Comprehension Questions</h2>
+
+  <div class="question">
+    <p><strong>1.</strong> Why did Alonso Quijano change his name to Don Quixote?</p>
+    <div class="options">
+      <label><input type="radio" name="q1" value="A"> A. Because he wanted to be rich.</label>
+      <label><input type="radio" name="q1" value="B"> B. Because he decided to become a knight.</label>
+      <label><input type="radio" name="q1" value="C"> C. Because his friend told him to.</label>
+      <label><input type="radio" name="q1" value="D"> D. Because he didn't like his old name.</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <p><strong>2.</strong> What did Don Quixote think the windmills were?</p>
+    <div class="options">
+      <label><input type="radio" name="q2" value="A"> A. Houses</label>
+      <label><input type="radio" name="q2" value="B"> B. Trees</label>
+      <label><input type="radio" name="q2" value="C"> C. Giants</label>
+      <label><input type="radio" name="q2" value="D"> D. Dragons</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <p><strong>3.</strong> What did Sancho try to tell Don Quixote?</p>
+    <div class="options">
+      <label><input type="radio" name="q3" value="A"> A. The giants were very dangerous.</label>
+      <label><input type="radio" name="q3" value="B"> B. They were windmills, not giants.</label>
+      <label><input type="radio" name="q3" value="C"> C. He should go home.</label>
+      <label><input type="radio" name="q3" value="D"> D. The horse was tired.</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <p><strong>4.</strong> After the windmill threw Don Quixote down, what did he believe happened?</p>
+    <div class="options">
+      <label><input type="radio" name="q4" value="A"> A. He was very tired and needed to rest.</label>
+      <label><input type="radio" name="q4" value="B"> B. Sancho was right all along.</label>
+      <label><input type="radio" name="q4" value="C"> C. Someone used magic to change the giants into windmills.</label>
+      <label><input type="radio" name="q4" value="D"> D. He wanted to give up his adventure.</label>
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+  <div class="result" id="result"></div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+  <button id="nextBtn" onclick="changePage(1)">Next →</button>
+  <div class="page-indicator" id="pageIndicator">Page 1 of 3</div>
+</div>
+
+<script>
+let currentPage = 1;
+const totalPages = 3;
+
+function changePage(direction) {
+  document.getElementById('page' + currentPage).classList.remove('active');
+  currentPage += direction;
+  document.getElementById('page' + currentPage).classList.add('active');
+  
+  document.getElementById('prevBtn').disabled = (currentPage === 1);
+  document.getElementById('nextBtn').disabled = (currentPage === totalPages);
+  document.getElementById('pageIndicator').textContent = 'Page ' + currentPage + ' of ' + totalPages;
+  
+  window.scrollTo(0, 0);
+}
+
+function checkAnswers() {
+  const answers = { q1: 'B', q2: 'C', q3: 'B', q4: 'C' };
+  let score = 0;
+  let total = Object.keys(answers).length;
+  
+  for (let q in answers) {
+    const selected = document.querySelector('input[name="' + q + '"]:checked');
+    if (selected && selected.value === answers[q]) {
+      score++;
+    }
+  }
+  
+  const resultDiv = document.getElementById('result');
+  if (score === total) {
+    resultDiv.innerHTML = '<span class="correct">🎉 Perfect! ' + score + '/' + total + '</span>';
+  } else {
+    resultDiv.innerHTML = '<span class="incorrect">You got ' + score + '/' + total + '. Try again!</span>';
+  }
+}
+</script>
+
+</body>
+</html>

@@ -793,6 +793,49 @@ When Daedalus looked behind him, he couldn't see his son. 'Icarus!' he shouted. 
         {q:"What did Daedalus warn Icarus NOT to do?",opts:["A. Not to fly too fast or too slow.","B. Not to fly too high or too low.","C. Not to fly during the night.","D. Not to fly over the sea."],ans:1,exp:"代达罗斯警告儿子：'Don't go too high because the sun will melt the wax... Don't go too low because the sea will make the feathers wet.'不要飞得太高或太低。"},
         {q:"What happened to Icarus in the end?",opts:["A. He flew safely to another island.","B. He landed on the nearest island.","C. The wax melted and he fell into the sea.","D. He flew back to the tower."],ans:2,exp:"文中描述：'as he got nearer to the sun, the wax between the feathers began to melt.'蜡融化后他坠入海中。"}
       ]
+    },
+    "don_quixote": {
+      name: " 堂吉诃德大战风车",
+      intro: "《堂吉诃德》是西班牙作家塞万提斯于1605年创作的世界文学名著。故事讲述了一位名叫阿隆索·吉哈诺的乡绅，因为沉迷于骑士小说，幻想自己成为一名骑士，改名'堂吉诃德'，穿上祖传的盔甲，骑着瘦马，带着仆人桑丘，踏上了行侠仗义的冒险之旅。他最著名的'冒险'就是把风车当成巨人去战斗，闹出了许多令人啼笑皆非的故事。",
+      text: `Narrator: A long time ago in Spain in a land called La Mancha, there was a quiet village with a large house. The man who lived in the house was called Alonso Quijano. Alonso read books all day about brave knights. He read so much that sometimes he forgot to eat or sleep. He dreamed about saving women in danger and fighting dragons. One day he decided to become a knight and he changed his name to Don Quixote. He put on his grandfather's armour and he rode his horse Rocinante. He asked his good friend Sancho Panza to join him and he promised to pay him lots of money in return. This story is about one of their fantastic adventures ...
+
+Quixote: Look, Sancho! Our next great adventure. Can you see them?
+Sancho: What?
+Quixote: Thirty or forty giants over there.
+Sancho: What giants?
+Quixote: Over there! Look how long their arms are. They're moving in all directions.
+Sancho: Dear friend. You think they look like giants but they're windmills and the arms you can see are their sails blowing in the wind.
+
+Quixote: Be quiet, Sancho! And prepare my horse for me! If you are afraid, you can stay here.
+Sancho: No, I'm not afraid. What I mean is ...
+Quixote: Let's go, Rocinante.
+
+[Don Quixote and his horse ride quickly towards the windmills.]
+
+Quixote: Don't run, unkind giants!
+
+[The windmill catches Don Quixote and Rocinante and then throws them down.]
+
+Sancho: Friend! Are you alright? I told you that ...
+Quixote: Be quiet, Sancho! Someone changed the giants into windmills. It's magic!
+Sancho: Yes, yes, my friend. Let me help you.
+
+Narrator: And they continued on their journey to find their next adventure.`,
+      vocabulary: [
+        {word:"knight",pos:"n.",meaning:"骑士"},
+        {word:"armour",pos:"n.",meaning:"盔甲"},
+        {word:"fantastic",pos:"adj.",meaning:"极好的；奇异的"},
+        {word:"adventure",pos:"n.",meaning:"冒险；奇遇"},
+        {word:"giant",pos:"n.",meaning:"巨人"},
+        {word:"windmill",pos:"n.",meaning:"风车"},
+        {word:"sail",pos:"n.",meaning:"帆"}
+      ],
+      mc: [
+        {q:"Why did Alonso Quijano change his name to Don Quixote?",opts:["A. Because he wanted to be rich.","B. Because he decided to become a knight.","C. Because his friend told him to.","D. Because he didn't like his old name."],ans:1,exp:"文中提到：'One day he decided to become a knight and he changed his name to Don Quixote.'他决定成为一名骑士，所以改了名字。"},
+        {q:"What did Don Quixote think the windmills were?",opts:["A. Houses","B. Trees","C. Giants","D. Dragons"],ans:2,exp:"堂吉诃德说：'Thirty or forty giants over there.'他把风车当成了巨人。"},
+        {q:"What did Sancho try to tell Don Quixote?",opts:["A. The giants were very dangerous.","B. They were windmills, not giants.","C. He should go home.","D. The horse was tired."],ans:1,exp:"桑丘说：'You think they look like giants but they're windmills.'他试图告诉堂吉德那是风车不是巨人。"},
+        {q:"After the windmill threw Don Quixote down, what did he believe happened?",opts:["A. He was very tired and needed to rest.","B. Sancho was right all along.","C. Someone used magic to change the giants into windmills.","D. He wanted to give up his adventure."],ans:2,exp:"堂吉诃德说：'Someone changed the giants into windmills. It's magic!'他认为是有人用魔法把巨人变成了风车。"}
+      ]
     }
   }
 };
@@ -913,7 +956,7 @@ async function getContent() {
     if (mod) grammarModuleData[k] = {review: mod.review || '', mc: mod.mc || [], fill: mod.fill || [], correct: mod.correct || []};
   });
 
-  const readingModuleKeys = ['icarus_myth'];
+  const readingModuleKeys = ['icarus_myth', 'don_quixote'];
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
@@ -972,7 +1015,7 @@ function getContentFromPush(pushConfig) {
     });
   }
 
-  const readingModuleKeys = pushConfig ? (pushConfig.reading || ['icarus_myth']) : ['icarus_myth'];
+  const readingModuleKeys = pushConfig ? (pushConfig.reading || ['icarus_myth', 'don_quixote']) : ['icarus_myth', 'don_quixote'];
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
