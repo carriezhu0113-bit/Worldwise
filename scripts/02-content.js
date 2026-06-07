@@ -908,13 +908,25 @@ async function getContent() {
   if (currentUser && currentUser.type === 'student') {
     const studentName = currentUser.name;
     
-    // 优先使用缓存
+    // 始终优先从 Supabase 获取最新配置（避免缓存导致看不到新内容）
+    try {
+      const { data } = await sb.from('push_configs').select('push_config').eq('student_name', studentName).single();
+      if (data && data.push_config) {
+        _cachedPushConfig = data.push_config;
+        _cachedPushStudent = studentName;
+        localStorage.setItem('push_config_' + studentName, JSON.stringify(data.push_config));
+        return getContentFromPush(data.push_config);
+      }
+    } catch(e) {
+      // Supabase 查询失败，尝试使用缓存
+    }
+    
+    // 缓存作为备用（网络失败时使用）
     if (_cachedPushStudent === studentName && _cachedPushConfig !== undefined) {
       if (_cachedPushConfig) {
         return getContentFromPush(_cachedPushConfig);
       }
     } else {
-      // 尝试从 localStorage 加载缓存
       const cached = localStorage.getItem('push_config_' + studentName);
       if (cached) {
         try {
@@ -927,23 +939,8 @@ async function getContent() {
       }
     }
     
-    // 从 Supabase 查询（带超时）
-    try {
-      const { data } = await sb.from('push_configs').select('push_config').eq('student_name', studentName).single();
-      if (data && data.push_config) {
-        _cachedPushConfig = data.push_config;
-        _cachedPushStudent = studentName;
-        localStorage.setItem('push_config_' + studentName, JSON.stringify(data.push_config));
-        return getContentFromPush(data.push_config);
-      } else {
-        _cachedPushConfig = null;
-        _cachedPushStudent = studentName;
-      }
-    } catch(e) {
-      // 无推送配置或查询失败，使用默认内容
-      _cachedPushConfig = null;
-      _cachedPushStudent = studentName;
-    }
+    _cachedPushConfig = null;
+    _cachedPushStudent = studentName;
   }
   // 默认内容（无推送时使用）
   const grammarModuleKeys = currentUser && STUDENT_GRADES[currentUser.name] === 'high'
