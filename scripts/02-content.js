@@ -796,7 +796,7 @@ When Daedalus looked behind him, he couldn't see his son. 'Icarus!' he shouted. 
     },
     "don_quixote": {
       name: " 堂吉诃德大战风车",
-      intro: "《堂吉诃德》是西班牙作家塞万提斯于1605年创作的世界文学名著。故事讲述了一位名叫阿隆索·吉哈诺的乡绅，因为沉迷于骑士小说，幻想自己成为一名骑士，改名'堂吉诃德'，穿上祖传的盔甲，骑着瘦马，带着仆人桑丘，踏上了行侠仗义的冒险之旅。他最著名的'冒险'就是把风车当成巨人去战斗，闹出了许多令人啼笑皆非的故事。",
+      intro: `<div style="margin-bottom:12px"><strong>📚 作品信息</strong><br>作者：塞万提斯（Miguel de Cervantes）｜西班牙｜1605年｜世界文学名著</div><div style="margin-bottom:8px"><strong>👤 主要人物</strong><br>• <strong>堂吉诃德</strong>（Don Quixote）—— 沉迷骑士小说的乡绅，幻想自己是骑士<br>• <strong>桑丘</strong>（Sancho Panza）—— 堂吉诃德的忠实仆人<br>• <strong>罗西南特</strong>（Rocinante）—— 堂吉诃德的瘦马</div><div><strong>📖 故事简介</strong><br>一位西班牙乡绅沉迷骑士小说，幻想自己成为骑士，穿上盔甲、骑着瘦马，带着仆人踏上冒险之旅。他最著名的'冒险'就是把风车当成巨人去战斗，闹出许多令人啼笑皆非的故事。</div>`,
       text: `Narrator: A long time ago in Spain in a land called La Mancha, there was a quiet village with a large house. The man who lived in the house was called Alonso Quijano. Alonso read books all day about brave knights. He read so much that sometimes he forgot to eat or sleep. He dreamed about saving women in danger and fighting dragons. One day he decided to become a knight and he changed his name to Don Quixote. He put on his grandfather's armour and he rode his horse Rocinante. He asked his good friend Sancho Panza to join him and he promised to pay him lots of money in return. This story is about one of their fantastic adventures ...
 
 Quixote: Look, Sancho! Our next great adventure. Can you see them?
