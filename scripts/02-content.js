@@ -910,13 +910,51 @@ function getDefaultGrammarReview() {
   return result;
 }
 
+// 后台异步检查推送配置更新（不阻塞页面加载）
+async function checkPushConfigUpdate(studentName) {
+  try {
+    const { data } = await sb.from('push_configs').select('push_config').eq('student_name', studentName).single();
+    if (data && data.push_config) {
+      const currentJson = JSON.stringify(_cachedPushConfig);
+      const newJson = JSON.stringify(data.push_config);
+      if (currentJson !== newJson) {
+        _cachedPushConfig = data.push_config;
+        localStorage.setItem('push_config_' + studentName, JSON.stringify(data.push_config));
+        console.log('推送配置已更新');
+      }
+    }
+  } catch(e) {}
+}
+
 // 获取当前学生应该看到的内容（根据教师推送配置）
 async function getContent() {
   // 如果有学生登录，检查是否有推送配置
   if (currentUser && currentUser.type === 'student') {
     const studentName = currentUser.name;
     
-    // 始终优先从 Supabase 获取最新配置（避免缓存导致看不到新内容）
+    // 优先使用内存缓存或 localStorage 缓存（快速返回，避免等待网络）
+    if (_cachedPushStudent === studentName && _cachedPushConfig !== undefined) {
+      if (_cachedPushConfig) {
+        // 后台异步检查更新（不阻塞）
+        checkPushConfigUpdate(studentName);
+        return getContentFromPush(_cachedPushConfig);
+      }
+    } else {
+      const cached = localStorage.getItem('push_config_' + studentName);
+      if (cached) {
+        try {
+          _cachedPushConfig = JSON.parse(cached);
+          _cachedPushStudent = studentName;
+          // 后台异步检查更新
+          checkPushConfigUpdate(studentName);
+          return getContentFromPush(_cachedPushConfig);
+        } catch(e) {
+          // 缓存损坏，继续
+        }
+      }
+    }
+    
+    // 无缓存时才等待 Supabase 查询
     try {
       const { data } = await sb.from('push_configs').select('push_config').eq('student_name', studentName).single();
       if (data && data.push_config) {
@@ -926,25 +964,7 @@ async function getContent() {
         return getContentFromPush(data.push_config);
       }
     } catch(e) {
-      // Supabase 查询失败，尝试使用缓存
-    }
-    
-    // 缓存作为备用（网络失败时使用）
-    if (_cachedPushStudent === studentName && _cachedPushConfig !== undefined) {
-      if (_cachedPushConfig) {
-        return getContentFromPush(_cachedPushConfig);
-      }
-    } else {
-      const cached = localStorage.getItem('push_config_' + studentName);
-      if (cached) {
-        try {
-          _cachedPushConfig = JSON.parse(cached);
-          _cachedPushStudent = studentName;
-          return getContentFromPush(_cachedPushConfig);
-        } catch(e) {
-          // 缓存损坏，继续
-        }
-      }
+      // 查询失败
     }
     
     _cachedPushConfig = null;
@@ -1024,7 +1044,7 @@ function getContentFromPush(pushConfig) {
     });
   }
 
-  let readingModuleKeys = pushConfig ? (pushConfig.reading ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote']) : ['icarus_myth', 'don_quixote'];
+  let readingModuleKeys = pushConfig && pushConfig.reading && pushConfig.reading.length > 0 ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote'];
   // 自动补充堂吉诃德阅读模块（确保所有学生都能看到）
   if (!readingModuleKeys.includes('don_quixote')) {
     readingModuleKeys.push('don_quixote');
