@@ -9,18 +9,32 @@ let readingSAAnswered = false;
 let readingMCIndex = 0;
 let readingMCSelected = -1;
 let readingMCAnswered = false;
+let readingModules = [];
+let currentReadingModule = '';
 
 async function initReading() {
   const gc = await getContent();
-  const modules = gc.readingModules || [];
-  if (modules.length === 0) {
+  readingModules = gc.readingModules || [];
+  currentReadingModule = readingModules.length > 0 ? readingModules[0].key : '';
+  renderReadingSubTabs();
+  if (currentReadingModule) {
+    loadReadingModule(currentReadingModule);
+  } else {
     document.getElementById('readingContent').innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">暂无阅读内容</div>';
-    return;
   }
-  loadReadingModule(modules[0].key);
+}
+
+function renderReadingSubTabs() {
+  const container = document.getElementById('readingSubTabs');
+  if (!container) return;
+  container.innerHTML = readingModules.map(m =>
+    `<button onclick="loadReadingModule('${m.key}')" style="padding:6px 14px;border:2px solid ${m.key === currentReadingModule ? '#2563eb' : '#e2e8f0'};border-radius:20px;background:${m.key === currentReadingModule ? '#2563eb' : '#fff'};color:${m.key === currentReadingModule ? '#fff' : '#64748b'};cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s">📖 ${m.name}</button>`
+  ).join('');
 }
 
 async function loadReadingModule(key) {
+  currentReadingModule = key;
+  renderReadingSubTabs();
   const gc = await getContent();
   readingModule = gc.readingModuleData[key];
   if (!readingModule) return;
