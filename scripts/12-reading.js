@@ -12,6 +12,16 @@ let readingMCAnswered = false;
 let readingModules = [];
 let currentReadingModule = '';
 
+function speakReadingWord(word) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    speechSynthesis.speak(u);
+  }
+}
+
 async function initReading() {
   const gc = await getContent();
   readingModules = gc.readingModules || [];
@@ -63,9 +73,12 @@ function renderReading() {
         <div style="font-size:36px;font-weight:700;color:#2563eb;margin-bottom:4px">${v.word}</div>
         <div style="font-size:16px;color:#64748b;margin-bottom:12px">${v.pos || ''}</div>
         <div style="font-size:20px;color:#1e293b;margin-bottom:20px">${v.meaning}</div>
+        <button onclick="speakReadingWord('${v.word.replace(/'/g, "\\'")}')" style="background:none;border:none;cursor:pointer;font-size:32px;padding:8px" title="播放发音">🔊</button>
       </div>
       <button class="quiz-submit" onclick="readingVocabIndex++;renderReading()">下一个</button>
     `;
+    // 自动发音
+    setTimeout(() => speakReadingWord(v.word), 300);
   } else if (readingStep === 'text') {
     const introHtml = readingModule.intro ? `<div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;padding:16px;margin-bottom:16px;line-height:1.8;font-size:14px;color:#555"><div style="font-weight:bold;color:#92400e;margin-bottom:8px">📖 故事介绍</div>${readingModule.intro}</div>` : '';
     container.innerHTML = `

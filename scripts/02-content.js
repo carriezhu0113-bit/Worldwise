@@ -822,13 +822,14 @@ Sancho: Yes, yes, my friend. Let me help you.
 
 Narrator: And they continued on their journey to find their next adventure.`,
       vocabulary: [
+        {word:"windmill",pos:"n.",meaning:"风车"},
+        {word:"in danger",pos:"phrase",meaning:"处于危险中"},
         {word:"knight",pos:"n.",meaning:"骑士"},
         {word:"armour",pos:"n.",meaning:"盔甲"},
-        {word:"fantastic",pos:"adj.",meaning:"极好的；奇异的"},
+        {word:"promise",pos:"v.",meaning:"承诺；答应"},
+        {word:"in return",pos:"phrase",meaning:"作为回报"},
         {word:"adventure",pos:"n.",meaning:"冒险；奇遇"},
-        {word:"giant",pos:"n.",meaning:"巨人"},
-        {word:"windmill",pos:"n.",meaning:"风车"},
-        {word:"sail",pos:"n.",meaning:"帆"}
+        {word:"giant",pos:"n.",meaning:"巨人"}
       ],
       sentenceAnalysis: [
         {sentence:"A long time ago in Spain in a land called La Mancha, there was a quiet village with a large house.",words:["A","long","time","ago","in","Spain","in","a","land","called","La","Mancha",",","there","was","a","quiet","village","with","a","large","house","."],roles:[3,3,3,3,3,3,3,3,3,3,3,3,-1,0,1,2,2,2,3,3,3,3,-1],translation:"很久以前，在西班牙一个叫拉曼查的地方，有一个安静的小村庄，村里有一座大房子。",exp:"时间状语：A long time ago（很久以前）· 地点状语：in Spain in a land called La Mancha（在西班牙一个叫拉曼查的地方）· 主语：there（引导词）· 谓语：was（有）· 表语：a quiet village with a large house（一个有座大房子的安静村庄）"},
