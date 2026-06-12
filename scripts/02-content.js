@@ -986,7 +986,7 @@ async function getContent() {
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
     const mod = MODULE_LIBRARY.reading[k];
-    if (mod) readingModuleData[k] = {text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
   });
 
   return {
@@ -1053,7 +1053,7 @@ function getContentFromPush(pushConfig) {
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
     const mod = MODULE_LIBRARY.reading[k];
-    if (mod) readingModuleData[k] = {text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
   });
 
   return {

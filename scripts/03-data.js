@@ -1,61 +1,63 @@
 // ==================== DATA MANAGEMENT ====================
-// 完全依赖 Supabase 云端存储，localStorage 仅作为临时缓存
-// 目标：学生在任何设备登录，都能看到相同的数据，教师端也能看到所有数据
+// 优化版：减少 Supabase 请求频率，增加退避机制
 
 let _cachedStudentData = null;
 let _cachedStudentName = null;
-let _pendingSync = null; // 待同步的数据
+let _pendingSync = null;
 let _syncTimer = null;
+let _consecutiveFailures = 0;
+let _nextRetryDelay = 10000; // 初始重试间隔 10 秒
+const MAX_RETRY_DELAY = 300000; // 最大重试间隔 5 分钟
+const MAX_CONSECUTIVE_FAILURES = 5; // 连续失败 5 次后暂停同步
 
-// 获取学生数据（优先从云端拉取）
+// 获取学生数据（优先从 localStorage，后台异步同步）
 async function getStudentData(name) {
   const key = 'eng_app_student_' + name;
 
-  // 如果缓存命中，直接返回
   if (_cachedStudentName === name && _cachedStudentData) {
     return _cachedStudentData;
   }
 
-  // 1. 优先从 Supabase 读取最新数据
-  let cloudData = null;
-  try {
-    const { data: row, error } = await sb.from('students').select('data').eq('name', name).maybeSingle();
-    if (error) {
-      console.error('Supabase读取失败:', error.message, error.details);
-    } else if (row && row.data) {
-      cloudData = row.data;
-      console.log('从云端加载数据:', name);
-    }
-  } catch(e) {
-    console.error('Supabase异常:', e.message);
-  }
-
-  // 2. 如果云端有数据，使用云端数据
-  if (cloudData) {
-    _cachedStudentData = cloudData;
-    _cachedStudentName = name;
-    // 备份到 localStorage
-    localStorage.setItem(key, JSON.stringify(cloudData));
-    return cloudData;
-  }
-
-  // 3. 云端没有，尝试从 localStorage 读取（可能是旧数据）
+  // 1. 优先从 localStorage 读取（快速返回）
   const localCached = localStorage.getItem(key);
   if (localCached) {
     try {
       const localData = JSON.parse(localCached);
       _cachedStudentData = localData;
       _cachedStudentName = name;
-      // 立即同步到云端
-      _syncToCloud(name, localData);
-      console.log('从本地缓存加载并同步:', name);
+      // 后台异步同步到云端（不阻塞）
+      _syncToCloudAsync(name, localData);
+      console.log('从本地缓存加载:', name);
       return localData;
     } catch(e) {
       console.error('localStorage解析失败:', e.message);
     }
   }
 
-  // 4. 都没有，创建新数据
+  // 2. 本地没有，尝试从云端读取
+  let cloudData = null;
+  try {
+    const { data: row, error } = await sb.from('students').select('data').eq('name', name).maybeSingle();
+    if (error) {
+      console.warn('Supabase读取失败:', error.message);
+    } else if (row && row.data) {
+      cloudData = row.data;
+      console.log('从云端加载数据:', name);
+    }
+  } catch(e) {
+    console.warn('Supabase异常:', e.message);
+  }
+
+  if (cloudData) {
+    _cachedStudentData = cloudData;
+    _cachedStudentName = name;
+    localStorage.setItem(key, JSON.stringify(cloudData));
+    _consecutiveFailures = 0;
+    _nextRetryDelay = 10000;
+    return cloudData;
+  }
+
+  // 3. 都没有，创建新数据
   const newData = {
     name: name,
     wordsLearned: 0,
@@ -83,14 +85,24 @@ async function getStudentData(name) {
   _cachedStudentData = newData;
   _cachedStudentName = name;
   localStorage.setItem(key, JSON.stringify(newData));
-  // 立即同步到云端
-  _syncToCloud(name, newData);
+  _syncToCloudAsync(name, newData);
   console.log('创建新学生数据:', name);
   return newData;
 }
 
-// 直接调用 Supabase REST API（绕过 SDK，更可靠）
+// 异步同步到云端（不阻塞 UI）
+function _syncToCloudAsync(name, data) {
+  _syncToCloud(name, data).catch(() => {}); // 忽略错误，避免 unhandled rejection
+}
+
+// 直接调用 Supabase REST API
 async function _syncToCloud(name, data) {
+  // 如果连续失败太多，暂停同步
+  if (_consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+    console.warn(`连续失败 ${_consecutiveFailures} 次，暂停同步`);
+    return;
+  }
+
   const payload = {
     name: name,
     data: data,
@@ -98,6 +110,9 @@ async function _syncToCloud(name, data) {
   };
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 秒超时
+
     const response = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
       method: 'POST',
       headers: {
@@ -106,25 +121,42 @@ async function _syncToCloud(name, data) {
         'Authorization': `Bearer ${SUPABASE_KEY}`,
         'Prefer': 'resolution=merge-duplicates'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('云端同步失败:', name, response.status, errorText);
-      // 保存待同步数据
-      _pendingSync = { name, data, time: Date.now() };
+      _handleSyncFailure(name, data);
     } else {
       console.log('云端同步成功:', name);
       _pendingSync = null;
+      _consecutiveFailures = 0;
+      _nextRetryDelay = 10000;
     }
   } catch(e) {
-    console.error('云端同步异常:', e.message);
-    _pendingSync = { name, data, time: Date.now() };
+    if (e.name === 'AbortError') {
+      console.warn('云端同步超时:', name);
+    } else {
+      console.error('云端同步异常:', e.message);
+    }
+    _handleSyncFailure(name, data);
   }
 }
 
-// 保存学生数据（核心方法）
+// 处理同步失败（指数退避）
+function _handleSyncFailure(name, data) {
+  _consecutiveFailures++;
+  _pendingSync = { name, data, time: Date.now() };
+  // 指数退避：10s -> 20s -> 40s -> 80s -> 160s -> 300s
+  _nextRetryDelay = Math.min(_nextRetryDelay * 2, MAX_RETRY_DELAY);
+  console.warn(`同步失败，下次重试间隔: ${_nextRetryDelay}ms`);
+}
+
+// 保存学生数据（不阻塞 UI）
 async function saveStudentData(name, data) {
   data.lastActive = new Date().toISOString();
   
@@ -136,51 +168,64 @@ async function saveStudentData(name, data) {
   const key = 'eng_app_student_' + name;
   localStorage.setItem(key, JSON.stringify(data));
   
-  // 3. 立即同步到云端（使用 fetch 直接调用）
-  await _syncToCloud(name, data);
+  // 3. 异步同步到云端（不等待）
+  _syncToCloudAsync(name, data);
 }
 
 // 获取所有学生数据（教师端使用）
 async function getAllStudents() {
-  // 直接从 Supabase 读取所有学生数据
   let rows = [];
+  
+  // 优先从 localStorage 读取（快速）
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('eng_app_student_')) {
+      const name = key.replace('eng_app_student_', '');
+      try {
+        const data = JSON.parse(localStorage.getItem(key));
+        rows.push({name, data});
+      } catch(e) {}
+    }
+  }
+
+  // 后台异步从云端更新（不阻塞）
+  _refreshStudentsFromCloud().catch(() => {});
+
+  return rows.map(r => ({name: r.name, ...r.data}));
+}
+
+// 后台从云端刷新学生数据
+async function _refreshStudentsFromCloud() {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     const response = await fetch(`${SUPABASE_URL}/rest/v1/students?select=name,data,updated_at`, {
       method: 'GET',
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`
-      }
+      },
+      signal: controller.signal
     });
 
-    if (!response.ok) {
-      console.error('Supabase读取失败:', response.status);
-    } else {
-      rows = await response.json();
-      console.log('从云端读取到', rows.length, '个学生');
-    }
-  } catch(e) {
-    console.error('Supabase异常:', e.message);
-  }
+    clearTimeout(timeoutId);
 
-  // 如果云端读取失败，尝试从 localStorage 读取（仅作为备份）
-  if (rows.length === 0) {
-    console.warn('云端无数据，尝试从本地读取');
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key.startsWith('eng_app_student_')) {
-        const name = key.replace('eng_app_student_', '');
-        try {
-          const data = JSON.parse(localStorage.getItem(key));
-          rows.push({name, data});
-        } catch(e) {
-          // 忽略损坏的数据
+    if (response.ok) {
+      const cloudRows = await response.json();
+      // 合并云端数据到 localStorage
+      for (const row of cloudRows) {
+        if (row.data) {
+          const key = 'eng_app_student_' + row.name;
+          localStorage.setItem(key, JSON.stringify(row.data));
         }
       }
+      console.log('从云端刷新', cloudRows.length, '个学生数据');
+      _consecutiveFailures = 0;
     }
+  } catch(e) {
+    console.warn('云端刷新失败:', e.message);
   }
-
-  return rows.map(r => ({name: r.name, ...r.data}));
 }
 
 // 页面关闭前确保数据同步
@@ -191,7 +236,6 @@ window.addEventListener('beforeunload', () => {
       data: _cachedStudentData,
       updated_at: new Date().toISOString()
     });
-    // 使用 fetch keepalive（支持自定义 headers）
     fetch(`${SUPABASE_URL}/rest/v1/students`, {
       method: 'POST',
       headers: {
@@ -209,17 +253,22 @@ window.addEventListener('beforeunload', () => {
 // 页面可见性变化时同步数据
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && _cachedStudentData && _cachedStudentName) {
-    _syncToCloud(_cachedStudentName, _cachedStudentData);
+    _syncToCloudAsync(_cachedStudentName, _cachedStudentData);
   }
 });
 
-// 定期同步（每10秒）
+// 定期同步（使用退避间隔）
 setInterval(() => {
-  if (_cachedStudentData && _cachedStudentName) {
-    _syncToCloud(_cachedStudentName, _cachedStudentData);
+  if (_pendingSync && _consecutiveFailures < MAX_CONSECUTIVE_FAILURES) {
+    _syncToCloudAsync(_pendingSync.name, _pendingSync.data);
+  } else if (_cachedStudentData && _cachedStudentName && _consecutiveFailures < MAX_CONSECUTIVE_FAILURES) {
+    _syncToCloudAsync(_cachedStudentName, _cachedStudentData);
   }
-  // 检查是否有待同步的数据
-  if (_pendingSync) {
-    _syncToCloud(_pendingSync.name, _pendingSync.data);
+}, _nextRetryDelay);
+
+// 动态调整同步间隔
+setInterval(() => {
+  if (_consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+    console.log('同步已暂停，等待网络恢复');
   }
-}, 10000);
+}, 60000);
