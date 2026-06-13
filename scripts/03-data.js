@@ -6,9 +6,11 @@ let _cachedStudentName = null;
 let _pendingSync = null;
 let _syncTimer = null;
 let _consecutiveFailures = 0;
-let _nextRetryDelay = 10000; // 初始重试间隔 10 秒
-const MAX_RETRY_DELAY = 300000; // 最大重试间隔 5 分钟
-const MAX_CONSECUTIVE_FAILURES = 5; // 连续失败 5 次后暂停同步
+let _nextRetryDelay = 5000; // 初始重试间隔 5 秒
+const MAX_RETRY_DELAY = 60000; // 最大重试间隔 1 分钟
+const MAX_CONSECUTIVE_FAILURES = 10; // 连续失败 10 次后暂停同步
+let _syncQueue = []; // 同步队列
+let _isSyncing = false;
 
 // 获取学生数据（优先从 localStorage，后台异步同步）
 async function getStudentData(name) {
@@ -90,17 +92,47 @@ async function getStudentData(name) {
   return newData;
 }
 
-// 异步同步到云端（不阻塞 UI）
+// 异步同步到云端（加入队列，确保不丢失）
 function _syncToCloudAsync(name, data) {
-  _syncToCloud(name, data).catch(() => {}); // 忽略错误，避免 unhandled rejection
+  // 加入同步队列
+  _syncQueue.push({ name, data, time: Date.now() });
+  // 如果当前没有在同步，立即开始
+  if (!_isSyncing) {
+    _processSyncQueue();
+  }
+}
+
+// 处理同步队列
+async function _processSyncQueue() {
+  if (_syncQueue.length === 0 || _isSyncing) return;
+  _isSyncing = true;
+  
+  // 只处理队列中的最新数据（丢弃旧的重复数据）
+  const latestByName = {};
+  for (const item of _syncQueue) {
+    latestByName[item.name] = item;
+  }
+  _syncQueue = Object.values(latestByName);
+  
+  while (_syncQueue.length > 0 && _consecutiveFailures < MAX_CONSECUTIVE_FAILURES) {
+    const item = _syncQueue.shift();
+    const success = await _syncToCloud(item.name, item.data);
+    if (!success) {
+      // 失败后等待再重试
+      await new Promise(r => setTimeout(r, _nextRetryDelay));
+    }
+  }
+  
+  _isSyncing = false;
 }
 
 // 直接调用 Supabase REST API
+// 返回 true 表示成功，false 表示失败
 async function _syncToCloud(name, data) {
   // 如果连续失败太多，暂停同步
   if (_consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
     console.warn(`连续失败 ${_consecutiveFailures} 次，暂停同步`);
-    return;
+    return false;
   }
 
   const payload = {
@@ -131,11 +163,13 @@ async function _syncToCloud(name, data) {
       const errorText = await response.text();
       console.error('云端同步失败:', name, response.status, errorText);
       _handleSyncFailure(name, data);
+      return false;
     } else {
       console.log('云端同步成功:', name);
       _pendingSync = null;
       _consecutiveFailures = 0;
-      _nextRetryDelay = 10000;
+      _nextRetryDelay = 5000;
+      return true;
     }
   } catch(e) {
     if (e.name === 'AbortError') {
@@ -144,6 +178,7 @@ async function _syncToCloud(name, data) {
       console.error('云端同步异常:', e.message);
     }
     _handleSyncFailure(name, data);
+    return false;
   }
 }
 
@@ -272,3 +307,73 @@ setInterval(() => {
     console.log('同步已暂停，等待网络恢复');
   }
 }, 60000);
+
+// 学生手动提交数据到云端（带重试机制）
+async function submitDataToCloud() {
+  if (!_cachedStudentData || !_cachedStudentName) {
+    document.getElementById('submitMsg').innerHTML = '<span style="color:#ef4444">请先开始学习</span>';
+    return;
+  }
+
+  const btn = document.querySelector('[onclick="submitDataToCloud()"]');
+  const msgEl = document.getElementById('submitMsg');
+  btn.disabled = true;
+  btn.textContent = '提交中...';
+  msgEl.innerHTML = '<span style="color:#64748b">正在同步数据...</span>';
+
+  // 最多重试 3 次
+  let success = false;
+  for (let i = 0; i < 3; i++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 秒超时
+
+      const payload = JSON.stringify({
+        name: _cachedStudentName,
+        data: _cachedStudentData,
+        updated_at: new Date().toISOString()
+      });
+
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: payload,
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        success = true;
+        _consecutiveFailures = 0;
+        _nextRetryDelay = 5000;
+        break;
+      } else {
+        const errorText = await response.text();
+        console.error('提交失败:', response.status, errorText);
+      }
+    } catch(e) {
+      console.error('提交异常:', e.message);
+    }
+
+    if (!success && i < 2) {
+      msgEl.innerHTML = `<span style="color:#f59e0b">第 ${i + 1} 次尝试失败，${3 - i - 1} 秒后重试...</span>`;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+
+  btn.disabled = false;
+  btn.textContent = '提交数据到云端';
+
+  if (success) {
+    msgEl.innerHTML = '<span style="color:#059669">✅ 数据已成功提交！老师可以看到你的成绩了</span>';
+    setTimeout(() => { msgEl.innerHTML = ''; }, 5000);
+  } else {
+    msgEl.innerHTML = '<span style="color:#ef4444">❌ 提交失败，请检查网络后重试</span>';
+  }
+}
