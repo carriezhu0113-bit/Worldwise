@@ -25,7 +25,7 @@ const STUDENT_GRADES = {
 // 自动推送配置：学生首次登录时自动创建
 const AUTO_PUSH_CONFIGS = {
   low: {
-    vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material', 'low_adverbs'],
+    vocabulary: ['pet_scene_24', 'pet_scene_23', 'low_subject_material', 'low_adverbs', 'low_jobs_colors'],
     grammar: ['pronoun_basic', 'present_simple_continuous', 'prepositional_phrases'],
     sentences: ['sentence_basic_16']
   },
@@ -179,6 +179,21 @@ const MODULE_LIBRARY = {
       {word:"slowly",pos:"adv.",phonetic:"ˈsləʊli",meaning:"慢慢地",phrase:"walk slowly 慢慢地走",synonyms:"近: gradually 反: quickly"},
       {word:"quietly",pos:"adv.",phonetic:"ˈkwaɪətli",meaning:"安静地",phrase:"sit quietly 安静地坐着",synonyms:"近: silently 反: loudly"},
       {word:"beautifully",pos:"adv.",phonetic:"ˈbjuːtɪfʊli",meaning:"美丽地；优美地",phrase:"sing beautifully 唱得优美",synonyms:"近: wonderfully, gracefully"}
+    ]},
+    "low_jobs_colors": { name: "职业与颜色", words: [
+      {word:"cook",pos:"n.",phonetic:"kʊk",meaning:"厨师",phrase:"a good cook 一个好厨师",synonyms:"近: chef"},
+      {word:"waiter",pos:"n.",phonetic:"ˈwetə",meaning:"服务员",phrase:"a waiter in a restaurant 餐厅服务员",synonyms:"近: server"},
+      {word:"actor",pos:"n.",phonetic:"ˈæktə",meaning:"演员",phrase:"a famous actor 著名演员",synonyms:"近: performer"},
+      {word:"journalist",pos:"n.",phonetic:"ˈdʒːnəlɪst",meaning:"记者",phrase:"a TV journalist 电视记者",synonyms:"近: reporter"},
+      {word:"artist",pos:"n.",phonetic:"ɑːtɪst",meaning:"艺术家；画家",phrase:"a great artist 伟大的艺术家",synonyms:"近: painter, creator"},
+      {word:"driver",pos:"n.",phonetic:"ˈdraɪvə",meaning:"司机",phrase:"a bus driver 公交车司机",synonyms:"近: chauffeur"},
+      {word:"photographer",pos:"n.",phonetic:"fəˈtɒɡrəfə",meaning:"摄影师",phrase:"a wedding photographer 婚礼摄影师",synonyms:"近: cameraman"},
+      {word:"designer",pos:"n.",phonetic:"dɪˈzaɪnə",meaning:"设计师",phrase:"a fashion designer 时装设计师",synonyms:"近: creator, stylist"},
+      {word:"singer",pos:"n.",phonetic:"ˈsŋə",meaning:"歌手",phrase:"a pop singer 流行歌手",synonyms:"近: vocalist"},
+      {word:"costume",pos:"n.",phonetic:"ˈkɒstjuːm",meaning:"服装；戏服",phrase:"a Halloween costume 万圣节服装",synonyms:"近: outfit, dress"},
+      {word:"bright",pos:"adj.",phonetic:"braɪt",meaning:"明亮的；鲜艳的",phrase:"a bright colour 鲜艳的颜色",synonyms:"近: vivid, shiny 反: dark"},
+      {word:"light",pos:"adj.",phonetic:"laɪt",meaning:"浅色的；轻的",phrase:"light blue 浅蓝色",synonyms:"近: pale 反: dark"},
+      {word:"dark",pos:"adj.",phonetic:"dɑːk",meaning:"深色的；黑暗的",phrase:"dark green 深绿色",synonyms:"近: deep 反: light, bright"}
     ]},
     "pet_scene_23": { name: "PET场景23-社会与文化", words: [
       {word:"country",pos:"n.",phonetic:"ˈkʌntri",meaning:"国家；乡村",phrase:"my country 我的国家",synonyms:"近: nation, state"},
