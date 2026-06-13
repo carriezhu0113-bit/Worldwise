@@ -857,7 +857,44 @@ Narrator: And they continued on their journey to find their next adventure.`,
         {q:"Why did Alonso Quijano change his name to Don Quixote?",opts:["A. Because he wanted to be rich.","B. Because he decided to become a knight.","C. Because his friend told him to.","D. Because he didn't like his old name."],ans:1,exp:"文中提到：'One day he decided to become a knight and he changed his name to Don Quixote.'他决定成为一名骑士，所以改了名字。"},
         {q:"What did Don Quixote think the windmills were?",opts:["A. Houses","B. Trees","C. Giants","D. Dragons"],ans:2,exp:"堂吉诃德说：'Thirty or forty giants over there.'他把风车当成了巨人。"},
         {q:"What did Sancho try to tell Don Quixote?",opts:["A. The giants were very dangerous.","B. They were windmills, not giants.","C. He should go home.","D. The horse was tired."],ans:1,exp:"桑丘说：'You think they look like giants but they're windmills.'他试图告诉堂吉德那是风车不是巨人。"},
-        {q:"After the windmill threw Don Quixote down, what did he believe happened?",opts:["A. He was very tired and needed to rest.","B. Sancho was right all along.","C. Someone used magic to change the giants into windmills.","D. He wanted to give up his adventure."],ans:2,exp:"堂吉诃德说：'Someone changed the giants into windmills. It's magic!'他认为是有人用魔法把巨人变成了风车。"}
+        {q:"After the windmill threw Don Quixote down, what did he believe happened?",opts:["A. He was very tired and needed to rest.","B. Sancho was right all along.","C. Someone used magic to change the giants into windmills.","D. He wanted to give up his adventure."],ans:2,exp:"堂吉德说：'Someone changed the giants into windmills. It's magic!'他认为是有人用魔法把巨人变成了风车。"}
+      ]
+    },
+    "beautiful_paintings": {
+      name: "🎨 美丽的壁画",
+      intro: `<div style="margin-bottom:12px"><strong>📚 文章信息</strong><br>作者：Paula White | 主题：考古与史前艺术</div><div><strong>📖 故事简介</strong><br>Paula 的爸爸是一位考古学家，他去了西班牙的阿尔塔米拉洞穴，那里有 14,000 年前的史前壁画。文章讲述了这些壁画的发现过程、绘画内容以及古人是如何制作颜料的。</div>`,
+      text: `My dad is an archaeologist. Last year, he visited Spain. There is lots of work for an archaeologist in Spain because it's got many examples of how people lived in the past. Its history is very old! My dad went to the Altamira Caves. The caves are famous because archaeologists discovered the first cave paintings there in 1895. My dad says that in the past, people told stories using art. They didn't write like we do.
+
+The paintings are over 14,000 years old. Many of the paintings on the cave walls show animals and people hunting. In one cave, a really big painting showed a bison (a type of animal). We think the paintings tell the story of how people hunted.
+
+There were no paints or paintbrushes then so the cave people used the things they found around them. They used sticks, leaves and animal hair for their brushes. They made paint with fruits, plants and blood!
+
+When I grow up I want to be an archaeologist like my father. He has a very interesting job and he sees amazing things!
+
+Paula White`,
+      vocabulary: [
+        {word:"archaeologist",pos:"n.",phonetic:"ˌɑːkiˈɒlədʒɪst",meaning:"考古学家",phrase:"an archaeologist in Spain 西班牙的考古学家",synonyms:"近: historian, researcher"},
+        {word:"cave",pos:"n.",phonetic:"keɪv",meaning:"洞穴",phrase:"cave paintings 洞穴壁画",synonyms:"近: cavern, grotto"},
+        {word:"bison",pos:"n.",phonetic:"ˈbaɪsᵊn",meaning:"野牛",phrase:"a big bison 一头大野牛",synonyms:"近: buffalo"},
+        {word:"hunt",pos:"v.",phonetic:"hnt",meaning:"打猎；狩猎",phrase:"people hunting 人们打猎",synonyms:"近: chase, track"},
+        {word:"paintbrush",pos:"n.",phonetic:"ˈpeɪntbrʌʃ",meaning:"画笔；毛笔",phrase:"use paintbrushes 使用画笔",synonyms:"近: brush"},
+        {word:"amazing",pos:"adj.",phonetic:"əˈmeɪzɪŋ",meaning:"令人惊奇的；了不起的",phrase:"amazing things 了不起的事物",synonyms:"近: wonderful, incredible"}
+      ],
+      sentenceAnalysis: [
+        {sentence:"There is lots of work for an archaeologist in Spain because it's got many examples of how people lived in the past.",words:["There","is","lots","of","work","for","an","archaeologist","in","Spain","because","it","'s","got","many","examples","of","how","people","lived","in","the","past","."],roles:[0,1,2,2,2,3,3,3,3,3,3,0,1,1,2,2,2,2,0,1,3,3,3,-1],translation:"在西班牙，考古学家有很多工作要做，因为那里有很多关于过去人们生活方式的例子。",exp:"主语：There（引导词）· 谓语：is（有）· 表语：lots of work for an archaeologist in Spain（在西班牙考古学家有很多工作）· 原因状语从句：because it's got many examples of how people lived in the past（因为它有很多关于过去人们生活方式的例子）· 其中 how people lived in the past 是 how 引导的宾语从句，作 examples of 的宾语"},
+        {sentence:"The caves are famous because archaeologists discovered the first cave paintings there in 1895.",words:["The","caves","are","famous","because","archaeologists","discovered","the","first","cave","paintings","there","in","1895","."],roles:[0,0,1,2,3,0,1,2,2,2,2,3,3,3,-1],translation:"这些洞穴很有名，因为考古学家在 1895 年在那里发现了第一批洞穴壁画。",exp:"主语：The caves（这些洞穴）· 系动词：are（是）· 表语：famous（有名的）· 原因状语从句：because archaeologists discovered the first cave paintings there in 1895（因为考古学家在 1895 年在那里发现了第一批洞穴壁画）· 地点状语：there（在那里）· 时间状语：in 1895（在 1895 年）"},
+        {sentence:"My dad says that in the past, people told stories using art.",words:["My","dad","says","that","in","the","past",",","people","told","stories","using","art","."],roles:[0,0,1,3,3,3,3,-1,0,1,2,3,2,-1],translation:"我爸爸说，在过去，人们用艺术来讲故事。",exp:"主语：My dad（我爸爸）· 谓语：says（说）· 宾语从句：that in the past, people told stories using art（在过去，人们用艺术来讲故事）· 时间状语：in the past（在过去）· 主语：people（人们）· 谓语：told（讲述）· 宾语：stories（故事）· 方式状语：using art（使用艺术）"},
+        {sentence:"Many of the paintings on the cave walls show animals and people hunting.",words:["Many","of","the","paintings","on","the","cave","walls","show","animals","and","people","hunting","."],roles:[0,0,0,0,3,3,3,3,1,2,2,2,2,-1],translation:"洞穴墙壁上的许多壁画展示了动物和人们打猎的场景。",exp:"主语：Many of the paintings on the cave walls（洞穴墙壁上的许多壁画）· 谓语：show（展示）· 宾语：animals and people hunting（动物和人们打猎）· on the cave walls 是介词短语作后置定语，修饰 paintings"},
+        {sentence:"There were no paints or paintbrushes then so the cave people used the things they found around them.",words:["There","were","no","paints","or","paintbrushes","then","so","the","cave","people","used","the","things","they","found","around","them","."],roles:[0,1,2,2,2,2,3,3,0,0,0,1,2,2,0,1,3,3,-1],translation:"那时没有颜料和画笔，所以洞穴里的人们使用他们在周围找到的东西。",exp:"第一分句：There were no paints or paintbrushes then（那时没有颜料和画笔）· 因果连接词：so（所以）· 第二分句：the cave people used the things they found around them（洞穴里的人们使用他们在周围找到的东西）· they found around them 是省略 that 的定语从句，修饰 the things"},
+        {sentence:"They used sticks, leaves and animal hair for their brushes.",words:["They","used","sticks",",","leaves","and","animal","hair","for","their","brushes","."],roles:[0,1,2,-1,2,2,2,2,3,3,3,-1],translation:"他们用树枝、树叶和动物毛发来做画笔。",exp:"主语：They（他们）· 谓语：used（使用）· 宾语：sticks, leaves and animal hair（树枝、树叶和动物毛发）· 目的状语：for their brushes（作为他们的画笔）"},
+        {sentence:"When I grow up I want to be an archaeologist like my father.",words:["When","I","grow","up","I","want","to","be","an","archaeologist","like","my","father","."],roles:[3,0,1,1,0,1,2,2,2,2,3,3,3,-1],translation:"当我长大后，我想成为像我爸爸一样的考古学家。",exp:"时间状语从句：When I grow up（当我长大后）· 主语：I（我）· 谓语：want to be（想成为）· 表语：an archaeologist like my father（像我爸爸一样的考古学家）· like my father 是介词短语作后置定语，修饰 archaeologist"}
+      ],
+      mc: [
+        {q:"What job does Paula's father do?",opts:["A. He is a teacher.","B. He is an archaeologist.","C. He is a painter.","D. He is a historian."],ans:1,exp:"文章第一句就说：'My dad is an archaeologist.'Paula 的爸爸是一位考古学家。"},
+        {q:"Where did he go to visit the caves?",opts:["A. France","B. Italy","C. Spain","D. Greece"],ans:2,exp:"文章提到：'Last year, he visited Spain.'和'My dad went to the Altamira Caves.'他去了西班牙的阿尔塔米拉洞穴。"},
+        {q:"Why did they paint on the walls of the caves?",opts:["A. Because they wanted to decorate the caves.","B. Because they told stories using art.","C. Because they had nothing else to do.","D. Because they wanted to leave messages."],ans:1,exp:"文章说：'My dad says that in the past, people told stories using art. They didn't write like we do.'古人用艺术来讲故事，因为他们不像我们现在这样写字。"},
+        {q:"What did the early cave people paint pictures of?",opts:["A. Trees and flowers","B. Houses and villages","C. Animals and people hunting","D. Stars and the moon"],ans:2,exp:"文章提到：'Many of the paintings on the cave walls show animals and people hunting.'洞穴壁画展示了动物和人们打猎的场景。"},
+        {q:"How did they make their paint?",opts:["A. With water and clay","B. With fruits, plants and blood","C. With flowers and leaves","D. With stones and sand"],ans:1,exp:"文章说：'They made paint with fruits, plants and blood!'他们用水果、植物和血液制作颜料。"}
       ]
     }
   }
@@ -996,7 +1033,7 @@ async function getContent() {
     if (mod) grammarModuleData[k] = {review: mod.review || '', mc: mod.mc || [], fill: mod.fill || [], correct: mod.correct || []};
   });
 
-  const readingModuleKeys = ['icarus_myth', 'don_quixote'];
+  const readingModuleKeys = ['icarus_myth', 'don_quixote', 'beautiful_paintings'];
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
@@ -1059,10 +1096,13 @@ function getContentFromPush(pushConfig) {
     });
   }
 
-  let readingModuleKeys = pushConfig && pushConfig.reading && pushConfig.reading.length > 0 ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote'];
-  // 自动补充堂吉诃德阅读模块（确保所有学生都能看到）
+  let readingModuleKeys = pushConfig && pushConfig.reading && pushConfig.reading.length > 0 ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote', 'beautiful_paintings'];
+  // 自动补充阅读模块（确保所有学生都能看到）
   if (!readingModuleKeys.includes('don_quixote')) {
     readingModuleKeys.push('don_quixote');
+  }
+  if (!readingModuleKeys.includes('beautiful_paintings')) {
+    readingModuleKeys.push('beautiful_paintings');
   }
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
