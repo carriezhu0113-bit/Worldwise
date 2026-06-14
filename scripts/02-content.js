@@ -896,6 +896,47 @@ Paula White`,
         {q:"What did the early cave people paint pictures of?",opts:["A. Trees and flowers","B. Houses and villages","C. Animals and people hunting","D. Stars and the moon"],ans:2,exp:"文章提到：'Many of the paintings on the cave walls show animals and people hunting.'洞穴壁画展示了动物和人们打猎的场景。"},
         {q:"How did they make their paint?",opts:["A. With water and clay","B. With fruits, plants and blood","C. With flowers and leaves","D. With stones and sand"],ans:1,exp:"文章说：'They made paint with fruits, plants and blood!'他们用水果、植物和血液制作颜料。"}
       ]
+    },
+    "beatles_dont_give_up": {
+      name: "🎸 永不放弃的披头士",
+      intro: `<div style="margin-bottom:12px"><strong>📚 文章信息</strong><br>主题：坚持与成功 | 适合：初一学生</div><div><strong>📖 故事简介</strong><br>1961 年，一支来自利物浦的年轻摇滚乐队去伦敦试演，却被唱片公司拒绝，理由是"吉他乐队已经过时了"。但这支乐队没有放弃，最终与另一家公司签约，成为了世界上最著名的乐队——披头士（The Beatles）。</div>`,
+      text: `Writers, artists, singers, and inventors often feel discouraged when others tell them they are not good enough. Some people give up. Others, like a group of young musicians in the 1960s, don't let it stop them.
+
+In December 1961, a record company executive traveled to Liverpool, England. He went to listen to a new rock 'n' roll band. The executive thought the band had talent and invited them to an audition in London. The group went to London and played on New Year's Day 1962. After the audition, they went home and waited for a phone call.
+
+They didn't hear any news for weeks. Finally, the company executive told the band manager, "Guitar groups are on the way out, Mr. Epstein." So the record company didn't give the band a contract.
+
+But the band didn't give up. In the end, they signed a contract with another company and became a very famous band: The Beatles.`,
+      vocabulary: [
+        {word:"give up",pos:"phrase",phonetic:"ɡɪv ʌp",meaning:"放弃",phrase:"don't give up 不要放弃",synonyms:"近: quit, stop trying"},
+        {word:"inventor",pos:"n.",phonetic:"ɪnventə",meaning:"发明家",phrase:"a great inventor 伟大的发明家",synonyms:"近: creator, designer"},
+        {word:"discouraged",pos:"adj.",phonetic:"dɪsˈkʌrɪdʒd",meaning:"气馁的；失去信心的",phrase:"feel discouraged 感到气馁",synonyms:"近: disappointed 反: encouraged"},
+        {word:"executive",pos:"n.",phonetic:"ɪɡˈzekjətɪv",meaning:"高管；行政人员",phrase:"a company executive 公司高管",synonyms:"近: manager, director"},
+        {word:"audition",pos:"n.",phonetic:"ɔːˈdɪʃᵊn",meaning:"试镜；试演",phrase:"go to an audition 参加试演",synonyms:"近: tryout, performance"},
+        {word:"out",pos:"adj.",phonetic:"aʊt",meaning:"过时的；不流行的",phrase:"on the way out 即将过时",synonyms:"近: unfashionable 反: in, popular"},
+        {word:"contract",pos:"n.",phonetic:"ˈkntrækt",meaning:"合同；契约",phrase:"sign a contract 签合同",synonyms:"近: agreement, deal"}
+      ],
+      vocabQuiz: [
+        {q:"Writers and artists often feel ______ when others tell them they are not good enough.",opts:["A. excited","B. discouraged","C. happy","D. confident"],ans:1,exp:"discouraged 意为'气馁的'。当别人说他们不够好时，创作者会感到气馁。"},
+        {q:"Some people ______ when they face difficulties. They stop trying.",opts:["A. give up","B. travel to","C. sign a contract","D. wait for"],ans:0,exp:"give up 意为'放弃'。遇到困难时，有些人会选择放弃，不再尝试。"},
+        {q:"Thomas Edison was a great ______. He designed and created many new things.",opts:["A. singer","B. executive","C. inventor","D. musician"],ans:2,exp:"inventor 意为'发明家'。爱迪生发明了很多新事物，是一位伟大的发明家。"},
+        {q:"The company ______ made an important decision about the band.",opts:["A. audition","B. contract","C. executive","D. inventor"],ans:2,exp:"executive 意为'高管'。公司高管负责管理公司并做出重要决策。"},
+        {q:"The band went to London to perform in an ______. They played a short show to show their ability.",opts:["A. audition","B. contract","C. executive","D. inventor"],ans:0,exp:"audition 意为'试演'。乐队去伦敦参加试演，通过短表演展示自己的能力。"},
+        {q:"The manager said, 'Guitar groups are ______. They are not popular anymore.'",opts:["A. on the way in","B. on the way out","C. on the way up","D. on the way down"],ans:1,exp:"on the way out 意为'即将过时'。经理认为吉他乐队已经不流行了。"},
+        {q:"The band finally ______ with another company. It was a written legal agreement.",opts:["A. gave up","B. traveled to","C. signed a contract","D. waited for"],ans:2,exp:"sign a contract 意为'签合同'。乐队最终与另一家公司签订了书面协议。"}
+      ],
+      sentenceAnalysis: [
+        {sentence:"Writers, artists, singers, and inventors often feel discouraged when others tell them they are not good enough.",words:["Writers",",","artists",",","singers",",","and","inventors","often","feel","discouraged","when","others","tell","them","they","are","not","good","enough","."],roles:[0,-1,0,-1,0,-1,0,0,3,1,2,3,0,1,2,0,1,3,3,3,-1],translation:"作家、艺术家、歌手和发明家，当别人告诉他们不够好时，常常会感到气馁。",exp:"主语：Writers, artists, singers, and inventors（作家、艺术家、歌手和发明家，并列主语）· 状语：often（经常）· 系动词：feel（感到）· 表语：discouraged（气馁的）· 时间状语从句：when others tell them they are not good enough（当别人告诉他们不够好时）· 从句中 they are not good enough 是省略 that 的宾语从句，作 tell 的直接宾语"},
+        {sentence:"The executive thought the band had talent and invited them to an audition in London.",words:["The","executive","thought","the","band","had","talent","and","invited","them","to","an","audition","in","London","."],roles:[0,0,1,0,0,1,2,3,1,2,3,3,3,3,3,-1],translation:"这位高管认为这支乐队有才华，并邀请他们去伦敦参加试演。",exp:"主语：The executive（这位高管）· 谓语 1：thought + 宾语从句（the band had talent，乐队有才华）· 连词：and（连接两个并列谓语）· 谓语 2：invited + 宾语（them）+ 目的状语（to an audition in London，去伦敦参加试演）"},
+        {sentence:"After the audition, they went home and waited for a phone call.",words:["After","the","audition",",","they","went","home","and","waited","for","a","phone","call","."],roles:[3,3,3,-1,0,1,3,3,1,3,3,3,3,-1],translation:"试演之后，他们回了家，等待一个电话。",exp:"时间状语：After the audition（试演之后）· 主语：they（他们）· 谓语 1：went + 地点状语（home，回家）· 连词：and（连接两个并列谓语）· 谓语 2：waited + 目的状语（for a phone call，等待电话）"},
+        {sentence:"In the end, they signed a contract with another company and became a very famous band: The Beatles.",words:["In","the","end",",","they","signed","a","contract","with","another","company","and","became","a","very","famous","band",":","The","Beatles","."],roles:[3,3,3,-1,0,1,2,2,3,3,3,3,1,2,2,2,2,-1,2,2,-1],translation:"最终，他们与另一家公司签了合同，成为了一支非常著名的乐队：披头士。",exp:"时间状语：In the end（最终）· 主语：they（他们）· 谓语 1：signed + 宾语（a contract）+ 方式状语（with another company，与另一家公司）· 连词：and（连接两个并列谓语）· 谓语 2：became + 表语（a very famous band，一支非常著名的乐队）· 同位语：The Beatles（披头士，解释说明 a very famous band）"}
+      ],
+      mc: [
+        {q:"Why did the record company executive go to Liverpool?",opts:["A. To sign a contract with a band.","B. To listen to a new rock 'n' roll band.","C. To visit Mr. Epstein.","D. To watch an audition in London."],ans:1,exp:"文章提到：'He went to listen to a new rock 'n' roll band.'他去利物浦是为了听一支新的摇滚乐队。"},
+        {q:"What did the executive think about the band after hearing them?",opts:["A. They were not good enough.","B. They had talent.","C. They should give up.","D. They were on the way out."],ans:1,exp:"文章说：'The executive thought the band had talent.'高管认为这支乐队有才华。"},
+        {q:"Why didn't the record company give the band a contract?",opts:["A. Because the band didn't have talent.","B. Because the band manager was rude.","C. Because guitar groups were on the way out.","D. Because the band didn't want a contract."],ans:2,exp:"高管说：'Guitar groups are on the way out.'他认为吉他乐队已经不流行了，所以没给合同。"},
+        {q:"What is the main idea of this passage?",opts:["A. The Beatles were the best band in the 1960s.","B. Record companies always make wrong decisions.","C. Don't give up even when others discourage you.","D. Liverpool is a great city for musicians."],ans:2,exp:"文章开头说有些人被否定后会放弃，但有些人（如披头士）不会让别人的否定阻止自己。最后强调 'the band didn't give up'，主题是永不放弃。"}
+      ]
     }
   }
 };
@@ -1033,12 +1074,12 @@ async function getContent() {
     if (mod) grammarModuleData[k] = {review: mod.review || '', mc: mod.mc || [], fill: mod.fill || [], correct: mod.correct || []};
   });
 
-  const readingModuleKeys = ['icarus_myth', 'don_quixote', 'beautiful_paintings'];
+  const readingModuleKeys = ['icarus_myth', 'don_quixote', 'beautiful_paintings', 'beatles_dont_give_up'];
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
     const mod = MODULE_LIBRARY.reading[k];
-    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], vocabQuiz: mod.vocabQuiz || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
   });
 
   return {
@@ -1096,7 +1137,7 @@ function getContentFromPush(pushConfig) {
     });
   }
 
-  let readingModuleKeys = pushConfig && pushConfig.reading && pushConfig.reading.length > 0 ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote', 'beautiful_paintings'];
+  let readingModuleKeys = pushConfig && pushConfig.reading && pushConfig.reading.length > 0 ? [...pushConfig.reading] : ['icarus_myth', 'don_quixote', 'beautiful_paintings', 'beatles_dont_give_up'];
   // 自动补充阅读模块（确保所有学生都能看到）
   if (!readingModuleKeys.includes('don_quixote')) {
     readingModuleKeys.push('don_quixote');
@@ -1104,11 +1145,14 @@ function getContentFromPush(pushConfig) {
   if (!readingModuleKeys.includes('beautiful_paintings')) {
     readingModuleKeys.push('beautiful_paintings');
   }
+  if (!readingModuleKeys.includes('beatles_dont_give_up')) {
+    readingModuleKeys.push('beatles_dont_give_up');
+  }
   const readingModules = readingModuleKeys.map(k => ({key: k, name: MODULE_LIBRARY.reading[k]?.name || k}));
   const readingModuleData = {};
   readingModuleKeys.forEach(k => {
     const mod = MODULE_LIBRARY.reading[k];
-    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
+    if (mod) readingModuleData[k] = {intro: mod.intro || '', text: mod.text || '', vocabulary: mod.vocabulary || [], vocabQuiz: mod.vocabQuiz || [], sentenceAnalysis: mod.sentenceAnalysis || [], mc: mod.mc || []};
   });
 
   return {

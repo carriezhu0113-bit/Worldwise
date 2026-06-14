@@ -2,6 +2,9 @@
 let readingModule = null;
 let readingStep = 'text';
 let readingVocabIndex = 0;
+let readingVQIndex = 0;
+let readingVQSelected = -1;
+let readingVQAnswered = false;
 let readingSAIndex = 0;
 let readingSASelectedWords = new Set();
 let readingSAWordRoles = {};
@@ -19,6 +22,22 @@ function speakReadingWord(word) {
     u.lang = 'en-US';
     u.rate = 0.85;
     speechSynthesis.speak(u);
+  }
+}
+
+function speakReadingText() {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(readingModule.text);
+    u.lang = 'en-US';
+    u.rate = 0.8;
+    speechSynthesis.speak(u);
+  }
+}
+
+function stopReadingText() {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
   }
 }
 
@@ -50,6 +69,9 @@ async function loadReadingModule(key) {
   if (!readingModule) return;
   readingStep = 'intro';
   readingVocabIndex = 0;
+  readingVQIndex = 0;
+  readingVQSelected = -1;
+  readingVQAnswered = false;
   readingSAIndex = 0;
   readingMCIndex = 0;
   renderReading();
@@ -68,7 +90,10 @@ function renderReading() {
   } else if (readingStep === 'vocab') {
     const vocab = readingModule.vocabulary || [];
     if (readingVocabIndex >= vocab.length) {
-      readingStep = 'text';
+      readingStep = 'vocabQuiz';
+      readingVQIndex = 0;
+      readingVQSelected = -1;
+      readingVQAnswered = false;
       renderReading();
       return;
     }
@@ -85,8 +110,20 @@ function renderReading() {
     `;
     // 自动发音
     setTimeout(() => speakReadingWord(v.word), 300);
+  } else if (readingStep === 'vocabQuiz') {
+    const vocabQuiz = readingModule.vocabQuiz || [];
+    if (readingVQIndex >= vocabQuiz.length) {
+      readingStep = 'text';
+      renderReading();
+      return;
+    }
+    renderReadingVQ(vocabQuiz[readingVQIndex]);
   } else if (readingStep === 'text') {
     container.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="margin:0">📖 阅读全文</h3>
+        <button onclick="speakReadingText()" style="background:#2563eb;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;font-weight:600">🔊 朗读全文</button>
+      </div>
       <div style="background:#f0f9ff;border-radius:12px;padding:20px;margin-bottom:16px;line-height:1.9;font-size:15px;color:#1e293b">
         ${readingModule.text.split('\n\n').map(p => `<p style="margin-bottom:12px;text-indent:2em">${p}</p>`).join('')}
       </div>
@@ -109,6 +146,61 @@ function renderReading() {
     }
     renderReadingMC(items[readingMCIndex]);
   }
+}
+
+function renderReadingVQ(item) {
+  const container = document.getElementById('readingContent');
+  if (!readingVQAnswered) {
+    container.innerHTML = `
+      <div style="margin-bottom:16px">
+        <div style="font-size:14px;color:#64748b;margin-bottom:8px"> 生词语境练习 (${readingVQIndex + 1}/${readingModule.vocabQuiz.length})</div>
+        <div style="font-size:15px;line-height:1.8;color:#1e293b;margin-bottom:16px">${item.q}</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${item.opts.map((opt, i) => `
+            <button onclick="selectReadingVQ(${i})" id="vqOpt${i}" style="padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;text-align:left;font-size:14px;cursor:pointer;transition:all 0.2s">${opt}</button>
+          `).join('')}
+        </div>
+      </div>
+      <button class="quiz-submit" id="vqSubmitBtn" onclick="submitReadingVQ()" style="display:none">提交答案</button>
+    `;
+  } else {
+    const isCorrect = readingVQSelected === item.ans;
+    container.innerHTML = `
+      <div style="margin-bottom:16px">
+        <div style="font-size:14px;color:#64748b;margin-bottom:8px">📝 生词语境练习 (${readingVQIndex + 1}/${readingModule.vocabQuiz.length})</div>
+        <div style="font-size:15px;line-height:1.8;color:#1e293b;margin-bottom:16px">${item.q}</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${item.opts.map((opt, i) => {
+            let style = 'padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;text-align:left;font-size:14px;';
+            if (i === item.ans) style += 'background:#dcfce7;border-color:#22c55e;color:#166534;';
+            else if (i === readingVQSelected && !isCorrect) style += 'background:#fee2e2;border-color:#ef4444;color:#991b1b;';
+            else style += 'background:#f8fafc;';
+            return `<div style="${style}">${opt}</div>`;
+          }).join('')}
+        </div>
+        <div style="margin-top:12px;padding:12px;background:${isCorrect ? '#dcfce7' : '#fee2e2'};border-radius:8px;font-size:14px;line-height:1.8">
+          ${isCorrect ? '✅ 回答正确！' : '❌ 回答错误。'}<br>${item.exp}
+        </div>
+      </div>
+      <button class="quiz-submit" onclick="readingVQIndex++;readingVQSelected=-1;readingVQAnswered=false;renderReading()">下一题</button>
+    `;
+  }
+}
+
+function selectReadingVQ(index) {
+  if (readingVQAnswered) return;
+  readingVQSelected = index;
+  document.querySelectorAll('[id^="vqOpt"]').forEach((btn, i) => {
+    btn.style.borderColor = i === index ? '#2563eb' : '#e2e8f0';
+    btn.style.background = i === index ? '#eff6ff' : '#fff';
+  });
+  document.getElementById('vqSubmitBtn').style.display = 'block';
+}
+
+function submitReadingVQ() {
+  if (readingVQSelected === -1) return;
+  readingVQAnswered = true;
+  renderReading();
 }
 
 function renderReadingSA(item) {
