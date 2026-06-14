@@ -5,6 +5,14 @@
   "installCommand": null,
   "rewrites": [
     {
+      "source": "/phrases-learning.html",
+      "destination": "/phrases-learning.html"
+    },
+    {
+      "source": "/reading-cassie.html",
+      "destination": "/reading-cassie.html"
+    },
+    {
       "source": "/scripts/:path*",
       "destination": "/scripts/:path*"
     },

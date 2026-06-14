@@ -38,6 +38,8 @@ bucket = oss2.Bucket(auth, f'https://{ENDPOINT}', BUCKET_NAME)
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 FILES_TO_UPLOAD = [
     ('index.html', 'text/html'),
+    ('phrases-learning.html', 'text/html'),
+    ('reading-cassie.html', 'text/html'),
     ('vocab_data.json', 'application/json'),
     ('vercel.json', 'application/json'),
 ]
@@ -71,7 +73,7 @@ for file_path, content_type in FILES_TO_UPLOAD:
             headers={
                 'Content-Type': content_type,
                 'Content-Disposition': 'inline',
-                'x-oss-object-acl': oss2.OBJECT_ACL_PUBLIC_READ,
+                'x-oss-force-download': 'false',
             }
         )
         print(f"  上传成功: {file_path} ({len(content)} bytes)")
