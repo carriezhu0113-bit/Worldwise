@@ -10,17 +10,29 @@ let verbQuizScore = 0;
 let verbQuizTotal = 0;
 
 function speakVerb(...texts) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    texts.forEach((text, i) => {
-      const clean = text.replace(/ \/red\//g, '').replace(/\/.*/g, '').trim();
-      const u = new SpeechSynthesisUtterance(clean);
-      u.lang = 'en-US';
-      u.rate = 0.85;
-      u.pitch = 1;
-      window.speechSynthesis.speak(u);
-    });
+  let index = 0;
+  function playNext() {
+    if (index >= texts.length) return;
+    const text = texts[index].replace(/ \/red\//g, '').replace(/\/.*/g, '').trim();
+    const audioUrl = `https://dict.youdao.com/dictvoice?type=0&audio=${encodeURIComponent(text)}`;
+    const audio = new Audio(audioUrl);
+    audio.onended = () => { index++; playNext(); };
+    audio.onerror = () => {
+      // Fallback to browser speech synthesis
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        u.rate = 0.85;
+        u.onend = () => { index++; playNext(); };
+        window.speechSynthesis.speak(u);
+      } else {
+        index++; playNext();
+      }
+    };
+    audio.play();
   }
+  playNext();
 }
 
 async function initVerbs() {

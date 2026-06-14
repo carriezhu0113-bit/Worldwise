@@ -47,10 +47,17 @@ function renderSpelling() {
 function playSpellingWord() {
   if (spIndex >= spWords.length) return;
   const word = spWords[spIndex].word;
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = 'en-US';
-  utterance.rate = 0.7;
-  speechSynthesis.speak(utterance);
+  const audioUrl = `https://dict.youdao.com/dictvoice?type=0&audio=${encodeURIComponent(word)}`;
+  const audio = new Audio(audioUrl);
+  audio.play().catch(() => {
+    // Fallback to browser speech synthesis
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.7;
+      speechSynthesis.speak(utterance);
+    }
+  });
 }
 
 async function checkSpelling() {

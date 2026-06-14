@@ -16,23 +16,48 @@ let readingModules = [];
 let currentReadingModule = '';
 
 function speakReadingWord(word) {
-  if ('speechSynthesis' in window) {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(word);
-    u.lang = 'en-US';
-    u.rate = 0.85;
-    speechSynthesis.speak(u);
-  }
+  const audioUrl = `https://dict.youdao.com/dictvoice?type=0&audio=${encodeURIComponent(word)}`;
+  const audio = new Audio(audioUrl);
+  audio.play().catch(() => {
+    // Fallback to browser speech synthesis
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.85;
+      speechSynthesis.speak(u);
+    }
+  });
 }
 
 function speakReadingText() {
-  if ('speechSynthesis' in window) {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(readingModule.text);
-    u.lang = 'en-US';
-    u.rate = 0.8;
-    speechSynthesis.speak(u);
+  // Split text into sentences and play each with Youdao
+  const sentences = readingModule.text.match(/[^.!?]+[.!?]+/g) || [readingModule.text];
+  let index = 0;
+
+  function playNext() {
+    if (index >= sentences.length) return;
+    const sentence = sentences[index].trim();
+    if (!sentence) { index++; playNext(); return; }
+    const audioUrl = `https://dict.youdao.com/dictvoice?type=0&audio=${encodeURIComponent(sentence)}`;
+    const audio = new Audio(audioUrl);
+    audio.onended = () => { index++; playNext(); };
+    audio.onerror = () => {
+      // Fallback: try browser speech synthesis for this sentence
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance(sentence);
+        u.lang = 'en-US';
+        u.rate = 0.8;
+        u.onend = () => { index++; playNext(); };
+        speechSynthesis.speak(u);
+      } else {
+        index++; playNext();
+      }
+    };
+    audio.play();
   }
+
+  playNext();
 }
 
 function stopReadingText() {
