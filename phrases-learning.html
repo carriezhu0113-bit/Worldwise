@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>短语学习 - 七年级上册</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;color:#1a1a2e;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+.hidden{display:none!important}
+
+.header{background:linear-gradient(135deg,#059669,#0d9488);color:#fff;padding:20px;text-align:center;border-radius:16px;margin-bottom:24px}
+.header h1{font-size:24px;margin-bottom:8px}
+.header p{font-size:14px;opacity:.9}
+
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:12px 20px;border:none;background:#fff;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;color:#64748b;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.tab.active{background:#059669;color:#fff}
+
+.card{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card h3{font-size:18px;margin-bottom:16px;color:#1e293b}
+
+/* Phrase Card */
+.phrase-card{background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;transition:all .2s}
+.phrase-card .phrase{font-size:28px;font-weight:700;color:#059669;margin-bottom:8px}
+.phrase-card .meaning{font-size:18px;color:#1e293b;margin-bottom:12px}
+.phrase-card .example{font-size:14px;color:#64748b;font-style:italic;line-height:1.6}
+.phrase-card .example .highlight{color:#059669;font-weight:600;font-style:normal}
+
+/* Progress */
+.progress-bar{background:#e2e8f0;border-radius:20px;height:8px;margin:16px 0;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,#059669,#0d9488);height:100%;border-radius:20px;transition:width .3s}
+
+/* Buttons */
+.btn{padding:12px 24px;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary{background:#059669;color:#fff}
+.btn-primary:hover{background:#047857}
+.btn-secondary{background:#e2e8f0;color:#64748b}
+.btn-secondary:hover{background:#cbd5e1}
+.btn-speak{background:none;border:none;cursor:pointer;font-size:28px;padding:4px 8px}
+
+/* Quiz */
+.quiz-option{display:block;width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;text-align:left;font-size:15px;cursor:pointer;margin-bottom:10px;transition:all .2s}
+.quiz-option:hover{border-color:#059669;background:#f0fdf4}
+.quiz-option.correct{border-color:#059669;background:#dcfce7;color:#166534}
+.quiz-option.wrong{border-color:#ef4444;background:#fee2e2;color:#991b1b}
+.quiz-option.disabled{pointer-events:none}
+
+/* Input */
+.quiz-input{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px;outline:none;transition:border-color .2s}
+.quiz-input:focus{border-color:#059669}
+.quiz-input.correct{border-color:#059669;background:#dcfce7}
+.quiz-input.wrong{border-color:#ef4444;background:#fee2e2}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.stat-card .num{font-size:28px;font-weight:700;color:#059669}
+.stat-card .label{font-size:12px;color:#94a3b8;margin-top:4px}
+
+/* Day selector */
+.day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px;margin:16px 0}
+.day-btn{padding:10px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;text-align:center;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s}
+.day-btn:hover{border-color:#059669}
+.day-btn.active{background:#059669;color:#fff;border-color:#059669}
+.day-btn.completed{background:#dcfce7;border-color:#059669;color:#166534}
+
+/* Feedback */
+.feedback{padding:12px;border-radius:8px;margin:12px 0;font-size:14px;line-height:1.6}
+.feedback.correct{background:#dcfce7;color:#166534}
+.feedback.wrong{background:#fee2e2;color:#991b1b}
+
+/* Review badge */
+.review-badge{display:inline-block;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600;margin-left:8px}
+
+/* Context quiz */
+.context-sentence{font-size:16px;line-height:1.8;color:#1e293b;margin-bottom:16px;padding:16px;background:#f8fafc;border-radius:10px}
+.context-blank{border-bottom:2px solid #059669;padding:0 4px;color:#059669;font-weight:600}
+
+/* Navigation */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+
+/* Result screen */
+.result-screen{text-align:center;padding:40px 20px}
+.result-screen .score{font-size:48px;font-weight:700;color:#059669;margin:16px 0}
+.result-screen .detail{font-size:16px;color:#64748b;margin:8px 0}
+
+/* Mode selector */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.mode-card{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s}
+.mode-card:hover{border-color:#059669;transform:translateY(-2px)}
+.mode-card .icon{font-size:36px;margin-bottom:8px}
+.mode-card .title{font-size:16px;font-weight:600;color:#1e293b}
+.mode-card .desc{font-size:13px;color:#94a3b8;margin-top:4px}
+
+/* Preposition quiz */
+.prep-options{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.prep-btn{padding:8px 16px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s}
+.prep-btn:hover{border-color:#059669}
+.prep-btn.selected{border-color:#059669;background:#eff6ff}
+.prep-btn.correct{border-color:#059669;background:#dcfce7}
+.prep-btn.wrong{border-color:#ef4444;background:#fee2e2}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📚 短语学习</h1>
+    <p>七年级上册 · 每天10个新短语 + 10个复习</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('learn')">📖 学习</button>
+    <button class="tab" onclick="switchTab('quiz')">✍️ 测试</button>
+    <button class="tab" onclick="switchTab('context')">📝 语境</button>
+    <button class="tab" onclick="switchTab('progress')">📊 进度</button>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script>
+// ==================== PHRASE DATA ====================
+const ALL_PHRASES = [
+  {"phrase":"close to","meaning":"接近；靠近","example":"Our school is close to the park.","isNoun":false},
+  {"phrase":"go to school","meaning":"去上学","example":"I go to school at 7:30 every morning.","isNoun":false},
+  {"phrase":"be good at","meaning":"擅长","example":"She is good at English.","isNoun":false},
+  {"phrase":"make friends with","meaning":"与……交朋友","example":"Tom wants to make friends with the new students.","isNoun":false},
+  {"phrase":"ask sb. about sth.","meaning":"向某人询问某事","example":"I asked my teacher about the homework.","isNoun":false},
+  {"phrase":"live with","meaning":"和……一起生活","example":"She lives with her grandparents.","isNoun":false},
+  {"phrase":"be far from","meaning":"远离","example":"My home is far from the train station.","isNoun":false},
+  {"phrase":"best wishes","meaning":"最美好的祝愿","example":"Best wishes for your birthday!","isNoun":true},
+  {"phrase":"on the Internet","meaning":"在互联网上","example":"I often watch English videos on the Internet.","isNoun":false},
+  {"phrase":"in my free time","meaning":"在我的业余时间","example":"I read books in my free time.","isNoun":false},
+  {"phrase":"hear from sb.","meaning":"收到某人的来信","example":"I heard from my cousin last week.","isNoun":false},
+  {"phrase":"start with","meaning":"以……开始","example":"The lesson starts with a short video.","isNoun":false},
+  {"phrase":"get…from…","meaning":"从……得到","example":"We get energy from the sun.","isNoun":false},
+  {"phrase":"pay attention to","meaning":"注意；重视","example":"Please pay attention to the teacher.","isNoun":false},
+  {"phrase":"brush one's teeth","meaning":"刷牙","example":"My brother brushes his teeth after breakfast.","isNoun":false},
+  {"phrase":"junior high school","meaning":"初中","example":"I am a student in junior high school.","isNoun":true},
+  {"phrase":"take part in","meaning":"参加","example":"They take part in the sports meeting every year.","isNoun":false},
+  {"phrase":"have a good time","meaning":"过得愉快","example":"We had a good time at the party.","isNoun":false},
+  {"phrase":"help sb. with sth.","meaning":"帮助某人做某事","example":"My mother helps me with my English.","isNoun":false},
+  {"phrase":"at the end of…","meaning":"在……的尽头；在……末尾","example":"There is a bookstore at the end of the street.","isNoun":false},
+  {"phrase":"in one's seat","meaning":"在某人的座位上","example":"Please sit in your seat.","isNoun":false},
+  {"phrase":"from…to…","meaning":"从……到……","example":"We study from Monday to Friday.","isNoun":false},
+  {"phrase":"provide…with…","meaning":"为……提供……","example":"The school provides students with lunch.","isNoun":false},
+  {"phrase":"put…into…","meaning":"把……放入……","example":"Please put the books into the bag.","isNoun":false},
+  {"phrase":"throw away","meaning":"扔掉","example":"Don't throw away the bottle.","isNoun":false},
+  {"phrase":"on the land","meaning":"在陆地上","example":"Many animals live on the land.","isNoun":false},
+  {"phrase":"in the sky","meaning":"在天空中","example":"A bird is flying in the sky.","isNoun":false},
+  {"phrase":"under the water","meaning":"在水下","example":"The fish is swimming under the water.","isNoun":false},
+  {"phrase":"under the ground","meaning":"在地下","example":"The subway runs under the ground.","isNoun":false},
+  {"phrase":"in the air","meaning":"在空中","example":"There are many balloons in the air.","isNoun":false},
+  {"phrase":"need sb. to do sth.","meaning":"需要……做某事","example":"We need someone to help us.","isNoun":false},
+  {"phrase":"find out","meaning":"查明；发现","example":"I want to find out the answer.","isNoun":false},
+  {"phrase":"take a trip","meaning":"去旅行","example":"We will take a trip to Beijing next month.","isNoun":false},
+  {"phrase":"go on a picnic","meaning":"去野餐","example":"They went on a picnic last Sunday.","isNoun":false},
+  {"phrase":"make a snowman","meaning":"堆雪人","example":"The children made a snowman in the park.","isNoun":false},
+  {"phrase":"fly a kite","meaning":"放风筝","example":"We flew a kite on the playground.","isNoun":false},
+  {"phrase":"go swimming","meaning":"去游泳","example":"My sister goes swimming every Saturday.","isNoun":false},
+  {"phrase":"have a picnic","meaning":"去野餐","example":"Let's have a picnic this weekend.","isNoun":false},
+  {"phrase":"during the winter holiday","meaning":"在寒假期间","example":"We visited our grandparents during the winter holiday.","isNoun":false},
+  {"phrase":"get married","meaning":"结婚","example":"My aunt got married last year.","isNoun":false},
+  {"phrase":"at this time of year","meaning":"在每年的这个时候","example":"It is warm at this time of year.","isNoun":false},
+  {"phrase":"go to the beach","meaning":"去海边","example":"We often go to the beach in summer.","isNoun":false},
+  {"phrase":"in the middle of…","meaning":"在……中间","example":"The lake is in the middle of the park.","isNoun":false},
+  {"phrase":"more than","meaning":"多于","example":"There are more than 50 students in my class.","isNoun":false},
+  {"phrase":"be able to","meaning":"能够","example":"He is able to speak Chinese now.","isNoun":false},
+  {"phrase":"have to","meaning":"不得不","example":"I have to finish my homework first.","isNoun":false},
+  {"phrase":"so that","meaning":"以便；为了","example":"I study hard so that I can pass the exam.","isNoun":false},
+  {"phrase":"as…as…","meaning":"像……一样","example":"She runs as fast as her brother.","isNoun":false},
+  {"phrase":"that is","meaning":"也就是说","example":"He is my best friend, that is, the boy in blue.","isNoun":false},
+  {"phrase":"in space","meaning":"在太空中","example":"Astronauts work in space.","isNoun":false},
+  {"phrase":"tie…to…","meaning":"把……系在……上","example":"She tied the ribbon to the gift.","isNoun":false},
+  {"phrase":"do exercise","meaning":"做运动","example":"We do exercise every morning.","isNoun":false},
+  {"phrase":"at the moment","meaning":"此刻；目前","example":"He is busy at the moment.","isNoun":false},
+  {"phrase":"solve the problem","meaning":"解决问题","example":"We need to solve the problem together.","isNoun":false},
+  {"phrase":"in the future","meaning":"在将来","example":"I want to be a doctor in the future.","isNoun":false},
+  {"phrase":"a large amount of","meaning":"大量的","example":"There is a large amount of water in the bottle.","isNoun":false},
+  {"phrase":"travel guide","meaning":"旅游指南","example":"I bought a travel guide for Japan.","isNoun":true},
+  {"phrase":"place of interest","meaning":"名胜","example":"We visited many places of interest in Beijing.","isNoun":true},
+  {"phrase":"in the centre of…","meaning":"在……中心","example":"The library is in the centre of the city.","isNoun":false},
+  {"phrase":"light up","meaning":"点亮","example":"The candles light up the room.","isNoun":false},
+  {"phrase":"talk about","meaning":"谈论","example":"We talked about our plans after class.","isNoun":false},
+  {"phrase":"travel around","meaning":"周游；环游","example":"My uncle wants to travel around Europe.","isNoun":false},
+  {"phrase":"the capital of…","meaning":"……的首都","example":"Beijing is the capital of China.","isNoun":true},
+  {"phrase":"be away from","meaning":"离开；远离","example":"The village is far away from the city.","isNoun":false},
+  {"phrase":"put on","meaning":"穿上；戴上","example":"Put on your coat. It's cold outside.","isNoun":false},
+  {"phrase":"for pleasure","meaning":"为了取乐","example":"Some people read for pleasure.","isNoun":false},
+  {"phrase":"have a wonderful time","meaning":"玩得开心","example":"We had a wonderful time at the beach.","isNoun":false},
+  {"phrase":"a large public area","meaning":"大型公共区域","example":"The square is a large public area.","isNoun":true},
+  {"phrase":"in every direction","meaning":"四面八方","example":"The light spread in every direction.","isNoun":false},
+  {"phrase":"natural beauty","meaning":"自然美景","example":"The natural beauty of the lake is amazing.","isNoun":true},
+  {"phrase":"walk along","meaning":"沿着……走","example":"We walked along the river.","isNoun":false},
+  {"phrase":"grand theatre","meaning":"大剧院","example":"We watched a show at the grand theatre.","isNoun":true},
+  {"phrase":"all the way","meaning":"一路上","example":"He sang all the way home.","isNoun":false},
+  {"phrase":"of course","meaning":"当然","example":"Of course, I will help you.","isNoun":false},
+  {"phrase":"remote control","meaning":"遥控器","example":"Where is the remote control?","isNoun":true},
+  {"phrase":"welcome to…","meaning":"欢迎来到……","example":"Welcome to our school.","isNoun":false},
+  {"phrase":"launch…into…","meaning":"把……发射到……中","example":"They launched the rocket into space.","isNoun":false},
+  {"phrase":"disappear into…","meaning":"消失于……之中","example":"The bird disappeared into the sky.","isNoun":false},
+  {"phrase":"solar power","meaning":"太阳能","example":"Solar power is a clean energy.","isNoun":true},
+  {"phrase":"give…back","meaning":"把……归还","example":"Please give the book back to me.","isNoun":false},
+  {"phrase":"look up","meaning":"查阅；查找","example":"You can look up the word in the dictionary.","isNoun":false},
+  {"phrase":"in the past","meaning":"在过去","example":"People lived a hard life in the past.","isNoun":false},
+  {"phrase":"in the woods","meaning":"在树林里","example":"We saw a rabbit in the woods.","isNoun":false},
+  {"phrase":"go on an adventure","meaning":"去探险","example":"They went on an adventure in the forest.","isNoun":false},
+  {"phrase":"wait for","meaning":"等候","example":"We are waiting for the bus.","isNoun":false},
+  {"phrase":"living room","meaning":"客厅","example":"We watch TV in the living room.","isNoun":true},
+  {"phrase":"make a list","meaning":"列清单","example":"She made a list of things to buy.","isNoun":false},
+  {"phrase":"have some tea","meaning":"喝茶","example":"Would you like to have some tea?","isNoun":false},
+  {"phrase":"in a short time","meaning":"不久；一会儿","example":"The rain stopped in a short time.","isNoun":false},
+  {"phrase":"work of art","meaning":"艺术作品","example":"This painting is a great work of art.","isNoun":true},
+  {"phrase":"take place","meaning":"发生","example":"The meeting will take place tomorrow.","isNoun":false},
+  {"phrase":"belong to","meaning":"属于","example":"This book belongs to me.","isNoun":false},
+  {"phrase":"learn about","meaning":"了解","example":"I want to learn about Chinese history.","isNoun":false},
+  {"phrase":"be bad for","meaning":"对……有害","example":"Too much sugar is bad for your teeth.","isNoun":false},
+  {"phrase":"be interested in","meaning":"对……感兴趣","example":"He is interested in science.","isNoun":false},
+  {"phrase":"a waste of time","meaning":"浪费时间","example":"Playing games all day is a waste of time.","isNoun":true},
+  {"phrase":"front door","meaning":"前门","example":"Please knock on the front door.","isNoun":true},
+  {"phrase":"go inside","meaning":"走进去","example":"The dog went inside quickly.","isNoun":false},
+  {"phrase":"all over","meaning":"遍及；到处","example":"Snow is all over the road.","isNoun":false},
+  {"phrase":"no more than","meaning":"仅仅；不过","example":"He is no more than ten years old.","isNoun":false},
+  {"phrase":"at the end","meaning":"最后；在结尾","example":"At the end, everyone was happy.","isNoun":false},
+  {"phrase":"work together","meaning":"一起工作；合作","example":"We need to work together.","isNoun":false},
+  {"phrase":"make energy","meaning":"产生能量","example":"Solar panels can make energy.","isNoun":false},
+  {"phrase":"catch a fish","meaning":"捕鱼；抓鱼","example":"My father caught a fish by the river.","isNoun":false},
+  {"phrase":"lift…up…","meaning":"把……抬起","example":"Please lift the box up.","isNoun":false},
+  {"phrase":"hurry to","meaning":"匆忙去……","example":"She hurried to school this morning.","isNoun":false},
+  {"phrase":"be worth doing","meaning":"值得做","example":"This book is worth reading.","isNoun":false},
+  {"phrase":"be excited about","meaning":"对……感到兴奋","example":"She is excited about the trip.","isNoun":false},
+  {"phrase":"be strict with sb.","meaning":"对某人严格","example":"Our teacher is strict with us.","isNoun":false},
+  {"phrase":"be strict in doing sth.","meaning":"对做某事要求严格","example":"He is strict in doing his work.","isNoun":false},
+  {"phrase":"be sure to do sth.","meaning":"一定做某事","example":"Be sure to lock the door.","isNoun":false},
+  {"phrase":"be ready to do sth.","meaning":"准备做某事","example":"I am ready to start.","isNoun":false},
+  {"phrase":"take care of","meaning":"照顾","example":"Please take care of my cat.","isNoun":false},
+  {"phrase":"care for","meaning":"照顾；关心","example":"She cares for her little brother.","isNoun":false},
+  {"phrase":"make a difference to","meaning":"对……有影响","example":"Your help makes a difference to me.","isNoun":false},
+  {"phrase":"bird's-eye view","meaning":"鸟瞰","example":"We had a bird's-eye view of the city.","isNoun":true}
+];
+
+// ==================== STATE ====================
+let currentTab = 'learn';
+let learnDay = 1;
+let learnIndex = 0;
+let learnMode = 'new'; // 'new' or 'review'
+let quizType = 'en2cn'; // 'en2cn' or 'cn2en'
+let quizIndex = 0;
+let quizScore = 0;
+let quizTotal = 10;
+let quizAnswered = false;
+let contextIndex = 0;
+let contextScore = 0;
+let contextTotal = 10;
+let contextAnswered = false;
+
+// Load progress from localStorage
+function loadProgress() {
+  try {
+    return JSON.parse(localStorage.getItem('phraseProgress') || '{}');
+  } catch(e) { return {}; }
+}
+
+function saveProgress(progress) {
+  localStorage.setItem('phraseProgress', JSON.stringify(progress));
+}
+
+function getToday() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getDayPhrases(day) {
+  const start = (day - 1) * 10;
+  return ALL_PHRASES.slice(start, start + 10);
+}
+
+function getReviewPhrases(day) {
+  // Review phrases from previous days (spaced repetition)
+  const reviewDays = [];
+  if (day > 1) reviewDays.push(day - 1);
+  if (day > 2) reviewDays.push(day - 2);
+  if (day > 4) reviewDays.push(day - 4);
+  if (day > 7) reviewDays.push(day - 7);
+  
+  let phrases = [];
+  reviewDays.forEach(d => {
+    phrases = phrases.concat(getDayPhrases(d));
+  });
+  // Shuffle and take 10
+  phrases.sort(() => Math.random() - 0.5);
+  return phrases.slice(0, 10);
+}
+
+function getTotalDays() {
+  return Math.ceil(ALL_PHRASES.length / 10);
+}
+
+// ==================== SPEECH ====================
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    speechSynthesis.speak(u);
+  }
+}
+
+// ==================== TAB SWITCHING ====================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  renderContent();
+}
+
+// ==================== RENDER ====================
+function renderContent() {
+  const content = document.getElementById('content');
+  switch(currentTab) {
+    case 'learn': renderLearn(content); break;
+    case 'quiz': renderQuiz(content); break;
+    case 'context': renderContext(content); break;
+    case 'progress': renderProgress(content); break;
+  }
+}
+
+// ==================== LEARN TAB ====================
+function renderLearn(container) {
+  const totalDays = getTotalDays();
+  const progress = loadProgress();
+  const today = getToday();
+  
+  let html = `
+    <div class="card">
+      <h3>📅 选择学习天数</h3>
+      <div class="day-grid">
+        ${Array.from({length: totalDays}, (_, i) => {
+          const day = i + 1;
+          const completed = progress[`day_${day}`];
+          const cls = completed ? 'completed' : (day === learnDay ? 'active' : '');
+          return `<button class="day-btn ${cls}" onclick="learnDay=${day};learnIndex=0;learnMode='new';renderContent()">${day}</button>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  
+  const dayPhrases = getDayPhrases(learnDay);
+  const reviewPhrases = getReviewPhrases(learnDay);
+  
+  html += `
+    <div class="card">
+      <h3>📖 第 ${learnDay} 天学习</h3>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="learnMode='new';learnIndex=0;renderContent()">
+          <div class="icon"></div>
+          <div class="title">学习新短语</div>
+          <div class="desc">${dayPhrases.length} 个新短语</div>
+        </div>
+        <div class="mode-card" onclick="learnMode='review';learnIndex=0;renderContent()">
+          <div class="icon">🔄</div>
+          <div class="title">复习旧短语</div>
+          <div class="desc">${reviewPhrases.length} 个复习短语</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const phrases = learnMode === 'new' ? dayPhrases : reviewPhrases;
+  
+  if (phrases.length === 0) {
+    html += `<div class="card"><p style="text-align:center;color:#94a3b8">暂无可复习的短语，请先学习新短语。</p></div>`;
+  } else if (learnIndex < phrases.length) {
+    const p = phrases[learnIndex];
+    const progress_pct = ((learnIndex) / phrases.length * 100).toFixed(0);
+    
+    html += `
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font-size:14px;color:#64748b">${learnMode === 'new' ? '🆕 新短语' : '🔄 复习'} (${learnIndex + 1}/${phrases.length})</span>
+          <span class="review-badge">${learnDay === 1 ? '必背' : (learnDay <= 10 ? '必背' : '拓展')}</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${progress_pct}%"></div></div>
+        <div class="phrase-card">
+          <div class="phrase">${p.phrase}</div>
+          <div class="meaning">${p.meaning}</div>
+          ${p.example && !p.isNoun ? `<div class="example">${p.example.replace(new RegExp(p.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '<span class="highlight">$&</span>')}</div>` : ''}
+          <button class="btn-speak" onclick="speak('${p.phrase.replace(/'/g, "\\'")}')"></button>
+        </div>
+        <div class="nav-row">
+          <button class="btn btn-secondary" onclick="learnIndex=Math.max(0,learnIndex-1);renderContent()" ${learnIndex === 0 ? 'disabled style="opacity:0.5"' : ''}> 上一个</button>
+          <button class="btn btn-primary" onclick="learnIndex++;if(learnIndex>=${phrases.length}){markDayComplete(${learnDay})}renderContent()">
+            ${learnIndex >= phrases.length - 1 ? '✅ 完成' : '下一个 '}
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Auto-speak
+    setTimeout(() => speak(p.phrase), 300);
+  } else {
+    html += `
+      <div class="card">
+        <div class="result-screen">
+          <div style="font-size:48px">🎉</div>
+          <div class="score">完成！</div>
+          <div class="detail">第 ${learnDay} 天 ${learnMode === 'new' ? '新短语' : '复习'} 学习完成</div>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="learnIndex=0;renderContent()"> 再学一遍</button>
+        </div>
+      </div>
+    `;
+  }
+  
+  container.innerHTML = html;
+}
+
+function markDayComplete(day) {
+  const progress = loadProgress();
+  progress[`day_${day}`] = { date: getToday(), completed: true };
+  saveProgress(progress);
+}
+
+// ==================== QUIZ TAB ====================
+function renderQuiz(container) {
+  const progress = loadProgress();
+  const learnedDays = Object.keys(progress).filter(k => k.startsWith('day_') && progress[k].completed).map(k => parseInt(k.split('_')[1]));
+  
+  if (learnedDays.length === 0) {
+    container.innerHTML = `<div class="card"><p style="text-align:center;color:#94a3b8">请先完成至少一天的学习，然后来进行测试。</p></div>`;
+    return;
+  }
+  
+  // Get phrases from learned days
+  let quizPhrases = [];
+  learnedDays.forEach(d => {
+    quizPhrases = quizPhrases.concat(getDayPhrases(d));
+  });
+  quizPhrases.sort(() => Math.random() - 0.5);
+  quizPhrases = quizPhrases.slice(0, quizTotal);
+  
+  if (quizIndex >= quizPhrases.length) {
+    container.innerHTML = `
+      <div class="card">
+        <div class="result-screen">
+          <div style="font-size:48px">${quizScore >= 8 ? '🎉' : quizScore >= 6 ? '👍' : ''}</div>
+          <div class="score">${quizScore}/${quizTotal}</div>
+          <div class="detail">${quizScore >= 8 ? '太棒了！' : quizScore >= 6 ? '不错，继续加油！' : '再练习一下吧！'}</div>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="quizIndex=0;quizScore=0;quizAnswered=false;renderContent()">🔄 再测一次</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  const p = quizPhrases[quizIndex];
+  const progress_pct = (quizIndex / quizTotal * 100).toFixed(0);
+  
+  let html = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:14px;color:#64748b">✍️ 短语测试 (${quizIndex + 1}/${quizTotal})</span>
+        <span style="font-size:14px;color:#059669;font-weight:600">得分: ${quizScore}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress_pct}%"></div></div>
+  `;
+  
+  if (quizType === 'en2cn') {
+    // Show English, write Chinese
+    html += `
+      <div class="phrase-card" style="margin-bottom:20px">
+        <div class="phrase">${p.phrase}</div>
+        <button class="btn-speak" onclick="speak('${p.phrase.replace(/'/g, "\\'")}')">🔊</button>
+      </div>
+      <p style="font-size:14px;color:#64748b;margin-bottom:12px">请写出这个短语的中文意思：</p>
+      <input type="text" class="quiz-input" id="quizInput" placeholder="输入中文意思..." onkeydown="if(event.key==='Enter')checkQuizAnswer()" ${quizAnswered ? 'disabled' : ''} autofocus>
+      <div id="quizFeedback"></div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="quizType='cn2en';renderContent()">切换：看中文写英文</button>
+        <button class="btn btn-primary" id="quizSubmitBtn" onclick="checkQuizAnswer()" ${quizAnswered ? 'style="display:none"' : ''}>提交答案</button>
+        <button class="btn btn-primary" id="quizNextBtn" onclick="quizIndex++;quizAnswered=false;renderContent()" style="display:none">下一题 ➡</button>
+      </div>
+    `;
+  } else {
+    // Show Chinese, write English
+    html += `
+      <div class="phrase-card" style="margin-bottom:20px">
+        <div class="meaning" style="font-size:24px">${p.meaning}</div>
+      </div>
+      <p style="font-size:14px;color:#64748b;margin-bottom:12px">请写出这个中文对应的英文短语：</p>
+      <input type="text" class="quiz-input" id="quizInput" placeholder="输入英文短语..." onkeydown="if(event.key==='Enter')checkQuizAnswer()" ${quizAnswered ? 'disabled' : ''} autofocus>
+      <div id="quizFeedback"></div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="quizType='en2cn';renderContent()">切换：看英文写中文</button>
+        <button class="btn btn-primary" id="quizSubmitBtn" onclick="checkQuizAnswer()" ${quizAnswered ? 'style="display:none"' : ''}>提交答案</button>
+        <button class="btn btn-primary" id="quizNextBtn" onclick="quizIndex++;quizAnswered=false;renderContent()" style="display:none">下一题 </button>
+      </div>
+    `;
+  }
+  
+  html += `</div>`;
+  container.innerHTML = html;
+  
+  if (!quizAnswered) {
+    setTimeout(() => {
+      const input = document.getElementById('quizInput');
+      if (input) input.focus();
+    }, 100);
+  }
+}
+
+function checkQuizAnswer() {
+  if (quizAnswered) return;
+  
+  const input = document.getElementById('quizInput');
+  const feedback = document.getElementById('quizFeedback');
+  const submitBtn = document.getElementById('quizSubmitBtn');
+  const nextBtn = document.getElementById('quizNextBtn');
+  
+  if (!input || !input.value.trim()) return;
+  
+  quizAnswered = true;
+  const userAnswer = input.value.trim();
+  
+  // Get current phrase
+  const progress = loadProgress();
+  const learnedDays = Object.keys(progress).filter(k => k.startsWith('day_') && progress[k].completed).map(k => parseInt(k.split('_')[1]));
+  let quizPhrases = [];
+  learnedDays.forEach(d => {
+    quizPhrases = quizPhrases.concat(getDayPhrases(d));
+  });
+  quizPhrases.sort(() => Math.random() - 0.5);
+  quizPhrases = quizPhrases.slice(0, quizTotal);
+  const p = quizPhrases[quizIndex];
+  
+  let isCorrect = false;
+  
+  if (quizType === 'en2cn') {
+    // Check if user's Chinese answer matches
+    const meanings = p.meaning.split(/[；;]/).map(m => m.trim());
+    isCorrect = meanings.some(m => userAnswer.includes(m) || m.includes(userAnswer));
+  } else {
+    // Check if user's English answer matches (case insensitive, ignore punctuation differences)
+    const normalize = s => s.toLowerCase().replace(/[…'']/g, '').replace(/\s+/g, ' ').trim();
+    isCorrect = normalize(userAnswer) === normalize(p.phrase);
+  }
+  
+  if (isCorrect) {
+    quizScore++;
+    input.classList.add('correct');
+    feedback.innerHTML = `<div class="feedback correct">✅ 正确！${quizType === 'en2cn' ? p.phrase + ' = ' + p.meaning : p.meaning + ' = ' + p.phrase}</div>`;
+  } else {
+    input.classList.add('wrong');
+    feedback.innerHTML = `<div class="feedback wrong">❌ 正确答案：${quizType === 'en2cn' ? p.meaning : p.phrase}<br>你的答案：${userAnswer}</div>`;
+  }
+  
+  submitBtn.style.display = 'none';
+  nextBtn.style.display = 'block';
+  input.disabled = true;
+}
+
+// ==================== CONTEXT TAB ====================
+function renderContext(container) {
+  const progress = loadProgress();
+  const learnedDays = Object.keys(progress).filter(k => k.startsWith('day_') && progress[k].completed).map(k => parseInt(k.split('_')[1]));
+  
+  if (learnedDays.length === 0) {
+    container.innerHTML = `<div class="card"><p style="text-align:center;color:#94a3b8">请先完成至少一天的学习，然后来进行语境练习。</p></div>`;
+    return;
+  }
+  
+  // Generate context questions
+  let contextPhrases = [];
+  learnedDays.forEach(d => {
+    contextPhrases = contextPhrases.concat(getDayPhrases(d).filter(p => !p.isNoun));
+  });
+  contextPhrases.sort(() => Math.random() - 0.5);
+  contextPhrases = contextPhrases.slice(0, contextTotal);
+  
+  if (contextIndex >= contextPhrases.length) {
+    container.innerHTML = `
+      <div class="card">
+        <div class="result-screen">
+          <div style="font-size:48px">${contextScore >= 8 ? '🎉' : contextScore >= 6 ? '👍' : '💪'}</div>
+          <div class="score">${contextScore}/${contextTotal}</div>
+          <div class="detail">${contextScore >= 8 ? '太棒了！' : contextScore >= 6 ? '不错，继续加油！' : '再练习一下吧！'}</div>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="contextIndex=0;contextScore=0;contextAnswered=false;renderContent()">🔄 再测一次</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  const p = contextPhrases[contextIndex];
+  const progress_pct = (contextIndex / contextTotal * 100).toFixed(0);
+  
+  // Generate context question: fill in the blank in the example sentence
+  const sentence = p.example;
+  const phraseInSentence = p.phrase.replace(/[…'']/g, '');
+  
+  // Create blank version
+  let blankSentence = sentence;
+  // Try to replace the phrase in the sentence with a blank
+  const regex = new RegExp(phraseInSentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  blankSentence = sentence.replace(regex, '<span class="context-blank">________</span>');
+  
+  // Generate wrong options
+  let options = [p.phrase];
+  const allPhrases = ALL_PHRASES.filter(ph => ph.phrase !== p.phrase && !ph.isNoun);
+  allPhrases.sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 3 && i < allPhrases.length; i++) {
+    options.push(allPhrases[i].phrase);
+  }
+  options.sort(() => Math.random() - 0.5);
+  
+  let html = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:14px;color:#64748b">📝 语境选择 (${contextIndex + 1}/${contextTotal})</span>
+        <span style="font-size:14px;color:#059669;font-weight:600">得分: ${contextScore}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress_pct}%"></div></div>
+      <div class="context-sentence">${blankSentence}</div>
+      <p style="font-size:14px;color:#64748b;margin-bottom:12px">选择正确的短语填入空白处：</p>
+      <div id="contextOptions">
+        ${options.map((opt, i) => `
+          <button class="quiz-option" onclick="checkContextAnswer('${opt.replace(/'/g, "\\'")}', '${p.phrase.replace(/'/g, "\\'")}', this)" ${contextAnswered ? 'disabled class="quiz-option disabled"' : ''}>${opt}</button>
+        `).join('')}
+      </div>
+      <div id="contextFeedback"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="contextNextBtn" onclick="contextIndex++;contextAnswered=false;renderContent()" style="display:none">下一题 ➡</button>
+      </div>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
+
+function checkContextAnswer(selected, correct, btn) {
+  if (contextAnswered) return;
+  contextAnswered = true;
+  
+  const feedback = document.getElementById('contextFeedback');
+  const nextBtn = document.getElementById('contextNextBtn');
+  const options = document.querySelectorAll('#contextOptions .quiz-option');
+  
+  options.forEach(opt => {
+    opt.classList.add('disabled');
+    if (opt.textContent === correct) {
+      opt.classList.add('correct');
+    }
+  });
+  
+  if (selected === correct) {
+    contextScore++;
+    btn.classList.add('correct');
+    feedback.innerHTML = `<div class="feedback correct">✅ 正确！</div>`;
+  } else {
+    btn.classList.add('wrong');
+    feedback.innerHTML = `<div class="feedback wrong">❌ 正确答案是：<strong>${correct}</strong></div>`;
+  }
+  
+  nextBtn.style.display = 'block';
+}
+
+// ==================== PROGRESS TAB ====================
+function renderProgress(container) {
+  const progress = loadProgress();
+  const totalDays = getTotalDays();
+  const completedDays = Object.keys(progress).filter(k => k.startsWith('day_') && progress[k].completed).length;
+  const totalPhrases = ALL_PHRASES.length;
+  const learnedPhrases = completedDays * 10;
+  
+  let html = `
+    <div class="card">
+      <h3>📊 学习进度</h3>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="num">${completedDays}/${totalDays}</div>
+          <div class="label">已完成天数</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">${learnedPhrases}/${totalPhrases}</div>
+          <div class="label">已学短语</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">${Math.round(learnedPhrases / totalPhrases * 100)}%</div>
+          <div class="label">完成率</div>
+        </div>
+      </div>
+      <div class="progress-bar" style="height:12px"><div class="progress-fill" style="width:${learnedPhrases / totalPhrases * 100}%"></div></div>
+    </div>
+    
+    <div class="card">
+      <h3> 每日完成情况</h3>
+      <div class="day-grid">
+        ${Array.from({length: totalDays}, (_, i) => {
+          const day = i + 1;
+          const p = progress[`day_${day}`];
+          const cls = p && p.completed ? 'completed' : '';
+          return `<div class="day-btn ${cls}">${day}${cls ? ' ✓' : ''}</div>`;
+        }).join('')}
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🔄 复习计划</h3>
+      <p style="font-size:14px;color:#64748b;line-height:1.8">
+        每天学习 10 个新短语的同时，系统会自动安排复习之前学过的短语。<br>
+        复习间隔：第 1 天 → 第 2 天 → 第 4 天 → 第 7 天<br>
+        这种<strong>间隔重复</strong>的记忆方法可以帮助你更好地记住短语。
+      </p>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
+
+// ==================== INIT ====================
+renderContent();
+</script>
+</body>
+</html>
