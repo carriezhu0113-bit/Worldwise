@@ -537,25 +537,33 @@ function checkQuizAnswer() {
   let isCorrect = false;
   
   if (quizType === 'en2cn') {
-    // Check if user's Chinese answer matches - flexible matching
-    const normalize = s => s.replace(/[，。；；、\s…—-]/g, '').trim();
+    // Flexible Chinese matching - accept answers that are similar in meaning
+    const normalize = s => s.replace(/[，。；；、\s…—-·]/g, '').trim();
     const normAnswer = normalize(userAnswer);
     const normMeaning = normalize(p.meaning);
     
-    // Extract key words from meaning (split by semicolons, commas, etc.)
+    // Extract key meaning parts (split by semicolons, commas)
     const meanings = p.meaning.split(/[；；,，]/).map(m => normalize(m)).filter(m => m.length > 0);
     
-    // Strategy 1: exact match of normalized strings
+    // Strategy 1: exact match after normalization
     if (normAnswer === normMeaning) { isCorrect = true; }
-    // Strategy 2: user answer contains at least one key meaning word
+    // Strategy 2: user answer contains any key meaning word
     else if (meanings.some(m => normAnswer.includes(m))) { isCorrect = true; }
     // Strategy 3: meaning contains user's answer (user wrote a subset)
-    else if (normMeaning.includes(normAnswer) && normAnswer.length >= 2) { isCorrect = true; }
-    // Strategy 4: check if user wrote multiple meanings together (e.g., "接近靠近" for "接近；靠近")
-    else {
-      const combinedMeanings = meanings.join('');
-      if (combinedMeanings.includes(normAnswer) && normAnswer.length >= 2) { isCorrect = true; }
-    }
+    else if (normMeaning.includes(normAnswer) && normAnswer.length >= 1) { isCorrect = true; }
+    // Strategy 4: user wrote multiple meanings combined (e.g., "接近靠近" for "接近；靠近")
+    else if (meanings.join('').includes(normAnswer) && normAnswer.length >= 1) { isCorrect = true; }
+    // Strategy 5: fuzzy match - check if any meaning word is contained in user answer or vice versa
+    else if (meanings.some(m => m.includes(normAnswer) || normAnswer.includes(m))) { isCorrect = true; }
+    // Strategy 6: very lenient - if user answer shares significant overlap with any meaning
+    else if (meanings.some(m => {
+      // Check character overlap ratio
+      const userChars = new Set(normAnswer.split(''));
+      const meaningChars = new Set(m.split(''));
+      const overlap = [...userChars].filter(c => meaningChars.has(c)).length;
+      const minLen = Math.min(userChars.size, meaningChars.size);
+      return minLen > 0 && overlap / minLen >= 0.5;
+    })) { isCorrect = true; }
   } else {
     // Check if user's English answer matches (case insensitive, ignore punctuation differences)
     const normalize = s => s.toLowerCase().replace(/[…'']/g, '').replace(/\s+/g, ' ').trim();
