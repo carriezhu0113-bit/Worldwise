@@ -178,13 +178,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="tabs" id="studentTabs">
       <button class="tab active" onclick="switchTab('dashboard')">📊 首页</button>
       <button class="tab" onclick="switchTab('flashcards')">🃏 单词闪卡</button>
+      <button class="tab" onclick="window.open('phrases-learning.html','_blank')"> 短语学习</button>
       <button class="tab" onclick="switchTab('spelling')">✏️ 听写</button>
       <button class="tab" onclick="switchTab('grammar')">📝 语法</button>
       <button class="tab" onclick="switchTab('verbs')">🔤 动词过去式</button>
       <button class="tab" onclick="switchTab('sentence')">🔍 句子分析</button>
       <button class="tab" onclick="switchTab('reading')"> 阅读理解</button>
-      <button class="tab" onclick="window.open('phrases-learning.html','_blank')">📚 短语学习</button>
-      <button class="tab" onclick="switchTab('errors')">❌ 错题<span class="badge" id="errorCount">0</span></button>
+      <button class="tab" onclick="switchTab('errors')"> 错题<span class="badge" id="errorCount">0</span></button>
     </div>
     <div class="tabs hidden" id="teacherTabs">
       <button class="tab active" onclick="switchTeacherTab('overview')">📊 总览</button>
